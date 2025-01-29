@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nik')->unique()->nullable();
             $table->string('email')->unique();
-            $table->string('no_hp');
-            $table->string('alamat');
+            $table->string('no_hp')->nullable();
+            $table->string('alamat')->nullable();
             $table->string('password');
             $table->enum('role', ['user', 'admin'])->default('user');
+            $table->timestamp('email_verified_at')->nullable();
             $table->integer('user_created')->nullable();
             $table->integer('user_updated')->nullable();
             $table->softDeletes();

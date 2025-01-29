@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Repositories\Interfaces\UserInterface;
 
 class UserRepository implements UserInterface
-{
-    protected $model;
+{protected $model;
 
     public function __construct(User $model)
     {
@@ -20,11 +19,11 @@ class UserRepository implements UserInterface
     {
         return $this->model->create([
             'nama' => $data['nama'],
-            'nik' => $data['nik'] ?? null,
             'email' => $data['email'],
-            'no_hp' => $data['no_hp'],
-            'alamat' => $data['alamat'],
             'password' => Hash::make($data['password']),
+            'nik' => $data['nik'] ?? null,
+            'no_hp' => $data['no_hp'] ?? null,
+            'alamat' => $data['alamat'] ?? null,
             'user_created' => auth()->id(),
         ]);
     }
@@ -32,15 +31,5 @@ class UserRepository implements UserInterface
     public function findByEmail(string $email)
     {
         return $this->model->where('email', $email)->first();
-    }
-
-    public function verifyEmail(int $userId)
-    {
-        return $this->model->find($userId)->markEmailAsVerified();
-    }
-
-    public function markEmailAsVerified($user)
-    {
-        return $user->markEmailAsVerified();
     }
 }
