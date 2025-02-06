@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
+use App\Repositories\Auth\UserInterface;
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\auth\UserRepository;
-use App\Repositories\Interfaces\UserInterface;
+use App\Repositories\Auth\UserRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(UserInterface::class,UserRepository::class);
+
     }
 }

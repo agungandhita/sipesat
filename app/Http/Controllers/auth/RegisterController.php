@@ -2,31 +2,42 @@
 
 namespace App\Http\Controllers\auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Repositories\Interfaces\UserInterface;
+
 
 class RegisterController extends Controller
 {
-    protected $userRepository;
-
-    public function __construct(UserInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
-    public function showRegistrationForm()
+    public function index()
     {
         return view('auth.Register.register');
     }
 
-    public function register(RegisterRequest $request)
-    {
-        $user = $this->userRepository->create($request->validated());
+    public function store(Request $request){
 
-        auth()->login($user);
+        $validasi = $request->validate([
+            'nama' => 'required|max:255',
+            'email' => 'required|email:rfc,dns|unique:users',
+            'password' => 'required|min:5|max:255',
+        ]);
 
-        return redirect()->route('dashboard')->with('success', 'Registration successful!');
+
+        $validasi['password'] = bcrypt($validasi['password']);
+
+        $proses = User::create([
+            'nama' => $validasi['nama'],
+            'email' => $validasi['email'],
+            'password' => $validasi['password'],
+            'updated_at' => null
+        ]);
+
+        if ($proses) {
+            return redirect('/login')->with('toast_success', 'Registration successful !!');
+        } else {
+            return redirect()->back()->with('warning', 'Registration failed');
+        }
     }
+
+
 }

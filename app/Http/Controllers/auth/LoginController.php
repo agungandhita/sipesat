@@ -2,45 +2,61 @@
 
 namespace App\Http\Controllers\auth;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Repositories\Interfaces\UserInterface;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class LoginController extends Controller
 {
-    protected $userRepository;
-
-    public function __construct(UserInterface $userRepository)
+    public function index()
     {
-        $this->userRepository = $userRepository;
-    }
-
-    public function showLoginForm()
-    {
-        return view('auth.Login.login');
-    }
-
-    public function login(LoginRequest $request)
-    {
-        $credentials = $request->validated();
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+        return view('auth.Login.login', [
+            'tittle' => 'login'
         ]);
     }
 
+    public function login(Request $request)
+    {
+        try {
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+
+            if (Auth::guard('web')->attempt($credentials)) {
+                $request->session()->regenerate();
+                $user = auth()->user();
+
+                if ($user->role == 'admin') {
+                    return redirect()->intended('/admin')->with('toast_success', 'Login sebagai Admin berhasil');
+                } elseif ($user->role == 'user') {
+                    Alert::success('Berhasil', 'Login sebagai Manajer berhasil');
+                    return redirect()->intended('/user');
+                }
+
+                Alert::success('Berhasil', 'Login berhasil');
+                return redirect()->intended('/home');
+            }
+
+            return back()->withErrors(['email' => 'Email atau password salah'])->onlyInput('email');
+
+        } catch (Exception $e) {
+            Alert::error('Terjadi Kesalahan', $e->getMessage());
+            return back();
+        }
+    }
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
+    Auth::logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return redirect('/');
     }
+
 }

@@ -60,7 +60,7 @@
                   </div>
 
                 <div class="flex gap-x-3">
-                    <a href='/login'
+                    <a href='{{ route('login') }}'
                         class='font-semibold text-white text-base rounded-xl bg-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400'>Login</a>
                     <a href="/register"
                         class="font-semibold text-black text-base rounded-xl bg-white border-2 border-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400">Register</a>

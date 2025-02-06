@@ -3,7 +3,7 @@
 <body>
 
 
-<div class="container">
+<div class="">
 
 @yield('container')
 
@@ -14,4 +14,5 @@
 
 @include('auth.partials.end')
 @include('sweetalert::alert')
+
 
