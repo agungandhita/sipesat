@@ -39,4 +39,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('admin')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
+
+    // penduduk
+    Route::get('/penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
+
 });
