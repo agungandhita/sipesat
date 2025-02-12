@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\admin\ArsipController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\PendudukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
@@ -16,9 +18,9 @@ use App\Http\Controllers\auth\RegisterController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/cek', function () {
+    return view('frontend.surat.sktm');
+});
 
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
 Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
@@ -39,8 +41,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware('admin')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
-
     // penduduk
-    Route::get('/penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
+    Route::get('penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
+    Route::post('penduduk/create', [PendudukController::class , 'store'])->name('penduduk.create');
+    Route::post('penduduk/delete/{id}', [PendudukController::class, 'destroy'])->name('penduduk.hapus');
+
+    // arsip
+    Route::get('arsip', [ArsipController::class, 'index'])->name('arsip');
+    Route::post('arsip/post', [ArsipController::class, 'store'])->name('arsip.post');
 
 });

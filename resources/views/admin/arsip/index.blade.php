@@ -2,23 +2,31 @@
 
 @section('container')
     <div class="pt-24">
-        @include('admin.penduduk._breadcum')
+        @include('admin.arsip._breadcum')
 
         <div class="font-sans overflow-x-auto rounded-2xl mt-6 shadow-2xl">
+            @if($surat->count() > 0)
             <table class="min-w-full bg-white">
+
                 <thead class="bg-gray-400 whitespace-nowrap">
                     <tr>
                         <th class="p-4 text-left text-xs font-semibold text-gray-800">
                             No
                         </th>
                         <th class="p-4 text-left text-xs font-semibold text-gray-800">
-                            Nama
+                            Perihal
                         </th>
                         <th class="p-4 text-left text-xs font-semibold text-gray-800">
-                            NIK
+                            tanggal surat
                         </th>
                         <th class="p-4 text-left text-xs font-semibold text-gray-800">
-                            Alamat
+                           Masuk
+                        </th>
+                        <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                            Asal Surat
+                        </th>
+                        <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                            Lihat Surat
                         </th>
                         <th class="p-4 text-left text-xs font-semibold text-gray-800">
                             Aksi
@@ -27,20 +35,25 @@
                 </thead>
 
                 <tbody class="whitespace-nowrap">
-                    @if($data->count() > 0)
-                    @foreach ($data as $no => $item)
+                    @foreach($surat as $index => $item)
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 text-[15px] text-gray-800">
-                                {{ $no + 1 }}
+                                {{ $index + 1 }}
                             </td>
                             <td class="p-4 text-[15px] text-gray-800">
-                                {{ $item->nama }}
+                                {{ $item->perihal }}
                             </td>
                             <td class="p-4 text-[15px] text-gray-800">
-                                {{ $item->nik }}
+                                {{ \Carbon\Carbon::parse($item->tanggal_surat)->translatedFormat('l, d F Y') }}
                             </td>
                             <td class="p-4 text-[15px] text-gray-800">
-                                {{ $item->alamat }}
+                                {{ $item->jenis_surat }}
+                            </td>
+                            <td class="p-4 text-[15px] text-gray-800">
+                                {{ $item->asal_surat }}
+                            </td>
+                            <td class="p-4 text-[15px] text-gray-800">
+                                link surat
                             </td>
                             <td class="p-4">
 
@@ -56,8 +69,8 @@
                                             data-original="#000000" />
                                     </svg>
                                 </button>
-                                <button class="mr-4" title="Delete" data-modal-target="popup-modal{{ $no }}"
-                                    data-modal-toggle="popup-modal{{ $no }}">
+                                <button class="mr-4" title="Delete" data-modal-target="popup-modal"
+                                    data-modal-toggle="popup-modal">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700"
                                         viewBox="0 0 24 24">
                                         <path
@@ -71,34 +84,28 @@
 
                             </td>
                         </tr>
-                    @endforeach
-                    @else
-                    <tr>
-                        <td colspan="5" class="text-center py-16">
-                            <div class="flex flex-col items-center justify-center">
-                                <svg class="w-24 h-24 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-                                </svg>
-                                <p class="text-gray-500 text-lg font-medium">Belum ada data</p>
-                                <p class="text-gray-400 text-sm mt-1">Silakan tambahkan data penduduk baru</p>
-                            </div>
-                        </td>
-                    </tr>
-                @endif
+                        @endforeach
                 </tbody>
             </table>
+            @else
+            <div class="text-center py-10">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada data</h3>
+                <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan data surat baru.</p>
+            </div>
+        @endif
         </div>
 
-        @foreach ($data as $no => $delete)
-            <div id="popup-modal{{ $no }}" tabindex="-1"
+            <div id="popup-modal" tabindex="-1"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <form action="penduduk/delete/{{ $delete->warga_id }}" method="post">
-                    @csrf
+                <form action="penduduk/delete/" method="post">
                     <div class="relative p-4 w-full max-w-md max-h-full">
                         <div class="relative bg-white rounded-lg shadow-sm">
                             <button type="button"
                                 class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                                data-modal-hide="popup-modal{{ $no }}">
+                                data-modal-hide="popup-modal">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -126,7 +133,6 @@
                     </div>
                 </form>
             </div>
-        @endforeach
 
     </div>
 @endsection

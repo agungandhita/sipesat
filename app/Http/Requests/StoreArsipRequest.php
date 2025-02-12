@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePendudukRequest extends FormRequest
+class StoreArsipRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,12 @@ class UpdatePendudukRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'alamat' => 'sometimes|string|max:255',
+            'perihal' => 'required|string',
+            'jenis_surat' => 'required',
+            'asal_surat' => 'nullable|string',
+            'tanggal_surat' => 'required|date',
+            'keterangan' => 'nullable|string',
+            'file_surat' => 'required|mimes:pdf|max:10240'
         ];
     }
 }

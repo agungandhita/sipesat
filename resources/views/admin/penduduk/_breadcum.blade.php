@@ -5,37 +5,31 @@
             <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl capitalize">data penduduk</h1>
         </div>
         <div class="sm:flex">
-            <div class="items-center hidden mb-3 sm:flex sm:divide-x sm:divide-gray-100 sm:mb-0 ">
-                <form class="lg:pr-3" action="#" method="GET">
-                    <label for="users-search" class="sr-only">Search</label>
-                    <div class="relative mt-1 lg:w-64 xl:w-96 lg:flex gap-x-3">
-                        <input type="text" name="email" id="users-search"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                            placeholder="cari nama">
-                        <button type="button" aria-haspopup="dialog" aria-expanded="false"
-                            aria-controls="hs-scale-animation-modal" data-hs-overlay="#hs-scale-animation-modal"
-                            class="inline-flex items-center justify-center w-1/2 px-3 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto ">
-                            cari
-                        </button>
-                    </div>
-                </form>
+            <form class="lg:pr-3" action="{{ route('penduduk') }}" method="GET">
+                <label for="users-search" class="sr-only">Search</label>
+                <div class="relative mt-1 lg:w-64 xl:w-96 lg:flex gap-x-3">
+                    <input type="text" name="search" id="users-search"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                        placeholder="cari nama/NIK/alamat" value="{{ request('search') }}">
+                    <button type="submit"
+                        class="inline-flex items-center justify-center w-1/2 px-3 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto">
+                        cari
+                    </button>
+                </div>
+            </form>
+            <div class="relative mt-1 lg:w-64 xl:w-96 lg:flex gap-x-3">
+                <a href="{{ route('penduduk') }}"
+                    class="inline-flex items-center justify-center w-1/2 px-3 text-sm font-medium text-center text-white rounded-lg bg-red-600 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto">
+                    Reset
+            </a>
             </div>
             <div class="flex items-center ml-auto space-x-2 sm:space-x-3">
                 <button data-modal-target="default-modal" data-modal-toggle="default-modal"
-                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    class="block capitalize text-white bg-blue-700 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     type="button">
-                    Toggle modal
+                    Input data
                 </button>
-                <a href="#"
-                    class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto ">
-                    <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                    import
-                </a>
+
                 <a href="#"
                     class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto ">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 mr-2 -ml-1" fill="currentColor">
@@ -50,21 +44,51 @@
     </div>
 </div>
 
+<div id="hs-basic-modal" class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden size-full fixed top-0 start-0 z-[80] opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="hs-basic-modal-label">
+    <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
+        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
+          <h3 id="hs-basic-modal-label" class="font-bold text-gray-800 dark:text-white">
+            Modal title
+          </h3>
+          <button type="button" class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#hs-basic-modal">
+            <span class="sr-only">Close</span>
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-4 overflow-y-auto">
+          <p class="mt-1 text-gray-800 dark:text-neutral-400">
+            This is a wider card with supporting text below as a natural lead-in to additional content.
+          </p>
+        </div>
+        <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-basic-modal">
+            Close
+          </button>
+          <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {{-- modal start --}}
 <div id="default-modal" tabindex="-1" aria-hidden="true"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    class="shadow-2xl border-[1px] hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm ">
             <!-- Modal header -->
-            <div
-                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t  border-gray-200">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
                 <h3 class="text-xl font-semibold text-gray-900 ">
-                    Terms of Service
+                    Masukkan Data Penduduk
                 </h3>
                 <button type="button"
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     data-modal-hide="default-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
@@ -76,23 +100,42 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                <p class="text-base leading-relaxed text-gray-500 ">
-                    With less than a month to go before the European Union enacts new consumer privacy laws for its
-                    citizens, companies around the world are updating their terms of service agreements to comply.
-                </p>
-                <p class="text-base leading-relaxed text-gray-500 ">
-                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is
-                    meant to ensure a common set of data rights in the European Union. It requires organizations to
-                    notify users as soon as possible of high-risk data breaches that could personally affect them.
-                </p>
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="default-modal" type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
-                    accept</button>
-                <button data-modal-hide="default-modal" type="button"
-                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">Decline</button>
+                <form action="{{ route('penduduk.create') }}" method="POST">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Nama Input -->
+                        <div>
+                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap</label>
+                            <input type="text" name="nama" id="nama"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan nama lengkap" required>
+                        </div>
+
+                        <!-- NIK Input -->
+                        <div>
+                            <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">NIK</label>
+                            <input type="text" name="nik" id="nik"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan Nomor Induk Kependudukan">
+                        </div>
+
+                        <!-- Alamat Textarea -->
+                        <div class="md:col-span-2">
+                            <label for="alamat" class="block mb-2 text-sm font-medium text-gray-900">Alamat</label>
+                            <textarea id="alamat" name="alamat" rows="4"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Masukkan alamat lengkap..." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b mt-4">
+                        <button type="submit"
+                            class="text-white bg-blue-700 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
+                        <button data-modal-hide="default-modal" type="button"
+                            class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

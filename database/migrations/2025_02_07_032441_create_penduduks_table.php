@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('warga_id');
             $table->string('nama');
             $table->string('alamat');
-            $table->string('nik')->unique()->nullable();
+            $table->string('nik')->unique();
             $table->integer('user_created')->nullable();
             $table->integer('user_updated')->nullable();
             $table->softDeletes();

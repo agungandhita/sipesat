@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pindahdomisilis', function (Blueprint $table) {
-            $table->id();
+            $table->id('pindah_id');
+            $table->foreignId('pengajuan_id')->constrained('pengajuans', 'pengajuan_id');
+            $table->string('kode_surat');
+            $table->string('nama');
+            $table->integer('nik');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('pekerjaan');
+            $table->string('keperluan');
             $table->timestamps();
         });
     }

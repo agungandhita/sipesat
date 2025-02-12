@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePendudukRequest extends FormRequest
+class UpdateArsipRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,7 +22,7 @@ class UpdatePendudukRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'alamat' => 'sometimes|string|max:255',
+            //
         ];
     }
 }

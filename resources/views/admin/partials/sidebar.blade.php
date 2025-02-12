@@ -5,7 +5,7 @@
                 class="bg-white shadow-lg h-screen fixed py-6 px-4 top-[70px] left-0 overflow-auto z-[99] lg:min-w-[250px] lg:w-max max-lg:w-0 max-lg:invisible transition-all duration-500">
                 <ul class="space-y-2">
                     <li>
-                        <a href="javascript:void(0)"
+                        <a href="{{ route('admin') }}"
                             class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3"
                                 viewBox="0 0 24 24">
@@ -37,9 +37,9 @@
                             </a>
                         </li>
                         <li>
-                            <div class="relative inline-block text-left">
+                            <div class="relative inline-block text-left w-full hover:bg-gray-100">
                                 <button id="dropdownButton"
-                                    class="text-gray-800 text-sm flex w-full items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all">
+                                    class="text-gray-800 text-sm flex items-center  rounded-md px-4 py-2 transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
                                         <path d="M18 2c2.206 0 4 1.794 4 4v12c0 2.206-1.794 4-4 4H6c-2.206 0-4-1.794-4-4V6c0-2.206 1.794-4 4-4zm0-2H6a6 6 0 0 0-6 6v12a6 6 0 0 0 6 6h12a6 6 0 0 0 6-6V6a6 6 0 0 0-6-6z"
                                             data-original="#000000" />
@@ -53,16 +53,14 @@
                                 <div id="dropdownMenu"
                                     class="hidden absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
                                     <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">SKTM</a>
-                                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Surat Keterangan</a>
                                     <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Suket Domisili</a>
-                                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Suket Kematian</a>
                                     <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Suket Pindah</a>
                                 </div>
                             </div>
                         </li>
 
                         <li>
-                            <a href="javascript:void(0)"
+                            <a href="{{ route('arsip') }}"
                                 class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     class="w-[18px] h-[18px] mr-3" viewBox="0 0 510 510">

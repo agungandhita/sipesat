@@ -2,9 +2,9 @@
     <div class="grid md:grid-cols-2 justify-center items-center gap-10">
         <!-- Kolom Teks -->
         <div class="max-md:order-1">
-            <h1 class="md:text-5xl text-3xl font-bold md:!leading-[55px]">Selamat Datang di Sistem Informasi Desa <span
+            <h1 class="md:text-5xl text-3xl font-bold md:!leading-[55px]">Selamat datang di Sistem Pelayanan Surat Terpadu <span
                     class="text-blue-700">(SIPESAT)</span></h1>
-            <h1 class="md:text-2xl text-blue-700 text-xl font-semibold md:!leading-[55px]">Sistem Informasi Pelayanan Surat</h1>
+            {{-- <h1 class="md:text-2xl text-blue-700 text-xl font-semibold md:!leading-[55px]">Sistem Informasi Pelayanan Surat</h1> --}}
             <span class="text-black font-bold">Desa Gedongboyountung, Kecamatan Turi, Kabupaten Lamongan</span>
             <p class="mt-4 text-lg leading-relaxed text-black font-serif text-justify">✨Kemudahan, Transparansi, dan
                 Pelayanan Terbaik untuk masyarakat. Kami berkomitmen untuk memberikan layanan desa yang cepat, mudah, dan transparan. Lewat platform ini,
