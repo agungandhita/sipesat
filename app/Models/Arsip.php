@@ -13,7 +13,7 @@ class Arsip extends Model
     protected $table = "arsips";
     protected $primaryKey = 'arsip_id';
 
-    protected $guarded =[
+    protected $guarded = [
         'arsip_id'
     ];
 
@@ -23,7 +23,8 @@ class Arsip extends Model
         'asal_surat',
         'tanggal_surat',
         'keterangan',
-        'file_surat'
+        'file_surat',
+        'user_deleted',
+        'deleted',
     ];
-
 }

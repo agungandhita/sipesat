@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreArsipRequest;
 use App\Models\Arsip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreArsipRequest;
 
 class ArsipController extends Controller
 {
@@ -26,14 +28,15 @@ class ArsipController extends Controller
             $query->where('perihal', 'like', '%' . $request->perihal . '%');
         }
 
-        // Ambil data dan urutkan berdasarkan tanggal terbaru
-        $surats = $query->orderBy('created_at', 'desc')->get();
+        // Ambil data dengan kolom file_surat
+        $surats = $query->get();
 
         return view('admin.arsip.index', [
             'title' => 'Arsip Surat',
             'surat' => $surats
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -45,31 +48,31 @@ class ArsipController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */public function store(StoreArsipRequest $request)
-{
-    $request->validated();
+     */ public function store(StoreArsipRequest $request)
+    {
+        $request->validated();
 
-    // Handle file upload
-    if ($request->hasFile('file_surat')) {
-        $file = $request->file('file_surat');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $path = $file->storeAs('surat', $filename, 'public');
+        // Handle file upload
+        if ($request->hasFile('file_surat')) {
+            $file = $request->file('file_surat');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('surat', $filename, 'public');
 
-        // Create new record
-        Arsip::create([
-            'perihal' => $request->perihal,
-            'asal_surat' => $request->asal_surat,
-            'jenis_surat' => $request->jenis_surat,
-            'tanggal_surat' => $request->tanggal_surat,
-            'keterangan' => $request->keterangan,
-            'file_surat' => $path
-        ]);
+            // Create new record
+            Arsip::create([
+                'perihal' => $request->perihal,
+                'asal_surat' => $request->asal_surat,
+                'jenis_surat' => $request->jenis_surat,
+                'tanggal_surat' => $request->tanggal_surat,
+                'keterangan' => $request->keterangan,
+                'file_surat' => $path
+            ]);
 
-        return redirect()->route('arsip')->with('success', 'Surat berhasil ditambahkan');
+            return redirect()->route('arsip')->with('success', 'Surat berhasil ditambahkan');
+        }
+
+        return back()->with('error', 'Terjadi kesalahan saat mengunggah file');
     }
-
-    return back()->with('error', 'Terjadi kesalahan saat mengunggah file');
-}
 
     /**
      * Display the specified resource.
@@ -97,9 +100,34 @@ class ArsipController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
-    public function destroy(Arsip $arsip)
+     */ public function destroy($id)
     {
-        //
+        try {
+            // Cari arsip berdasarkan ID
+            $arsip = Arsip::where('arsip_id', $id)->first();
+
+            if (!$arsip) {
+                return redirect('/arsip')->with('error', 'Data tidak ditemukan');
+            }
+
+            $file_path = public_path('surat/' . $arsip->file_surat);
+
+            $arsip->update([
+                'user_deleted' => auth()->user()->user_id,
+                'deleted' => true
+            ]);
+
+            // Hapus file fisik jika ada
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+
+            // Hapus record dari database
+            $arsip->delete();
+
+            return redirect('/arsip')->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect('/arsip')->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        }
     }
 }

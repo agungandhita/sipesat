@@ -35,10 +35,10 @@
                 </thead>
 
                 <tbody class="whitespace-nowrap">
-                    @foreach($surat as $index => $item)
+                    @foreach($surat as $no => $item)
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 text-[15px] text-gray-800">
-                                {{ $index + 1 }}
+                                {{ $no + 1 }}
                             </td>
                             <td class="p-4 text-[15px] text-gray-800">
                                 {{ $item->perihal }}
@@ -53,7 +53,9 @@
                                 {{ $item->asal_surat }}
                             </td>
                             <td class="p-4 text-[15px] text-gray-800">
-                                link surat
+                                <a href="{{ Storage::url('public/' . $item->file_surat) }}" target="_blank" class="btn btn-primary">
+                                    Lihat Surat
+                                </a>
                             </td>
                             <td class="p-4">
 
@@ -69,8 +71,8 @@
                                             data-original="#000000" />
                                     </svg>
                                 </button>
-                                <button class="mr-4" title="Delete" data-modal-target="popup-modal"
-                                    data-modal-toggle="popup-modal">
+                                <button class="mr-4" title="Delete" data-modal-target="popup-modal{{ $no }}"
+                                    data-modal-toggle="popup-modal{{ $no }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700"
                                         viewBox="0 0 24 24">
                                         <path
@@ -98,14 +100,18 @@
         @endif
         </div>
 
-            <div id="popup-modal" tabindex="-1"
+        @foreach ($surat as $key => $tes)
+
+            <div id="popup-modal{{ $key }}" tabindex="-1"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <form action="penduduk/delete/" method="post">
+                <form action="{{ route('arsip.destroy', $tes->arsip_id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
                     <div class="relative p-4 w-full max-w-md max-h-full">
                         <div class="relative bg-white rounded-lg shadow-sm">
                             <button type="button"
                                 class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
-                                data-modal-hide="popup-modal">
+                                data-modal-hide="popup-modal{{ $key }}">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -133,6 +139,7 @@
                     </div>
                 </form>
             </div>
+            @endforeach
 
     </div>
 @endsection

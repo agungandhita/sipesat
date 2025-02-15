@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nomor_surat')->nullable();
             $table->enum('jenis_surat', ['masuk', 'keluar'])->nullable();
             $table->string('perihal')->nullable();
-            $table->date('tanggal_surat');
+            $table->date('tanggal_surat')->nullable();
             $table->string('asal_surat')->nullable();
             $table->text('keterangan')->nullable();
             $table->string('file_surat');
