@@ -29,7 +29,7 @@ class PendudukController extends Controller
 
     public function store(StorePendudukRequest $request)
     {
-       Penduduk::create([
+        Penduduk::create([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'nik' => $request->nik,
@@ -39,7 +39,8 @@ class PendudukController extends Controller
         return redirect()->route('penduduk')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function update(UpdatePendudukRequest $request, Penduduk $id) {
+    public function update(UpdatePendudukRequest $request, Penduduk $id)
+    {
         $id->update([
             'alamat' => $request->alamat,
             'user_updated' => Auth::id()
@@ -49,17 +50,17 @@ class PendudukController extends Controller
     }
 
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $update = Penduduk::where('warga_id', $id)->update([
             'user_deleted' => auth()->user()->user_id,
             'deleted' => true
         ]);
 
-        // dd($update);
         if ($update) {
             Penduduk::find($id)->delete();
         }
-        return redirect()->back();
+        return redirect()->route('penduduk')->with('success', 'data berhasil di hapus');
     }
 }

@@ -43,6 +43,7 @@ Route::middleware('admin')->group(function () {
 
     // penduduk
     Route::get('penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
+    Route::post('penduduk/update/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
     Route::post('penduduk/create', [PendudukController::class , 'store'])->name('penduduk.create');
     Route::post('penduduk/delete/{id}', [PendudukController::class, 'destroy'])->name('penduduk.hapus');
 
