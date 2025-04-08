@@ -1,9 +1,7 @@
 @import "tailwindcss";
+@source "node_modules/preline/variants.css";
 @source "../views";
-
-
-
-@import "tailwindcss";
 @source "node_modules/preline/dist";
+
 
 

@@ -17,7 +17,10 @@ class PageController extends Controller
     public function profil() {
         return view('frontend.profile.index', [
             'title' => 'profil desa'
-
         ]);
+    }
+
+    public function pengumuman(){
+        return view('frontend.pengumuman.index');
     }
 }

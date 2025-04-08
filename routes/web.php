@@ -24,6 +24,7 @@ Route::get('/cek', function () {
 
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
 Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
+Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
 
 
 Route::middleware('guest')->group(function () {

@@ -12,7 +12,7 @@ class Penduduk extends Model
 
     protected $table = "penduduks";
     protected $primaryKey = 'warga_id';
-    protected $fillable = ['nama', 'alamat', 'nik', 'user_created'];
+    protected $fillable = ['nama', 'alamat', 'nik', 'kelamin', 'user_created', 'user_updated'];
 
     protected $guarded =[
         'warga_id'

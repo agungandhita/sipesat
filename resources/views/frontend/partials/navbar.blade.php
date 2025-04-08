@@ -38,6 +38,8 @@
                     aria-current="page">Home</a>
                 <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
                     href="{{ Route('profil') }}">Profil desa</a>
+                    <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
+                    href="{{ Route('pengumuman') }}">Pengumuman</a>
 
                     <button
                     id="dropdownLayananButton"
