@@ -1,12 +1,15 @@
-<header class="relative flex flex-wrap sm:justify-start sm:flex-nowrap w-full rounded-b-4xl bg-white shadow-2xl text-sm py-3">
+<header
+    class="relative flex flex-wrap sm:justify-start sm:flex-nowrap w-full rounded-b-4xl bg-white shadow-2xl text-sm py-3">
     <nav class="max-w-[90rem] w-full mx-auto px-2 sm:flex sm:items-center sm:justify-between">
         <div class="flex items-center justify-between">
-            <a class="flex-none text-xl font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Brand">
+            <a class="flex-none text-xl font-semibold focus:outline-none focus:opacity-80" href="#"
+                aria-label="Brand">
                 <img src="{{ asset('img/lamongan.png') }}" alt="logo" class='w-14 md:w-16' />
             </a>
             <div class="hidden md:block">
                 <h1 class="text-xl px-3 font-bold capitalize">desa
-                    <span class="text-base capitalize">gedungboyountung</span></h1>
+                    <span class="text-base capitalize">gedungboyountung</span>
+                </h1>
             </div>
             <div class="sm:hidden">
                 <button type="button"
@@ -34,32 +37,17 @@
             class="hidden hs-collapse overflow-hidden transition-all duration-300 basis-full grow sm:block"
             aria-labelledby="hs-navbar-example-collapse">
             <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-                <a class="font-semibold text-black text-base hover:text-blue-600 focus:outline-none" href="{{ Route('home') }}"
-                    aria-current="page">Home</a>
+                <a class="font-semibold text-black text-base hover:text-blue-600 focus:outline-none"
+                    href="{{ Route('home') }}" aria-current="page">Home</a>
                 <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
                     href="{{ Route('profil') }}">Profil desa</a>
-                    <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
+                <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
                     href="{{ Route('pengumuman') }}">Pengumuman</a>
 
-                    <button
-                    id="dropdownLayananButton"
-                    data-dropdown-toggle="dropdownLayanan"
-                    class="font-semibold text-black text-base hover:text-blue-700 flex items-center gap-2"
-                  >
-                    Layanan
-                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
+                    <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
+                    href="{{ Route('layanan') }}">layanan</a>
 
-                  <!-- Dropdown Menu -->
-                  <div
-                    id="dropdownLayanan"
-                    class="hidden z-10 bg-white border border-gray-200 rounded-md shadow-md"
-                  >
-                    <a href="#" class="block px-4 py-2 text-black hover:bg-gray-100 capitalze">Surat Keterangan tidak mampu</a>
-                    <a href="#" class="block px-4 py-2 text-black hover:bg-gray-100">Surat Pindah</a>
-                  </div>
+
 
                 <div class="flex gap-x-3">
                     <a href='{{ route('login') }}'
@@ -82,5 +70,4 @@
             navbar.classList.toggle('hidden', !isHidden);
         });
     });
-
 </script>

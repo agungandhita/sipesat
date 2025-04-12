@@ -10,12 +10,13 @@
                 Pelayanan Terbaik untuk masyarakat. Kami berkomitmen untuk memberikan layanan desa yang cepat, mudah, dan transparan. Lewat platform ini,
                 Anda dapat mengakses informasi desa, layanan administrasi, dan kebutuhan lainnya secara langsung.
             </p>
+
             <!-- Search Bar -->
-            <div class="bg-white mt-10 flex px-1 py-1.5 rounded-r-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] overflow-hidden">
-                <input type='email' placeholder='Cari Sesuatu...'
-                    class="w-full outline-none bg-white pl-4 border-none" />
-                <button type='button'
-                    class="bg-blue-700 hover:bg-blue-500 font-bold transition-all text-white rounded-r-full px-5 py-2">Search</button>
+            <div class="bg-gray-200 mt-10 flex rounded-r-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] overflow-hidden">
+                <input type='email' placeholder='Cari Data Penduduk Dengan NIK'
+                    class="w-full outline-none bg-gray-200 pl-4 border-none" />
+                <button type='submit'
+                    class="bg-blue-700 hover:bg-blue-500 font-bold transition-all text-white rounded-r-full px-5 py-2 cursor-pointer">Search</button>
             </div>
             <!-- Logo Organisasi -->
             <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 items-center">

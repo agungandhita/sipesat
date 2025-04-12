@@ -25,6 +25,10 @@ Route::get('/cek', function () {
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
 Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
 Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
+Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
+Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');
+
+
 
 
 Route::middleware('guest')->group(function () {
