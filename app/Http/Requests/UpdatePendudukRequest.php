@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePendudukRequest extends FormRequest
 {
@@ -22,7 +23,14 @@ class UpdatePendudukRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'alamat' => 'sometimes|string|max:255',
+            'nama' => 'sometimes|required|string|max:255',
+            'alamat' => 'sometimes|required|string|max:255',
+            'nik' => [
+                'sometimes',
+                'required',
+                Rule::unique('penduduks', 'nik')->ignore($this->route('id')->warga_id, 'warga_id')
+            ],
+            'jenis_kelamin' => 'sometimes|required|in:laki-laki,perempuan'
         ];
     }
 }

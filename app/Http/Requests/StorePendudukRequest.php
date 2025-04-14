@@ -24,7 +24,8 @@ class StorePendudukRequest extends FormRequest
         return [
             'nama' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
-            'nik' => 'required|unique:penduduks,nik'
+            'nik' => 'required|unique:penduduks,nik',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan'
         ];
     }
 }

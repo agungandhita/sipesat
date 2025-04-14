@@ -16,7 +16,12 @@ class PendudukController extends Controller
         $query = Penduduk::query();
 
         if ($request->has('search')) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
+            $query->where('nama', 'like', '%' . $request->search . '%')
+                  ->orWhere('nik', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->has('jenis_kelamin') && $request->jenis_kelamin != '') {
+            $query->where('jenis_kelamin', $request->jenis_kelamin);
         }
 
         $data = $query->latest()->get();
@@ -27,34 +32,51 @@ class PendudukController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return view('admin.penduduk.create', [
+            'title' => 'Tambah Data Penduduk'
+        ]);
+    }
+
     public function store(StorePendudukRequest $request)
     {
         Penduduk::create([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'nik' => $request->nik,
+            'jenis_kelamin' => $request->jenis_kelamin,
             'user_created' => auth()->id()
         ]);
 
         return redirect()->route('penduduk')->with('success', 'Data berhasil ditambahkan');
     }
 
+    public function edit(Penduduk $id)
+    {
+        return view('admin.penduduk.edit', [
+            'penduduk' => $id,
+            'title' => 'Edit Data Penduduk'
+        ]);
+    }
+
     public function update(UpdatePendudukRequest $request, Penduduk $id)
     {
         $id->update([
-            'alamat' => $request->alamat,
+            'nama' => $request->nama ?? $id->nama,
+            'alamat' => $request->alamat ?? $id->alamat,
+            'nik' => $request->nik ?? $id->nik,
+            'jenis_kelamin' => $request->jenis_kelamin ?? $id->jenis_kelamin,
             'user_updated' => Auth::id()
         ]);
 
-        return redirect()->back();
+        return redirect()->route('penduduk')->with('success', 'Data berhasil diperbarui');
     }
-
 
     public function destroy($id)
     {
-
         $update = Penduduk::where('warga_id', $id)->update([
-            'user_deleted' => auth()->user()->user_id,
+            'user_deleted' => auth()->user()->id,
             'deleted' => true
         ]);
 

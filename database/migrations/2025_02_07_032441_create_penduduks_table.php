@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('alamat');
             $table->string('nik')->unique();
+            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->integer('user_created')->nullable();
             $table->integer('user_updated')->nullable();
             $table->softDeletes();
