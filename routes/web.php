@@ -22,8 +22,8 @@ Route::get('/cek', function () {
     return view('frontend.surat.sktm');
 });
 
-Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
-Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
+
+
 
 
 Route::middleware('guest')->group(function () {
@@ -44,12 +44,25 @@ Route::middleware('admin')->group(function () {
     // penduduk
     Route::get('penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
     Route::post('penduduk/update/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
-    Route::post('penduduk/create', [PendudukController::class , 'store'])->name('penduduk.create');
+    Route::post('penduduk/create', [PendudukController::class, 'store'])->name('penduduk.create');
     Route::post('penduduk/delete/{id}', [PendudukController::class, 'destroy'])->name('penduduk.hapus');
 
     // arsip
     Route::get('arsip', [ArsipController::class, 'index'])->name('arsip');
     Route::post('arsip/post', [ArsipController::class, 'store'])->name('arsip.post');
     Route::delete('arsip/delete/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
-
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
+    Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
+    Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
+    Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
+    // Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');
+});
+
+Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
+Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
+Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
+Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
+Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');

@@ -11,6 +11,7 @@
         "axios": "^1.6.4",
         "crypto-browserify": "^3.12.1",
         "daisyui": "^4.12.23",
+        "flowbite-typography": "^1.0.5",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.5.1",
         "vite": "^5.0.0"

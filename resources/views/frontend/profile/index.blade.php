@@ -12,12 +12,12 @@
                     </p>
                 </div>
                 <div>
-                    <h2 class="md:text-4xl text-3xl font-semibold mb-4">"Visi"</h2>
+                    <h2 class="md:text-4xl text-3xl my-4 font-semibold">"Visi"</h2>
                     <p>mewujudkan pelayanan masyarakat yang profesional dan transparan demi kemajuan dan kesejahteraan masyarakat Desa Gedong Boyo untung.</p>
 
                     <br>
 
-                    <h2 class="md:text-4xl text-3xl font-semibold mb-4">"Misi"</h2>
+                    <h2 class="md:text-4xl text-3xl font-semibold mb-2">"Misi"</h2>
                     <ul class="text-justify mx-3 md:block">
                         <li class="list-disc">Meningkatkan kualitas pelayanan masyarakat yang profesional, mudah diakses, dan transparan.</li>
                         <li class="list-disc">Mendorong pembangunan infrastruktur desa untuk mendukung kemajuan ekonomi dan sosial masyarakat.</li>

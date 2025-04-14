@@ -46,6 +46,7 @@ class PendudukController extends Controller
             'alamat' => $request->alamat,
             'nik' => $request->nik,
             'jenis_kelamin' => $request->jenis_kelamin,
+            'kelamin' => $request->kelamin,
             'user_created' => auth()->id()
         ]);
 

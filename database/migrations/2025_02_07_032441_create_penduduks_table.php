@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('warga_id');
             $table->string('nama');
             $table->string('alamat');
+            $table->enum('kelamin', ['laki-laki', 'perempuan'])->nullable();
             $table->string('nik')->unique();
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->integer('user_created')->nullable();
