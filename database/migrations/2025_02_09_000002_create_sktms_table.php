@@ -6,30 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('pindahdomisilis', function (Blueprint $table) {
-            $table->id('pindah_id');
-            $table->foreignId('pengajuan_id')->constrained('pengajuans', 'pengajuan_id');
-            $table->string('kode_surat');
+        Schema::create('sktms', function (Blueprint $table) {
+            $table->id('sktm_id');
+            $table->unsignedBigInteger('pengajuan_id');
             $table->string('nama');
-            $table->integer('nik');
+            $table->string('nik');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('pekerjaan');
+            $table->text('alamat');
+            $table->text('keterangan');
             $table->string('keperluan');
             $table->timestamps();
+            
+            $table->foreign('pengajuan_id')->references('pengajuan_id')->on('pengajuans')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('pindahdomisilis');
+        Schema::dropIfExists('sktms');
     }
 };

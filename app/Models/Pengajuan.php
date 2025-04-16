@@ -4,29 +4,58 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pengajuan extends Model
 {
-    use HasFactory, SoftDeletes;
-
     use HasFactory;
 
     protected $primaryKey = 'pengajuan_id';
-    protected $fillable = ['nik', 'nama', 'tgl_pengajuan', 'status'];
+    protected $fillable = [
+        'user_id',
+        'jenis_surat',
+        'status',
+        'catatan_admin',
+        'approved_at',
+        'approved_by'
+    ];
 
-    public function tidakMampu()
+    public function user()
     {
-        return $this->hasOne(TidakMampu::class, 'pengajuan_id', 'pengajuan_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function pindahDomisili()
+    public function admin()
     {
-        return $this->hasOne(PindahDomisili::class, 'pengajuan_id', 'pengajuan_id');
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
-    public function meninggal()
+    public function sktm()
     {
-        return $this->hasOne(Meninggal::class, 'pengajuan_id', 'pengajuan_id');
+        return $this->hasOne(Sktm::class, 'pengajuan_id');
+    }
+
+    public function domisili()
+    {
+        return $this->hasOne(Domisili::class, 'pengajuan_id');
+    }
+
+    public function arsip()
+    {
+        return $this->hasOne(Arsip::class, 'pengajuan_id');
+    }
+
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isApproved()
+    {
+        return $this->status === 'approved';
+    }
+
+    public function isRejected()
+    {
+        return $this->status === 'rejected';
     }
 }

@@ -44,69 +44,60 @@
                 <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
                     href="{{ Route('pengumuman') }}">Pengumuman</a>
 
-                    <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
+                <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
                     href="{{ Route('layanan') }}">layanan</a>
 
+
                 <div class="flex gap-x-3">
-                @guest
-                    <a href='{{ route('login') }}'
-                        class='font-semibold text-white text-base rounded-xl bg-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400'>Login</a>
-                    <a href="/register"
-                        class="font-semibold text-black text-base rounded-xl bg-white border-2 border-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400">Register</a>
-                @else
-                <div class="inline-flex items-center gap-2 list-none lg:ml-auto mr-8">
-                    <div class="hidden md:block">
-                        <div class="flex  space-x-5 items-center ">
-                            {{-- tampilan dekstop --}}
-                            <a href="" class="text-black font-bold  items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                    <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                    <path d="M17 17h-11v-14h-2" />
-                                    <path d="M6 5l14 1l-1 7h-13" />
-                                </svg>
-                            </a>
-                            <button id="menu-button" aria-expanded="true" aria-haspopup="true"
-                                class="text-white font-medium rounded-lg text-sm inline-flex items-center border border-red-400 "
-                                type="button">
-                                <img src="{{ asset('img/aa.jpeg') }}" alt=""
-                                    class="w-10 rounded-full hidden md:block">
-                            </button>
+                    @guest
+                        <a href='{{ route('login') }}'
+                            class='font-semibold text-white text-base rounded-xl bg-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400'>Login</a>
+                        <a href="/register"
+                            class="font-semibold text-black text-base rounded-xl bg-white border-2 border-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400">Register</a>
+                    @else
+                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                            class="text-white font-medium rounded-full text-sm inline-flex items-center border border-blue-300 p-2"
+                            type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="text-blue-700">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div id="dropdown"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profil</a>
+                                </li>
+                                <li>
+                                    <form action="/logout" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit"
+                                            class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black">
+                                            Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
+
                     </div>
-
-                    <!-- Dropdown menu -->
-                    <div id="dropdown"
-                        class="z-60 absolute hidden border border-red-600 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="/user" class="block px-4 py-2 hover:bg-gray-100 text-black">Profile</a>
-                            </li>
-                            <form action="/logout" method="POST" class="inline">
-                                @csrf
-                                <button type="submit" class="block px-4 py-2 hover:bg-gray-100 text-black">
-                                    Logout
-                                </button>
-                            </form>
-                        </ul>
-                    </div>
-
-
-                </div>
-            @endguest
-                </div>
+                @endguest
             </div>
+        </div>
         </div>
     </nav>
 </header>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Mobile menu toggle
         const toggleButton = document.getElementById('hs-navbar-example-collapse');
         const navbar = document.getElementById('hs-navbar-example');
 

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('arsips', function (Blueprint $table) {
             $table->id('arsip_id');
-            $table->foreign('pengajuan_id')->references('pengajuan_id')->on('pengajuans')->onDelete('set null');
+            $table->unsignedBigInteger('pengajuan_id')->nullable();
             $table->string('nomor_surat')->nullable();
             $table->enum('jenis_surat', ['masuk', 'keluar'])->nullable();
             $table->string('perihal')->nullable();
@@ -21,14 +21,14 @@ return new class extends Migration
             $table->string('asal_surat')->nullable();
             $table->text('keterangan')->nullable();
             $table->string('file_surat');
-            $table->unsignedBigInteger('pengajuan_id')->nullable();
             $table->integer('user_created')->nullable();
             $table->integer('user_updated')->nullable();
             $table->softDeletes();
             $table->integer('user_deleted')->nullable();
             $table->integer('deleted')->nullable();
-            $table->rememberToken();
             $table->timestamps();
+            
+            $table->foreign('pengajuan_id')->references('pengajuan_id')->on('pengajuans')->onDelete('set null');
         });
     }
 

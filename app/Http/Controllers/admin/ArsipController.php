@@ -31,9 +31,17 @@ class ArsipController extends Controller
         // Ambil data dengan kolom file_surat
         $surats = $query->get();
 
+        // Calculate counts
+        $totalSuratMasuk = Arsip::where('jenis_surat', 'masuk')->count();
+        $totalSuratKeluar = Arsip::where('jenis_surat', 'keluar')->count();
+        $totalArsip = $surats->count();
+
         return view('admin.arsip.index', [
             'title' => 'Arsip Surat',
-            'surat' => $surats
+            'surat' => $surats,
+            'totalSuratMasuk' => $totalSuratMasuk,
+            'totalSuratKeluar' => $totalSuratKeluar,
+            'totalArsip' => $totalArsip
         ]);
     }
 

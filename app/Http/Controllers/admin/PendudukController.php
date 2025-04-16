@@ -61,13 +61,15 @@ class PendudukController extends Controller
         ]);
     }
 
-    public function update(UpdatePendudukRequest $request, Penduduk $id)
+    public function update(UpdatePendudukRequest $request, $id)
     {
-        $id->update([
-            'nama' => $request->nama ?? $id->nama,
-            'alamat' => $request->alamat ?? $id->alamat,
-            'nik' => $request->nik ?? $id->nik,
-            'jenis_kelamin' => $request->jenis_kelamin ?? $id->jenis_kelamin,
+        $penduduk = Penduduk::findOrFail($id);
+        
+        $penduduk->update([
+            'nama' => $request->nama ?? $penduduk->nama,
+            'alamat' => $request->alamat ?? $penduduk->alamat,
+            'nik' => $request->nik ?? $penduduk->nik,
+            'jenis_kelamin' => $request->jenis_kelamin ?? $penduduk->jenis_kelamin,
             'user_updated' => Auth::id()
         ]);
 

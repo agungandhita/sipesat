@@ -36,26 +36,58 @@
                                 <span>Data Penduduk</span>
                             </a>
                         </li>
-                        <li>
-                            <div class="relative inline-block text-left w-full hover:bg-gray-100">
-                                <button id="dropdownButton"
-                                    class="text-gray-800 text-sm flex items-center  rounded-md px-4 py-2 transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
-                                        <path d="M18 2c2.206 0 4 1.794 4 4v12c0 2.206-1.794 4-4 4H6c-2.206 0-4-1.794-4-4V6c0-2.206 1.794-4 4-4zm0-2H6a6 6 0 0 0-6 6v12a6 6 0 0 0 6 6h12a6 6 0 0 0 6-6V6a6 6 0 0 0-6-6z"
-                                            data-original="#000000" />
-                                        <path d="M12 18a1 1 0 0 1-1-1V7a1 1 0 0 1 2 0v10a1 1 0 0 1-1 1z" data-original="#000000" />
-                                        <path d="M6 12a1 1 0 0 1 1-1h10a1 1 0 0 1 0 2H7a1 1 0 0 1-1-1z" data-original="#000000" />
-                                    </svg>
-                                    <span>Surat</span>
-                                </button>
 
-                                <!-- Dropdown menu -->
-                                <div id="dropdownMenu"
-                                    class="hidden absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
-                                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">SKTM</a>
-                                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Suket Domisili</a>
-                                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Suket Pindah</a>
-                                </div>
+                        <li class="hs-accordion" id="account-accordion">
+                            <button type="button"
+                                class="hs-accordion-toggle text-gray-800 gap-x-3 w-full text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all cursor-pointer"
+                                aria-expanded="true" aria-controls="account-accordion-sub-1-collapse-1">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-[18px] h-[18px]"
+                                    fill="currentColor">
+                                    <path
+                                        d="M2.24283 6.85435L11.4895 1.3086C11.8062 1.11865 12.2019 1.11872 12.5185 1.30878L21.7573 6.85433C21.9079 6.9447 22 7.10743 22 7.28303V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V7.28315C2 7.10748 2.09218 6.94471 2.24283 6.85435ZM4 8.13261V19H20V8.13214L12.0037 3.33237L4 8.13261ZM12.0597 13.6983L17.3556 9.23532L18.6444 10.7647L12.074 16.3017L5.36401 10.7717L6.63599 9.2283L12.0597 13.6983Z">
+                                    </path>
+                                </svg>
+                                <span>Pengajuan Surat</span>
+
+                                <svg class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m18 15-6-6-6 6" />
+                                </svg>
+
+                                <svg class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
+
+                            <div id="account-accordion-sub-1-collapse-1"
+                                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
+                                role="region" aria-labelledby="account-accordion">
+                                <ul class="pt-1 ps-7 space-y-1">
+                                    <li>
+                                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 "
+                                            href="{{ route('domisili.index') }}">
+                                            Suket Domisili
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 "
+                                            href="#">
+                                            Suket Meninggal
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100"
+                                            href="#">
+                                            Suket Tidak Mampu
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </li>
 

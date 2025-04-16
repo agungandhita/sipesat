@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('pengajuans', function (Blueprint $table) {
             $table->id('pengajuan_id');
-            $table->string('nik');
-            $table->string('nama');
-            $table->string('tgl_pengajuan');
-            $table->enum('status', ['menunggu', 'disetujui', 'ditolak'])->default('menunggu');
+            $table->unsignedBigInteger('user_id')->constrained();
+            $table->enum('jenis_surat', ['sktm', 'domisili']); // Surat Keterangan Tidak Mampu, Domisili
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('catatan_admin')->nullable();
+            $table->timestamp('approved_at')->nullable();
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamps();
         });
     }

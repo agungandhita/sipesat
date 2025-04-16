@@ -33,8 +33,8 @@ class LoginController extends Controller
                 if ($user->role == 'admin') {
                     return redirect()->intended('/admin')->with('toast_success', 'Login sebagai Admin berhasil');
                 } elseif ($user->role == 'user') {
-                    Alert::success('Berhasil', 'Login sebagai Manajer berhasil');
-                    return redirect()->intended('/user');
+                    Alert::success('Berhasil', 'Login sebagai berhasil');
+                    return redirect()->intended('/');
                 }
 
                 Alert::success('Berhasil', 'Login berhasil');
@@ -42,7 +42,6 @@ class LoginController extends Controller
             }
 
             return back()->withErrors(['email' => 'Email atau password salah'])->onlyInput('email');
-
         } catch (Exception $e) {
             Alert::error('Terjadi Kesalahan', $e->getMessage());
             return back();
@@ -50,13 +49,12 @@ class LoginController extends Controller
     }
     public function logout(Request $request)
     {
-    Auth::logout();
+        Auth::logout();
 
-    $request->session()->invalidate();
+        $request->session()->invalidate();
 
-    $request->session()->regenerateToken();
+        $request->session()->regenerateToken();
 
-    return redirect('/');
+        return redirect('/');
     }
-
 }
