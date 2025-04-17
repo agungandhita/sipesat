@@ -92,9 +92,9 @@ class DomisiliController extends Controller
 
     private function generateNomorSurat()
     {
-        $prefix = 'SKD';
-
-        // Get the highest number used this year
+        $prefix = '470'; // Changed from 'SKD' to '470' as shown in the image
+        
+        // Get the highest number used this year for this type of letter
         $latestArsip = Arsip::whereYear('created_at', date('Y'))
             ->where('nomor_surat', 'like', $prefix . '/%/' . date('m') . '/' . date('Y'))
             ->orderBy('created_at', 'desc')

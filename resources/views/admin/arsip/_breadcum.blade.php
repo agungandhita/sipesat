@@ -1,83 +1,72 @@
-<div
-    class="p-4 backdrop-blur-sm bg-white/80 block sm:flex items-center justify-between border border-gray-200/60 shadow-lg rounded-xl transition-all duration-300 hover:shadow-xl lg:mt-1.5">
-    <div class="w-full mb-1">
-        <div class="mb-4">
-            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl capitalize">data arsip surat</h1>
+<div class="bg-white rounded-lg shadow-md p-5 mb-6">
+    <h1 class="text-xl font-semibold text-gray-900 mb-4">Data Arsip Surat</h1>
+
+    <form action="{{ route('arsip') }}" method="GET" class="mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+            <div>
+                <label for="jenis_surat" class="block text-sm font-medium text-gray-700 mb-1">Jenis Surat</label>
+                <select name="jenis_surat" id="jenis_surat"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option value="Semua" {{ request('jenis_surat') == 'Semua' ? 'selected' : '' }}>Semua</option>
+                    <option value="masuk" {{ request('jenis_surat') == 'masuk' ? 'selected' : '' }}>Surat Masuk</option>
+                    <option value="keluar" {{ request('jenis_surat') == 'keluar' ? 'selected' : '' }}>Surat Keluar</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="perihal" class="block text-sm font-medium text-gray-700 mb-1">Perihal</label>
+                <input type="text" name="perihal" id="perihal" value="{{ request('perihal') }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Cari perihal...">
+            </div>
+
+            <div>
+                <button type="submit"
+                    class="w-full flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Filter
+                </button>
+            </div>
+
+            <div>
+                <a href="{{ route('arsip') }}"
+                    class="w-full flex items-center justify-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    Reset
+                </a>
+            </div>
         </div>
-        <div class="sm:flex">
-            <form action="{{ route('arsip') }}" method="GET" class="mb-6">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                        <label for="jenis_surat" class="block text-sm font-medium text-gray-700 mb-1">Jenis Surat</label>
-                        <select name="jenis_surat" id="jenis_surat"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option value="Semua" {{ request('jenis_surat') == 'Semua' ? 'selected' : '' }}>Semua
-                            </option>
-                            <option value="masuk" {{ request('jenis_surat') == 'masuk' ? 'selected' : '' }}>Surat Masuk
-                            </option>
-                            <option value="keluar" {{ request('jenis_surat') == 'keluar' ? 'selected' : '' }}>Surat
-                                Keluar</option>
-                        </select>
-                    </div>
+    </form>
 
-                    <div>
-                        <label for="perihal" class="block text-sm font-medium text-gray-700 mb-1">Perihal</label>
-                        <input type="text" name="perihal" id="perihal" value="{{ request('perihal') }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Cari perihal...">
-                    </div>
+    <div class="flex flex-wrap gap-2">
+        <button data-modal-target="default-modal" data-modal-toggle="default-modal"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Input Data
+        </button>
 
-                    <div class="flex items-end space-x-2">
-                        <button type="submit"
-                            class="flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-300 transform hover:scale-105">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            Filter
-                        </button>
-
-                        <a href="{{ route('arsip') }}"
-                            class="flex items-center justify-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 transition-all duration-300 transform hover:scale-105">
-                            Reset
-                        </a>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:flex items-center ml-auto gap-3 sm:space-x-3">
-            <button data-modal-target="default-modal" data-modal-toggle="default-modal"
-                class="w-full sm:w-auto capitalize text-white bg-blue-700 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 transform hover:scale-105"
-                type="button">
-                Input data
-            </button>
-
-            <a href="#"
-                class="inline-flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:ring-green-300 sm:w-auto transition-all duration-300 transform hover:scale-105">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 mr-2 -ml-1"
-                    fill="currentColor">
-                    <path
-                        d="M4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19ZM13 9V16H11V9H6L12 3L18 9H13Z">
-                    </path>
-                </svg>
-                Export
-            </a>
-        </div>
+        {{-- <a href="#"
+            class="inline-flex items-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4 mr-2"
+                fill="currentColor">
+                <path
+                    d="M4 19H20V12H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V12H4V19ZM13 9V16H11V9H6L12 3L18 9H13Z">
+                </path>
+            </svg>
+            Export
+        </a> --}}
     </div>
 </div>
 
-
 {{-- modal start --}}
 <div id="default-modal" tabindex="-1" aria-hidden="true"
-    class="backdrop-blur-md bg-black/30 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full">
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full bg-black/50">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
-        <div
-            class="relative bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200/60 transition-all duration-300">
+        <div class="relative bg-white rounded-lg shadow">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                 <h3 class="text-xl font-semibold text-gray-900">
                     Tambah Arsip Surat
                 </h3>
@@ -94,13 +83,13 @@
             </div>
 
             <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
+            <div class="p-4 md:p-5">
                 <form action="{{ route('arsip.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Perihal -->
                         <div>
-                            <label for="perihal" class="block text-base mb-1 font-medium text-gray-900">Perihal</label>
+                            <label for="perihal" class="block text-sm font-medium text-gray-900 mb-1">Perihal</label>
                             <input type="text" name="perihal" id="perihal"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 placeholder="Masukkan perihal surat">
@@ -108,16 +97,16 @@
 
                         <!-- Asal Surat -->
                         <div>
-                            <label for="asal_surat" class="block text-base mb-1 font-medium text-gray-900">Asal
+                            <label for="asal_surat" class="block text-sm font-medium text-gray-900 mb-1">Asal
                                 Surat</label>
                             <input type="text" name="asal_surat" id="asal_surat"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 placeholder="Masukkan asal surat">
                         </div>
 
-                        {{-- jenis surat --}}
+                        <!-- Jenis surat -->
                         <div>
-                            <label for="jenis_surat" class="block text-base mb-1 font-medium text-gray-900">Jenis
+                            <label for="jenis_surat" class="block text-sm font-medium text-gray-900 mb-1">Jenis
                                 Surat</label>
                             <select name="jenis_surat" id="jenis_surat" required
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -128,7 +117,7 @@
 
                         <!-- Tanggal Surat -->
                         <div>
-                            <label for="tanggal_surat" class="block text-base mb-1 font-medium text-gray-900">Tanggal
+                            <label for="tanggal_surat" class="block text-sm font-medium text-gray-900 mb-1">Tanggal
                                 Surat</label>
                             <input type="date" name="tanggal_surat" id="tanggal_surat"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -137,7 +126,7 @@
                         <!-- Keterangan -->
                         <div class="md:col-span-2">
                             <label for="keterangan"
-                                class="block text-base mb-1 font-medium text-gray-900">Keterangan</label>
+                                class="block text-sm font-medium text-gray-900 mb-1">Keterangan</label>
                             <textarea id="keterangan" name="keterangan" rows="3"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Tambahkan keterangan jika ada"></textarea>
@@ -145,10 +134,10 @@
 
                         <!-- Upload File -->
                         <div class="md:col-span-2">
-                            <label class="block text-base mb-1 font-medium text-gray-900" for="file_surat">Upload
+                            <label class="block text-sm font-medium text-gray-900 mb-1" for="file_surat">Upload
                                 file</label>
                             <input type="file" name="file_surat" id="file_surat"
-                                class="w-full text-gray-500 font-medium text-sm bg-gray-100 file:cursor-pointer cursor-pointer file:border-0 file:py-2 file:px-4 file:mr-4 file:bg-gray-800 file:hover:bg-gray-700 file:text-white rounded" />
+                                class="w-full text-gray-500 text-sm bg-gray-50 file:mr-4 file:py-2 file:px-4 file:bg-blue-600 file:text-white file:border-0 file:rounded-md border border-gray-300 rounded-lg" />
                         </div>
 
                         <!-- Error messages -->
@@ -165,13 +154,11 @@
                         @endif
 
                         <!-- Modal footer -->
-                        <div class="flex items-center md:col-span-2 border-t border-gray-200 rounded-b mt-4">
-                            <div class="mt-3">
-                                <button type="submit"
-                                    class="text-white bg-blue-700 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 transform hover:scale-105">Simpan</button>
-                                <button data-modal-hide="default-modal" type="button"
-                                    class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 transition-all duration-300 transform hover:scale-105">Batal</button>
-                            </div>
+                        <div class="flex items-center md:col-span-2 pt-4 border-t border-gray-200 mt-4">
+                            <button type="submit"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
+                            <button data-modal-hide="default-modal" type="button"
+                                class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
                         </div>
                     </div>
                 </form>
