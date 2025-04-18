@@ -6,13 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('sktms', function (Blueprint $table) {
             $table->id('sktm_id');
-            $table->unsignedBigInteger('pengajuan_id');
+            $table->unsignedBigInteger('pengajuan_id')->nullable(); // Make nullable
+            $table->string('nik', 16);
             $table->string('nama');
-            $table->string('nik');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('pekerjaan');
@@ -20,11 +23,23 @@ return new class extends Migration
             $table->text('keterangan');
             $table->string('keperluan');
             $table->timestamps();
-            
-            $table->foreign('pengajuan_id')->references('pengajuan_id')->on('pengajuans')->onDelete('cascade');
+            $table->softDeletes();
         });
+
+        // Add foreign key constraint if the referenced table exists
+        if (Schema::hasTable('pengajuans')) {
+            Schema::table('sktms', function (Blueprint $table) {
+                $table->foreign('pengajuan_id')
+                      ->references('pengajuan_id')
+                      ->on('pengajuans')
+                      ->onDelete('cascade');
+            });
+        }
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('sktms');

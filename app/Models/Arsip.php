@@ -10,21 +10,19 @@ class Arsip extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "arsips";
+    protected $table = 'arsips'; // Explicitly set the table name
     protected $primaryKey = 'arsip_id';
-
-    protected $guarded = [
-        'arsip_id'
-    ];
-
+    
     protected $fillable = [
-        'perihal',
+        'pengajuan_id',
+        'nomor_surat',
         'jenis_surat',
-        'asal_surat',
+        'perihal',
         'tanggal_surat',
+        'asal_surat',
         'keterangan',
         'file_surat',
-        'user_deleted',
-        'deleted',
+        'user_created',
+        'user_updated'
     ];
 }

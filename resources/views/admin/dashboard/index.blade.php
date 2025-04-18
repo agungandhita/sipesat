@@ -30,16 +30,20 @@
                         <div class="mb-4">
                             <h2 class="text-xl font-semibold text-gray-800">Arsip Surat</h2>
                             <div class="flex items-end gap-2">
-                                <h1 class="text-4xl font-bold text-gray-900">8</h1>
-                                <span class="text-sm text-green-600 font-medium">+2 baru</span>
+                                <h1 class="text-4xl font-bold text-gray-900">{{ $totalArsip }}</h1>
+                                <span class="text-sm text-green-600 font-medium">
+                                    @if($newArsip > 0)
+                                        +{{ $newArsip }} baru
+                                    @endif
+                                </span>
                             </div>
                         </div>
 
                         <div class="w-full bg-yellow-200 rounded-full h-2 mb-4">
-                            <div class="bg-yellow-600 h-2 rounded-full" style="width: 65%"></div>
+                            <div class="bg-yellow-600 h-2 rounded-full" style="width: {{ min(($totalArsip / max($targetArsip, 1)) * 100, 100) }}%"></div>
                         </div>
 
-                        <a href=""
+                        <a href="{{ route('arsip') }}"
                             class="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-300">
                             <span>Lihat Detail</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
@@ -70,16 +74,20 @@
                         <div class="mb-4">
                             <h2 class="text-xl font-semibold text-white">Surat Masuk</h2>
                             <div class="flex items-end gap-2">
-                                <h1 class="text-4xl font-bold text-white">9</h1>
-                                <span class="text-sm text-blue-100 font-medium">+3 hari ini</span>
+                                <h1 class="text-4xl font-bold text-white">{{ $totalSuratMasuk }}</h1>
+                                <span class="text-sm text-blue-100 font-medium">
+                                    @if($newSuratMasuk > 0)
+                                        +{{ $newSuratMasuk }} hari ini
+                                    @endif
+                                </span>
                             </div>
                         </div>
 
                         <div class="w-full bg-blue-300 rounded-full h-2 mb-4">
-                            <div class="bg-white h-2 rounded-full" style="width: 75%"></div>
+                            <div class="bg-white h-2 rounded-full" style="width: {{ min(($totalSuratMasuk / max($targetSuratMasuk, 1)) * 100, 100) }}%"></div>
                         </div>
 
-                        <a href=""
+                        <a href="{{ route('arsip', ['jenis_surat' => 'masuk']) }}"
                             class="flex items-center justify-center gap-2 bg-white hover:bg-blue-50 text-blue-600 font-medium py-2.5 px-4 rounded-lg transition-colors duration-300">
                             <span>Lihat Detail</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
@@ -111,16 +119,20 @@
                         <div class="mb-4">
                             <h2 class="text-xl font-semibold text-white">Surat Keluar</h2>
                             <div class="flex items-end gap-2">
-                                <h1 class="text-4xl font-bold text-white">20</h1>
-                                <span class="text-sm text-green-100 font-medium">+5 minggu ini</span>
+                                <h1 class="text-4xl font-bold text-white">{{ $totalSuratKeluar }}</h1>
+                                <span class="text-sm text-green-100 font-medium">
+                                    @if($newSuratKeluar > 0)
+                                        +{{ $newSuratKeluar }} minggu ini
+                                    @endif
+                                </span>
                             </div>
                         </div>
 
                         <div class="w-full bg-green-300 rounded-full h-2 mb-4">
-                            <div class="bg-white h-2 rounded-full" style="width: 85%"></div>
+                            <div class="bg-white h-2 rounded-full" style="width: {{ min(($totalSuratKeluar / max($targetSuratKeluar, 1)) * 100, 100) }}%"></div>
                         </div>
 
-                        <a href=""
+                        <a href="{{ route('arsip', ['jenis_surat' => 'keluar']) }}"
                             class="flex items-center justify-center gap-2 bg-white hover:bg-green-50 text-green-600 font-medium py-2.5 px-4 rounded-lg transition-colors duration-300">
                             <span>Lihat Detail</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
@@ -141,67 +153,36 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl font-bold text-gray-800">Aktivitas Terbaru</h2>
-                        <button class="text-blue-500 hover:text-blue-700 text-sm font-medium">Lihat Semua</button>
+                        <a href="#" class="text-blue-500 hover:text-blue-700 text-sm font-medium">Lihat Semua</a>
                     </div>
 
                     <div class="space-y-5 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                        <!-- Activity Item 1 -->
-                        <div class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                            <div class="bg-blue-100 p-2.5 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between">
-                                    <h3 class="font-medium text-gray-800">Surat Masuk Baru</h3>
-                                    <span class="text-xs text-gray-500">2 jam yang lalu</span>
+                        @forelse($recentActivities as $activity)
+                            <div class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                                <div class="bg-{{ $activity->type_color }}-100 p-2.5 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-{{ $activity->type_color }}-600" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        {!! $activity->icon_path !!}
+                                    </svg>
                                 </div>
-                                <p class="text-sm text-gray-600 mt-1">Surat dari Dinas Pendidikan telah diterima</p>
-                            </div>
-                        </div>
-
-                        <!-- Activity Item 2 -->
-                        <div class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                            <div class="bg-green-100 p-2.5 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between">
-                                    <h3 class="font-medium text-gray-800">Surat Keluar Terkirim</h3>
-                                    <span class="text-xs text-gray-500">5 jam yang lalu</span>
+                                <div class="flex-1">
+                                    <div class="flex justify-between">
+                                        <h3 class="font-medium text-gray-800">{{ $activity->title }}</h3>
+                                        <span class="text-xs text-gray-500">{{ $activity->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-1">{{ $activity->description }}</p>
                                 </div>
-                                <p class="text-sm text-gray-600 mt-1">Surat undangan rapat berhasil dikirim</p>
                             </div>
-                        </div>
-
-                        <!-- Activity Item 3 -->
-                        <div class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                            <div class="bg-yellow-100 p-2.5 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-600"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
+                        @empty
+                            <div class="text-center py-8">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada aktivitas</h3>
+                                <p class="mt-1 text-sm text-gray-500">Aktivitas terbaru akan muncul di sini.</p>
                             </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between">
-                                    <h3 class="font-medium text-gray-800">Dokumen Diarsipkan</h3>
-                                    <span class="text-xs text-gray-500">1 hari yang lalu</span>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-1">3 dokumen baru telah diarsipkan</p>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -213,62 +194,68 @@
                         <h2 class="text-xl font-bold text-gray-800">Statistik Pelayanan</h2>
                         <div class="flex items-center gap-2">
                             <span class="text-sm text-gray-500">Filter:</span>
-                            <select class="text-sm border border-gray-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>Bulan Ini</option>
-                                <option>3 Bulan Terakhir</option>
-                                <option>Tahun Ini</option>
+                            <select id="statisticPeriod"
+                                class="text-sm border border-gray-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="month">Bulan Ini</option>
+                                <option value="quarter">3 Bulan Terakhir</option>
+                                <option value="year">Tahun Ini</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="space-y-6">
-                        <!-- Stat Item 1 -->
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-medium text-gray-700">Surat Keterangan Tidak Mampu</h3>
-                                <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full">45%</span>
+                        @forelse($statistikLayanan as $index => $stat)
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="font-medium text-gray-700">{{ $stat->perihal }}</h3>
+                                    <span
+                                        class="text-xs font-semibold bg-{{ $statColors[$index % count($statColors)] }}-100 text-{{ $statColors[$index % count($statColors)] }}-800 px-2 py-1 rounded-full">{{ $stat->percentage }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-{{ $statColors[$index % count($statColors)] }}-600 h-2 rounded-full" style="width: {{ $stat->percentage }}%"></div>
+                                </div>
+                                <div class="flex justify-between mt-2">
+                                    <span class="text-xs text-gray-500">Total: {{ $stat->total }} surat</span>
+                                    <span class="text-xs {{ $stat->change > 0 ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ $stat->change > 0 ? '+' : '' }}{{ $stat->change }} dari periode lalu
+                                    </span>
+                                </div>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+                        @empty
+                            <div class="text-center py-8">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada data statistik</h3>
+                                <p class="mt-1 text-sm text-gray-500">Statistik layanan akan muncul di sini.</p>
                             </div>
-                            <div class="flex justify-between mt-2">
-                                <span class="text-xs text-gray-500">Total: 15 surat</span>
-                                <span class="text-xs text-green-600">+3 dari bulan lalu</span>
-                            </div>
-                        </div>
-
-                        <!-- Stat Item 2 -->
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-medium text-gray-700">Surat Keterangan Domisili</h3>
-                                <span class="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded-full">65%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-green-600 h-2 rounded-full" style="width: 65%"></div>
-                            </div>
-                            <div class="flex justify-between mt-2">
-                                <span class="text-xs text-gray-500">Total: 22 surat</span>
-                                <span class="text-xs text-green-600">+5 dari bulan lalu</span>
-                            </div>
-                        </div>
-
-                        <!-- Stat Item 3 -->
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-medium text-gray-700">Surat Keterangan Meninggal</h3>
-                                <span class="text-xs font-semibold bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">25%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-yellow-600 h-2 rounded-full" style="width: 25%"></div>
-                            </div>
-                            <div class="flex justify-between mt-2">
-                                <span class="text-xs text-gray-500">Total: 8 surat</span>
-                                <span class="text-xs text-red-600">-2 dari bulan lalu</span>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.getElementById('statisticPeriod').addEventListener('change', function() {
+            // You can implement AJAX call here to update statistics based on selected period
+            const period = this.value;
+            
+            // Example AJAX call
+            /*
+            fetch(`/admin/dashboard/statistics?period=${period}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the statistics section with new data
+                console.log(data);
+            });
+            */
+        });
+    </script>
+    @endpush
 @endsection

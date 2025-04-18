@@ -68,6 +68,19 @@ Route::middleware('admin')->group(function () {
     Route::get('domisili/{id}/edit', [App\Http\Controllers\admin\DomisiliController::class, 'edit'])->name('domisili.edit');
     Route::post('domisili/{id}/update', [App\Http\Controllers\admin\DomisiliController::class, 'update'])->name('domisili.update');
     Route::get('domisili/{id}/download', [App\Http\Controllers\admin\DomisiliController::class, 'download'])->name('domisili.download');
+    // Add these routes in the admin middleware group
+
+    // SKTM routes
+    Route::prefix('admin/sktm')->name('sktm.')->group(function () {
+        Route::get('/', [App\Http\Controllers\admin\SktmController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\admin\SktmController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\admin\SktmController::class, 'store'])->name('store');
+        Route::get('/{id}', [App\Http\Controllers\admin\SktmController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [App\Http\Controllers\admin\SktmController::class, 'edit'])->name('edit');
+        Route::post('/{id}/update', [App\Http\Controllers\admin\SktmController::class, 'update'])->name('update');
+        Route::post('/{id}/destroy', [App\Http\Controllers\admin\SktmController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}/download', [App\Http\Controllers\admin\SktmController::class, 'download'])->name('download');
+    });
 });
 
 
