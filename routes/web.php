@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\admin\ArsipController;
-use App\Http\Controllers\admin\DashboardController;
-use App\Http\Controllers\admin\PendudukController;
-use App\Http\Controllers\admin\PengajuanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\admin\ArsipController;
 use App\Http\Controllers\auth\RegisterController;
+use App\Http\Controllers\admin\PendudukController;
+use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\MeninggalController;
+use App\Http\Controllers\admin\PengajuanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +69,16 @@ Route::middleware('admin')->group(function () {
     Route::get('domisili/{id}/edit', [App\Http\Controllers\admin\DomisiliController::class, 'edit'])->name('domisili.edit');
     Route::post('domisili/{id}/update', [App\Http\Controllers\admin\DomisiliController::class, 'update'])->name('domisili.update');
     Route::get('domisili/{id}/download', [App\Http\Controllers\admin\DomisiliController::class, 'download'])->name('domisili.download');
-    // Add these routes in the admin middleware group
+
+    Route::controller(MeninggalController::class)->group(function () {
+        Route::get('/surat-keterangan-meninggal', 'index')->name('meninggal.index');
+        Route::get('/surat-keterangan-meninggal/create', 'create')->name('meninggal.create');
+        Route::post('/surat-keterangan-meninggal', 'store')->name('meninggal.store');
+        Route::get('/admin/surat-keterangan-meninggal/{id}',  'show')->name('meninggal.show');
+        Route::get('/surat-keterangan-meninggal/{id}/edit', 'edit')->name('meninggal.edit');
+        Route::put('/surat-keterangan-meninggal/{id}', 'update')->name('meninggal.update');
+        Route::get('/surat-keterangan-meninggal/{id}/download', 'download')->name('meninggal.download');
+    });
 
     // SKTM routes
     Route::prefix('admin/sktm')->name('sktm.')->group(function () {
@@ -82,6 +92,9 @@ Route::middleware('admin')->group(function () {
         Route::get('/{id}/download', [App\Http\Controllers\admin\SktmController::class, 'download'])->name('download');
     });
 });
+
+
+// Surat Keterangan Meninggal Routes
 
 
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');

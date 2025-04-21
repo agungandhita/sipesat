@@ -29,7 +29,6 @@ class Pengajuan extends Model
         return $this->belongsTo(User::class, 'approved_by');
     }
 
-    // Add this method to your Pengajuan model
     public function sktm()
     {
         return $this->hasOne(Sktm::class, 'pengajuan_id', 'pengajuan_id');
@@ -58,5 +57,10 @@ class Pengajuan extends Model
     public function isRejected()
     {
         return $this->status === 'rejected';
+    }
+
+    public function meninggal()
+    {
+        return $this->hasOne(Meninggal::class, 'pengajuan_id', 'pengajuan_id');
     }
 }

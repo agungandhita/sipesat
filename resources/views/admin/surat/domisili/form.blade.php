@@ -1,64 +1,94 @@
 @extends('admin.layouts.main')
 
 @section('container')
-    <div class="container mx-auto px-4 mt-32">
-        <div class="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Form Surat Keterangan Domisili</h2>
-            <form method="POST" action="{{ route('domisili.store') }}" class="space-y-4">
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="form-group">
-                        <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                        <input type="text" name="nama" id="nama"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required>
+    <div class="container mx-auto px-4 pt-20">
+        <div class="bg-white rounded-lg shadow-md max-w-3xl mx-auto">
+            <div class="p-8">
+                <h4 class="text-lg font-semibold mb-8">Form Surat Keterangan Domisili</h4>
+                <form action="{{ route('domisili.store') }}" method="POST">
+                    @csrf
+                    <div class="grid grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <label for="nama" class="block text-sm text-gray-700 mb-2">Nama</label>
+                            <input type="text" id="nama" name="nama"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('nama') border-red-500 @enderror"
+                                value="{{ old('nama') }}">
+                            @error('nama')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="nik" class="block text-sm text-gray-700 mb-2">NIK</label>
+                            <input type="text" id="nik" name="nik" maxlength="16" minlength="16"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('nik') border-red-500 @enderror"
+                                value="{{ old('nik') }}">
+                            @error('nik')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="tempat_lahir" class="block text-sm text-gray-700 mb-2">Tempat Lahir</label>
+                            <input type="text" id="tempat_lahir" name="tempat_lahir"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('tempat_lahir') border-red-500 @enderror"
+                                value="{{ old('tempat_lahir') }}">
+                            @error('tempat_lahir')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="pekerjaan" class="block text-sm text-gray-700 mb-2">Pekerjaan</label>
+                            <input type="text" id="pekerjaan" name="pekerjaan"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('pekerjaan') border-red-500 @enderror"
+                                value="{{ old('pekerjaan') }}">
+                            @error('pekerjaan')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="nik" class="block text-sm font-medium text-gray-700">NIK</label>
-                        <input type="text" name="nik" id="nik"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required>
+
+                    <div class="mb-8">
+                        <label for="alamat" class="block text-sm text-gray-700 mb-2">Alamat</label>
+                        <textarea id="alamat" name="alamat" rows="4"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('alamat') border-red-500 @enderror">{{ old('alamat') }}</textarea>
+                        @error('alamat')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
-                        <input type="text" name="tempat_lahir" id="tempat_lahir"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required>
+
+                    <div class="mb-8">
+                        <label for="keterangan" class="block text-sm text-gray-700 mb-2">Keterangan</label>
+                        <textarea id="keterangan" name="keterangan" rows="4"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('keterangan') border-red-500 @enderror">{{ old('keterangan') }}</textarea>
+                        @error('keterangan')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="pekerjaan" class="block text-sm font-medium text-gray-700">Pekerjaan</label>
-                        <input type="text" name="pekerjaan" id="pekerjaan"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required>
+
+                    <div class="mb-8">
+                        <label for="keperluan" class="block text-sm text-gray-700 mb-2">Keperluan</label>
+                        <input type="text" id="keperluan" name="keperluan"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('keperluan') border-red-500 @enderror"
+                            value="{{ old('keperluan') }}">
+                        @error('keperluan')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <div class="form-group md:col-span-2">
-                        <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                        <textarea name="alamat" id="alamat" rows="3"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" onclick="window.history.back()"
+                            class="px-6 py-2.5 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-6 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                            Simpan
+                        </button>
                     </div>
-                    <div class="form-group md:col-span-2">
-                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
-                        <textarea name="keterangan" id="keterangan" rows="3"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
-                    </div>
-                    <div class="form-group md:col-span-2">
-                        <label for="keperluan" class="block text-sm font-medium text-gray-700">Keperluan</label>
-                        <input type="text" name="keperluan" id="keperluan"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required>
-                    </div>
-                </div>
-                <div class="flex justify-end mt-6">
-                    <a href="{{ route('domisili.index') }}"
-                        class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-600 transition duration-200">
-                        Batal
-                    </a>
-                    <button type="submit"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
-                        Simpan
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 @endsection
