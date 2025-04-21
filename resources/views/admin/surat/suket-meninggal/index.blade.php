@@ -107,6 +107,17 @@
                     const modal = document.getElementById('detailModal');
                     const content = document.getElementById('modalContent');
 
+                    // Format tanggal
+                    function formatDate(dateString) {
+                        if (!dateString) return '';
+                        // Menghapus bagian waktu (T00:00:00.000000Z)
+                        const datePart = dateString.split('T')[0];
+                        if (!datePart) return dateString;
+                        
+                        const [year, month, day] = datePart.split('-');
+                        return `${day}-${month}-${year}`;
+                    }
+
                     content.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-3">
@@ -115,7 +126,7 @@
                             <div class="border rounded-lg p-3 space-y-2">
                                 <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_almarhum}</p>
                                 <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_almarhum}</p>
-                                <p><span class="font-medium">Tempat/Tgl Lahir:</span> ${data.meninggal.tempat_lahir_almarhum}, ${data.meninggal.tanggal_lahir_almarhum}</p>
+                                <p><span class="font-medium">Tempat/Tgl Lahir:</span> ${data.meninggal.tempat_lahir_almarhum}, ${formatDate(data.meninggal.tanggal_lahir_almarhum)}</p>
                                 <p><span class="font-medium">Jenis Kelamin:</span> ${data.meninggal.jenis_kelamin}</p>
                                 <p><span class="font-medium">Agama:</span> ${data.meninggal.agama}</p>
                                 <p><span class="font-medium">Pekerjaan:</span> ${data.meninggal.pekerjaan_almarhum}</p>
@@ -125,7 +136,7 @@
                         <div>
                             <h4 class="font-medium text-gray-500">Data Kematian</h4>
                             <div class="border rounded-lg p-3 space-y-2">
-                                <p><span class="font-medium">Tanggal Meninggal:</span> ${data.meninggal.tanggal_meninggal}</p>
+                                <p><span class="font-medium">Tanggal Meninggal:</span> ${formatDate(data.meninggal.tanggal_meninggal)}</p>
                                 <p><span class="font-medium">Sebab:</span> ${data.meninggal.sebab_meninggal}</p>
                                 <p><span class="font-medium">Tempat:</span> ${data.meninggal.tempat_meninggal}</p>
                             </div>
@@ -137,7 +148,7 @@
                             <div class="border rounded-lg p-3 space-y-2">
                                 <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_pelapor}</p>
                                 <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_pelapor}</p>
-                                <p><span class="font-medium">Tempat/Tgl Lahir:</span> ${data.meninggal.tempat_lahir_pelapor}, ${data.meninggal.tanggal_lahir_pelapor}</p>
+                                <p><span class="font-medium">Tempat/Tgl Lahir:</span> ${data.meninggal.tempat_lahir_pelapor}, ${formatDate(data.meninggal.tanggal_lahir_pelapor)}</p>
                                 <p><span class="font-medium">Jenis Kelamin:</span> ${data.meninggal.jenis_kelamin_pelapor}</p>
                                 <p><span class="font-medium">Alamat:</span> ${data.meninggal.alamat_pelapor}</p>
                             </div>
@@ -146,7 +157,7 @@
                             <h4 class="font-medium text-gray-500">Info Surat</h4>
                             <div class="border rounded-lg p-3 space-y-2">
                                 <p><span class="font-medium">Nomor Surat:</span> ${data.arsip.nomor_surat}</p>
-                                <p><span class="font-medium">Tanggal Surat:</span> ${data.arsip.tanggal_surat}</p>
+                                <p><span class="font-medium">Tanggal Surat:</span> ${formatDate(data.arsip.tanggal_surat)}</p>
                                 <p><span class="font-medium">Status:</span>
                                     <span class="px-2 py-1 rounded-full text-xs font-medium ${data.pengajuan.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
                                         ${data.pengajuan.status}

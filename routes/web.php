@@ -65,7 +65,7 @@ Route::middleware('admin')->group(function () {
     Route::get('domisili', [App\Http\Controllers\admin\DomisiliController::class, 'index'])->name('domisili.index');
     Route::get('domisili/create', [App\Http\Controllers\admin\DomisiliController::class, 'create'])->name('domisili.create');
     Route::post('domisili/store', [App\Http\Controllers\admin\DomisiliController::class, 'store'])->name('domisili.store');
-    Route::get('domisili/{id}', [App\Http\Controllers\admin\DomisiliController::class, 'show'])->name('domisili.show');
+    Route::get('/admin/surat-keterangan-domisili/{id}', [App\Http\Controllers\admin\DomisiliController::class, 'show'])->name('domisili.show');
     Route::get('domisili/{id}/edit', [App\Http\Controllers\admin\DomisiliController::class, 'edit'])->name('domisili.edit');
     Route::post('domisili/{id}/update', [App\Http\Controllers\admin\DomisiliController::class, 'update'])->name('domisili.update');
     Route::get('domisili/{id}/download', [App\Http\Controllers\admin\DomisiliController::class, 'download'])->name('domisili.download');

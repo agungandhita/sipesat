@@ -110,13 +110,13 @@ class SktmController extends Controller
         $prefix = '470'; // Fixed prefix
         $suffix = '413.321.19'; // Fixed suffix for SKTM
         $year = date('Y');
-    
+
         // Get the highest number used this year for this type of letter
         $latestArsip = Arsip::whereYear('created_at', $year)
             ->where('nomor_surat', 'like', $prefix . '/%/' . $suffix . '/' . $year)
             ->orderBy('created_at', 'desc')
             ->first();
-    
+
         if ($latestArsip && $latestArsip->nomor_surat) {
             // Extract the number part from the latest nomor_surat
             $parts = explode('/', $latestArsip->nomor_surat);
@@ -128,7 +128,7 @@ class SktmController extends Controller
         } else {
             $count = 1;
         }
-    
+
         return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . $suffix . '/' . $year;
     }
 
@@ -137,20 +137,15 @@ class SktmController extends Controller
         try {
             $pengajuan = Pengajuan::with(['sktm', 'arsip'])->findOrFail($id);
 
-            if (request()->ajax()) {
-                return response()->json([
-                    'pengajuan' => $pengajuan,
-                    'sktm' => $pengajuan->sktm,
-                    'arsip' => $pengajuan->arsip
-                ]);
-            }
-
-            return view('admin.surat.tidak-mampu.show', compact('pengajuan'));
+            return response()->json([
+                'sktm' => $pengajuan->sktm,
+                'arsip' => $pengajuan->arsip,
+                'pengajuan' => $pengajuan
+            ]);
         } catch (\Exception $e) {
-            if (request()->ajax()) {
-                return response()->json(['error' => 'Data tidak ditemukan'], 404);
-            }
-            return back()->with('error', 'Data tidak ditemukan');
+            return response()->json([
+                'error' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
     }
 

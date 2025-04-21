@@ -112,14 +112,18 @@ class MeninggalController extends Controller
 
     private function generateNomorSurat()
     {
-        $prefix = '474.3'; // Prefix for death certificate
-        
-        $latestArsip = Arsip::whereYear('created_at', date('Y'))
-            ->where('nomor_surat', 'like', $prefix . '/%/' . date('m') . '/' . date('Y'))
+        $prefix = '470'; // Prefix untuk surat kematian
+        $suffix = '413.321.19'; // Suffix tetap
+        $year = date('Y');
+
+        // Cari nomor surat terakhir dengan format yang sama di tahun ini
+        $latestArsip = Arsip::whereYear('created_at', $year)
+            ->where('nomor_surat', 'like', $prefix . '/%/' . $suffix . '/' . $year)
             ->orderBy('created_at', 'desc')
             ->first();
 
         if ($latestArsip && $latestArsip->nomor_surat) {
+            // Ekstrak nomor urut dari nomor surat terakhir
             $parts = explode('/', $latestArsip->nomor_surat);
             if (count($parts) >= 2 && is_numeric($parts[1])) {
                 $count = (int)$parts[1] + 1;
@@ -130,7 +134,8 @@ class MeninggalController extends Controller
             $count = 1;
         }
 
-        return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . date('m') . '/' . date('Y');
+        // Format: 470/001/413.321.19/2024
+        return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . $suffix . '/' . $year;
     }
 
     public function show($id)

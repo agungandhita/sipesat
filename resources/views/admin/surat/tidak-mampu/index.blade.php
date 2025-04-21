@@ -104,7 +104,7 @@
 @section('scripts')
 <script>
     function showDetail(id) {
-        fetch(`/admin/surat-keterangan-tidak-mampu/${id}`, {
+        fetch(`/admin/sktm/${id}`, { // Perbaikan URL sesuai dengan route yang baru
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
