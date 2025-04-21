@@ -1,13 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\admin\ArsipController;
-use App\Http\Controllers\auth\RegisterController;
-use App\Http\Controllers\admin\PendudukController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\DomisiliController;
+use App\Http\Controllers\Admin\InformasiController;
 use App\Http\Controllers\admin\MeninggalController;
+use App\Http\Controllers\admin\PendudukController;
 use App\Http\Controllers\admin\PengajuanController;
+use App\Http\Controllers\admin\SktmController;
+use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\auth\RegisterController;
+use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +74,15 @@ Route::middleware('admin')->group(function () {
     Route::get('domisili/{id}/edit', [App\Http\Controllers\admin\DomisiliController::class, 'edit'])->name('domisili.edit');
     Route::post('domisili/{id}/update', [App\Http\Controllers\admin\DomisiliController::class, 'update'])->name('domisili.update');
     Route::get('domisili/{id}/download', [App\Http\Controllers\admin\DomisiliController::class, 'download'])->name('domisili.download');
+
+    //informasi-berita
+    Route::resource('informasi', InformasiController::class);
+    Route::prefix('informasi')->name('informasi.')->group(function () {
+        Route::post('/upload-image', [InformasiController::class, 'uploadImage'])->name('upload-image');
+        Route::post('/{informasi}/komentar', [InformasiController::class, 'storeKomentar'])->name('komentar.store');
+        Route::put('/komentar/{komentar}', [InformasiController::class, 'updateKomentar'])->name('komentar.update');
+        Route::delete('/komentar/{komentar}', [InformasiController::class, 'destroyKomentar'])->name('komentar.destroy');
+    });
 
     Route::controller(MeninggalController::class)->group(function () {
         Route::get('/surat-keterangan-meninggal', 'index')->name('meninggal.index');
