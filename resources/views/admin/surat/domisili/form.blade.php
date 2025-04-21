@@ -39,14 +39,24 @@
                         </div>
 
                         <div>
-                            <label for="pekerjaan" class="block text-sm text-gray-700 mb-2">Pekerjaan</label>
-                            <input type="text" id="pekerjaan" name="pekerjaan"
-                                class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('pekerjaan') border-red-500 @enderror"
-                                value="{{ old('pekerjaan') }}">
-                            @error('pekerjaan')
+                            <label for="tanggal_lahir" class="block text-sm text-gray-700 mb-2">Tanggal Lahir</label>
+                            <input type="date" id="tanggal_lahir" name="tanggal_lahir"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('tanggal_lahir') border-red-500 @enderror"
+                                value="{{ old('tanggal_lahir') }}">
+                            @error('tanggal_lahir')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
+                    </div>
+                    <div>
+                        <label for="pekerjaan" class="block text-sm text-gray-700 mb-2">Pekerjaan</label>
+                        <input type="text" id="pekerjaan" name="pekerjaan"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-blue-500 @error('pekerjaan') border-red-500 @enderror"
+                            value="{{ old('pekerjaan') }}">
+                        @error('pekerjaan')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mb-8">

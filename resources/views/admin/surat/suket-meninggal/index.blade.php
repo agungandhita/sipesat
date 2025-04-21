@@ -42,24 +42,27 @@
                         @forelse ($meninggals as $index => $pengajuan)
                             <tr class="bg-white border-b hover:bg-gray-50">
                                 <td class="px-6 py-4">{{ $index + $meninggals->firstItem() }}</td>
-                                <td class="px-6 py-4 font-medium text-gray-900">{{ $pengajuan->meninggal->nama_almarhum }}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900">{{ $pengajuan->meninggal->nama_almarhum }}
+                                </td>
                                 <td class="px-6 py-4">{{ $pengajuan->meninggal->nik_almarhum }}</td>
                                 <td class="px-6 py-4">{{ $pengajuan->created_at->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4">
-                                    <span class="px-2 py-1 rounded-full text-xs font-medium {{ $pengajuan->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                    <span
+                                        class="px-2 py-1 rounded-full text-xs font-medium {{ $pengajuan->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                                         {{ ucfirst($pengajuan->status) }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <button onclick="showDetail({{ $pengajuan->pengajuan_id }})" 
+                                    <button onclick="showDetail({{ $pengajuan->pengajuan_id }})"
                                         class="text-blue-600 hover:underline">Detail</button>
-                                    <a href="{{ route('meninggal.download', $pengajuan->pengajuan_id) }}" 
+                                    <a href="{{ route('meninggal.download', $pengajuan->pengajuan_id) }}"
                                         class="text-green-600 hover:underline ml-3">Download PDF</a>
                                 </td>
                             </tr>
                         @empty
                             <tr class="bg-white border-b">
-                                <td colspan="6" class="px-6 py-4 text-center">Tidak ada data surat keterangan kematian.</td>
+                                <td colspan="6" class="px-6 py-4 text-center">Tidak ada data surat keterangan kematian.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -70,7 +73,7 @@
                 {{ $meninggals->links() }}
             </div>
         </div>
-    
+
         <!-- Modal -->
         <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
             <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
@@ -78,7 +81,8 @@
                     <h3 class="text-xl font-semibold text-gray-900">Detail Surat Keterangan Kematian</h3>
                     <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -91,19 +95,19 @@
 @endsection
 
 @section('scripts')
-<script>
-    function showDetail(id) {
-        fetch(`/admin/surat-keterangan-meninggal/${id}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const modal = document.getElementById('detailModal');
-            const content = document.getElementById('modalContent');
-            
-            content.innerHTML = `
+    <script>
+        function showDetail(id) {
+            fetch(`/admin/surat-keterangan-meninggal/${id}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const modal = document.getElementById('detailModal');
+                    const content = document.getElementById('modalContent');
+
+                    content.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-3">
                         <div>
@@ -143,7 +147,7 @@
                             <div class="border rounded-lg p-3 space-y-2">
                                 <p><span class="font-medium">Nomor Surat:</span> ${data.arsip.nomor_surat}</p>
                                 <p><span class="font-medium">Tanggal Surat:</span> ${data.arsip.tanggal_surat}</p>
-                                <p><span class="font-medium">Status:</span> 
+                                <p><span class="font-medium">Status:</span>
                                     <span class="px-2 py-1 rounded-full text-xs font-medium ${data.pengajuan.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
                                         ${data.pengajuan.status}
                                     </span>
@@ -153,25 +157,25 @@
                     </div>
                 </div>
             `;
-            
-            modal.classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat memuat data');
-        });
-    }
 
-    function closeModal() {
-        document.getElementById('detailModal').classList.add('hidden');
-    }
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const modal = document.getElementById('detailModal');
-        if (event.target == modal) {
-            closeModal();
+                    modal.classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memuat data');
+                });
         }
-    }
-</script>
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 @endsection

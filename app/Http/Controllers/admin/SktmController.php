@@ -20,20 +20,20 @@ class SktmController extends Controller
 
         // Filter by name if provided
         if ($request->filled('nama')) {
-            $query->whereHas('sktm', function($q) use ($request) {
+            $query->whereHas('sktm', function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->nama . '%');
             });
         }
 
         // Filter by NIK if provided
         if ($request->filled('nik')) {
-            $query->whereHas('sktm', function($q) use ($request) {
+            $query->whereHas('sktm', function ($q) use ($request) {
                 $q->where('nik', 'like', '%' . $request->nik . '%');
             });
         }
 
         $sktms = $query->latest()->paginate(10);
-        
+
         return view('admin.surat.tidak-mampu.index', compact('sktms'));
     }
 
@@ -107,14 +107,16 @@ class SktmController extends Controller
 
     private function generateNomorSurat()
     {
-        $prefix = '471'; // Prefix for SKTM
-        
+        $prefix = '470'; // Fixed prefix
+        $suffix = '413.321.19'; // Fixed suffix for SKTM
+        $year = date('Y');
+    
         // Get the highest number used this year for this type of letter
-        $latestArsip = Arsip::whereYear('created_at', date('Y'))
-            ->where('nomor_surat', 'like', $prefix . '/%/' . date('m') . '/' . date('Y'))
+        $latestArsip = Arsip::whereYear('created_at', $year)
+            ->where('nomor_surat', 'like', $prefix . '/%/' . $suffix . '/' . $year)
             ->orderBy('created_at', 'desc')
             ->first();
-
+    
         if ($latestArsip && $latestArsip->nomor_surat) {
             // Extract the number part from the latest nomor_surat
             $parts = explode('/', $latestArsip->nomor_surat);
@@ -126,16 +128,30 @@ class SktmController extends Controller
         } else {
             $count = 1;
         }
-
-        return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . date('m') . '/' . date('Y');
+    
+        return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . $suffix . '/' . $year;
     }
 
     public function show($id)
     {
-        $pengajuan = Pengajuan::with('sktm')->findOrFail($id);
-        $arsip = Arsip::where('pengajuan_id', $pengajuan->pengajuan_id)->first();
+        try {
+            $pengajuan = Pengajuan::with(['sktm', 'arsip'])->findOrFail($id);
 
-        return view('admin.surat.tidak-mampu.show', compact('pengajuan', 'arsip'));
+            if (request()->ajax()) {
+                return response()->json([
+                    'pengajuan' => $pengajuan,
+                    'sktm' => $pengajuan->sktm,
+                    'arsip' => $pengajuan->arsip
+                ]);
+            }
+
+            return view('admin.surat.tidak-mampu.show', compact('pengajuan'));
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json(['error' => 'Data tidak ditemukan'], 404);
+            }
+            return back()->with('error', 'Data tidak ditemukan');
+        }
     }
 
     public function edit($id)
@@ -191,7 +207,7 @@ class SktmController extends Controller
     public function destroy($id)
     {
         $pengajuan = Pengajuan::findOrFail($id);
-        
+
         // Delete the arsip record if it exists
         $arsip = Arsip::where('pengajuan_id', $pengajuan->pengajuan_id)->first();
         if ($arsip) {
@@ -202,7 +218,7 @@ class SktmController extends Controller
             }
             $arsip->delete();
         }
-        
+
         // Delete the pengajuan record (will cascade delete SKTM due to foreign key)
         $pengajuan->delete();
 

@@ -35,6 +35,7 @@ class DomisiliController extends Controller
             'nama' => 'required|string|max:255',
             'nik' => 'required|string|max:16',
             'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',  // Add this
             'pekerjaan' => 'required|string|max:255',
             'alamat' => 'required|string',
             'keterangan' => 'required|string',
@@ -45,7 +46,7 @@ class DomisiliController extends Controller
         $pengajuan = Pengajuan::create([
             'user_id' => Auth::id(),
             'jenis_surat' => 'domisili',
-            'status' => 'approved', // Auto-approved
+            'status' => 'approved',
             'approved_at' => now(),
             'approved_by' => Auth::id(),
         ]);
@@ -56,6 +57,7 @@ class DomisiliController extends Controller
             'nama' => $request->nama,
             'nik' => $request->nik,
             'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,  // Add this
             'pekerjaan' => $request->pekerjaan,
             'alamat' => $request->alamat,
             'keterangan' => $request->keterangan,
@@ -93,7 +95,7 @@ class DomisiliController extends Controller
     private function generateNomorSurat()
     {
         $prefix = '470'; // Changed from 'SKD' to '470' as shown in the image
-        
+
         // Get the highest number used this year for this type of letter
         $latestArsip = Arsip::whereYear('created_at', date('Y'))
             ->where('nomor_surat', 'like', $prefix . '/%/' . date('m') . '/' . date('Y'))
@@ -135,6 +137,7 @@ class DomisiliController extends Controller
             'nama' => 'required|string|max:255',
             'nik' => 'required|string|max:16',
             'tempat_lahir' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',  // Add this validation
             'pekerjaan' => 'required|string|max:255',
             'alamat' => 'required|string',
             'keterangan' => 'required|string',
@@ -148,6 +151,7 @@ class DomisiliController extends Controller
             'nama' => $request->nama,
             'nik' => $request->nik,
             'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,  // Add this field
             'pekerjaan' => $request->pekerjaan,
             'alamat' => $request->alamat,
             'keterangan' => $request->keterangan,

@@ -15,6 +15,7 @@ class Domisili extends Model
         'nama',
         'nik',
         'tempat_lahir',
+        'tanggal_lahir',  // Add this
         'pekerjaan',
         'alamat',
         'keterangan',

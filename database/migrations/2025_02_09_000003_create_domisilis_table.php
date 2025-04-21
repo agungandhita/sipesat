@@ -14,12 +14,13 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nik');
             $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
             $table->string('pekerjaan')->nullable();
             $table->text('alamat');
             $table->text('keterangan');
             $table->string('keperluan');
             $table->timestamps();
-            
+
             $table->foreign('pengajuan_id')->references('pengajuan_id')->on('pengajuans')->onDelete('cascade');
         });
     }
