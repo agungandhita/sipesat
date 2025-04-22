@@ -10,9 +10,8 @@ return new class extends Migration
     {
         Schema::create('komentar', function (Blueprint $table) {
             $table->id('komentar_id');
-            $table->unsignedBigInteger('informasi_id')->constrained('informasi')->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->constrained('users')->onDelete('cascade');
-            $table->unsignedBigInteger('parent_id')->nullable()->constrained('komentar')->onDelete('cascade');
+            $table->unsignedBigInteger('informasi_id')->constrained('informasi')->onDelete('cascade');
             $table->text('konten');
             $table->timestamps();
         });

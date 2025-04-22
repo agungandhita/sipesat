@@ -10,17 +10,25 @@ class Informasi extends Model
     use HasFactory;
 
     protected $table = 'informasi';
-    
+    protected $primaryKey = 'informasi_id';
     protected $fillable = [
         'judul',
+        'slug',
+        'excerpt',
         'konten',
+        'gambar_sampul',
         'kategori',
         'status',
-        'slug'
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function komentar()
     {
-        return $this->hasMany(Komentar::class);
+        return $this->hasMany(Komentar::class, 'informasi_id');
     }
 }

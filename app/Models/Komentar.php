@@ -10,31 +10,21 @@ class Komentar extends Model
     use HasFactory;
 
     protected $table = 'komentar';
+    protected $primaryKey = 'komentar_id';
     
     protected $fillable = [
-        'informasi_id',
         'user_id',
-        'parent_id',
+        'informasi_id',
         'konten'
     ];
-
-    public function informasi()
-    {
-        return $this->belongsTo(Informasi::class);
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function parent()
+    public function informasi()
     {
-        return $this->belongsTo(Komentar::class, 'parent_id');
-    }
-
-    public function replies()
-    {
-        return $this->hasMany(Komentar::class, 'parent_id');
+        return $this->belongsTo(Informasi::class);
     }
 }

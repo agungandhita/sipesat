@@ -10,16 +10,15 @@ return new class extends Migration
     {
         Schema::create('informasi', function (Blueprint $table) {
             $table->id('informasi_id');
-            $table->unsignedBigInteger('user_id')->constrained('users')->onDelete('cascade'); // untuk mengetahui pembuat berita
             $table->string('judul');
             $table->string('slug')->unique();
+            $table->text('excerpt');
             $table->text('konten');
-            $table->string('gambar_sampul')->nullable(); // untuk thumbnail berita
-            $table->string('excerpt')->nullable(); // untuk ringkasan berita
+            $table->string('gambar_sampul')->nullable();
+            $table->enum('kategori', ['pengumuman', 'berita', 'agenda']);
             $table->enum('status', ['draft', 'published'])->default('draft');
-            $table->integer('views')->default(0); // untuk menghitung jumlah view
+            $table->unsignedBigInteger('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes(); // untuk fitur trash/recycle bin
         });
     }
 
