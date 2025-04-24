@@ -80,13 +80,14 @@ Route::middleware('admin')->group(function () {
     Route::get('informasi/create', [InformasiController::class, 'create'])->name('informasi.create');
     Route::post('informasi/store', [InformasiController::class, 'store'])->name('informasi.store');
     Route::get('informasi/{id}', [InformasiController::class, 'show'])->name('informasi.show');
-    Route::get('informasi/{id}/edit', [InformasiController::class, 'edit'])->name('informasi.edit');
-    Route::post('informasi/{id}/update', [InformasiController::class, 'update'])->name('informasi.update');
-    Route::post('informasi/{id}/destroy', [InformasiController::class, 'destroy'])->name('informasi.destroy');
+    Route::get('informasi/edit/{id}', [InformasiController::class, 'edit'])->name('informasi.edit');
+    Route::put('informasi/update/{id}', [InformasiController::class, 'update'])->name('informasi.update');
+    Route::delete('informasi/{id}', [InformasiController::class, 'destroy'])->name('informasi.destroy');
     Route::post('informasi/upload-image', [InformasiController::class, 'uploadImage'])->name('informasi.upload-image');
     Route::post('informasi/{informasi}/komentar', [InformasiController::class, 'storeKomentar'])->name('informasi.komentar.store');
     Route::put('informasi/komentar/{komentar}', [InformasiController::class, 'updateKomentar'])->name('informasi.komentar.update');
     Route::delete('informasi/komentar/{komentar}', [InformasiController::class, 'destroyKomentar'])->name('informasi.komentar.destroy');
+
 
     Route::controller(MeninggalController::class)->group(function () {
         Route::get('/surat-keterangan-meninggal', 'index')->name('meninggal.index');
