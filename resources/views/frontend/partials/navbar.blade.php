@@ -68,18 +68,17 @@
 
                         <!-- Dropdown menu -->
                         <div id="dropdown"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownDefaultButton">
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
+                            <ul class="py-2 text-gray-700 " aria-labelledby="dropdownDefaultButton">
                                 <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profil</a>
+                                    <a href='{{ route('pengajuan.riwayat') }}'
+                                        class="block px-4 py-2 hover:bg-gray-100">Pengajuan</a>
                                 </li>
                                 <li>
                                     <form action="/logout" method="POST" class="inline">
                                         @csrf
                                         <button type="submit"
-                                            class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black">
+                                            class="block cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100 text-black">
                                             Logout
                                         </button>
                                     </form>

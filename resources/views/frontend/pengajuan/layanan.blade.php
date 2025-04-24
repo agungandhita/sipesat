@@ -12,7 +12,7 @@
         <!-- Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
             <div class="text-center">
-                <a href="" class="cursor-pointer">
+                <a href="{{ route('form.sktm') }}" class="cursor-pointer">
                     <img class="rounded-xl sm:size-48 lg:size-60 mx-auto" src="{{ asset('img/lamongan.png') }}" alt="Avatar">
                     <div class="mt-2 sm:mt-4">
                         <h3 class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg ">
@@ -27,7 +27,7 @@
             <!-- End Col -->
 
             <div class="text-center">
-                <a href="" class="cursor-pointer">
+                <a href="{{ route('form.domisili') }}" class="cursor-pointer">
                     <img class="rounded-xl sm:size-48 lg:size-60 mx-auto" src="{{ asset('img/lamongan.png') }}"
                         alt="Avatar">
                     <div class="mt-2 sm:mt-4">
@@ -43,7 +43,7 @@
             <!-- End Col -->
 
             <div class="text-center">
-                <a href="" class="cursor-pointer">
+                <a href="{{ route('form.suket-meninggal') }}" class="cursor-pointer">
                     <img class="rounded-xl sm:size-48 lg:size-60 mx-auto" src="{{ asset('img/lamongan.png') }}"
                         alt="Avatar">
                     <div class="mt-2 sm:mt-4">

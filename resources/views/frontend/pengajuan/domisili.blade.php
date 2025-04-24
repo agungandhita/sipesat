@@ -18,19 +18,19 @@
             <div class="bg-white rounded-lg shadow-lg border border-gray-100">
                 <div class="border-b border-gray-200 p-6 bg-gradient-to-r from-blue-50 to-blue-100">
                     <div class="flex items-center space-x-4">
-                        <!-- Logo SKTM -->
+                        <!-- Logo Domisili -->
                         <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
                         <div>
-                            <h4 class="text-2xl font-bold text-gray-800">Form Pengajuan SKTM</h4>
+                            <h4 class="text-2xl font-bold text-gray-800">Form Pengajuan Surat Domisili</h4>
                             <p class="text-gray-600 mt-2">Silakan lengkapi data di bawah ini dengan benar</p>
                         </div>
                     </div>
                 </div>
                 <div class="p-6">
-                    <form action="{{ route('sktm.store') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('domisili.store') }}" method="POST" class="space-y-6">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,8 +82,7 @@
                         <div>
                             <label for="pekerjaan" class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan</label>
                             <input type="text" id="pekerjaan" name="pekerjaan"
-                                class="w-full rounded-lg  border-2 p-1 px-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 @error('pekerjaan') border-red-500 @enderror"
-                                required>
+                                class="w-full rounded-lg  border-2 p-1 px-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 @error('pekerjaan') border-red-500 @enderror">
                             @error('pekerjaan')
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror

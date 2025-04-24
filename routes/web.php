@@ -49,7 +49,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
     Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
     Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');
+
+    //riwayat
+    Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('pengajuan.riwayat');
+
+    //SKTM
+    Route::get('/form/sktm', [App\Http\Controllers\Page\SktmController::class, 'index'])->name('form.sktm');
+
+
+    //Domisili
+    Route::get('/form/domisili', [App\Http\Controllers\Page\DomisiliController::class, 'index'])->name('form.domisili');
+
+
+    //Suket-Meninggal
+    Route::get('form/suket-meinggal', [App\Http\Controllers\Page\MeninggalController::class, 'index'])->name('form.suket-meninggal');
 });
+
+
 
 Route::middleware('admin')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
