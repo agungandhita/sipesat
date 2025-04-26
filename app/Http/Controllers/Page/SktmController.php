@@ -32,11 +32,11 @@ class SktmController extends Controller
             'keperluan' => 'required|string',
         ]);
 
-        // Buat pengajuan terlebih dahulu
+        // Buat pengajuan terlebih dahulu dengan status pending
         $pengajuan = Pengajuan::create([
             'user_id' => Auth::id(),
             'jenis_surat' => 'sktm',
-            'status' => 'pending',
+            'status' => 'pending',  // Status otomatis pending saat dibuat
         ]);
 
         // Buat record SKTM

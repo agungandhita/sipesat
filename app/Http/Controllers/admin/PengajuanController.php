@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Sktm;
 use App\Models\Arsip;
 use App\Models\Domisili;
-use App\Models\Pengajuan;
-use App\Models\Sktm;
 use Barryvdh\DomPDF\PDF;
+use App\Models\Pengajuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,49 +28,11 @@ class PengajuanController extends Controller
     public function create($jenis)
     {
         // Validate jenis surat
-        if (!in_array($jenis, ['domisili', 'tidak_mampu'])) {
+        if (!in_array($jenis, ['domisili', 'sktm'])) { // Ubah 'tidak_mampu' menjadi 'sktm'
             return redirect()->back()->with('error', 'Jenis surat tidak valid.');
         }
 
         return view('user.pengajuan.form', compact('jenis'));
-    }
-
-
-
-    public function show($id)
-    {
-        $pengajuan = Pengajuan::with(['user', 'domisili', 'sktm'])
-            ->findOrFail($id);
-
-        // Load data berdasarkan jenis surat
-        if ($pengajuan->jenis_surat == 'domisili') {
-            $data = $pengajuan->domisili;
-            $view = 'admin.approve.show.domisili';
-        } else if ($pengajuan->jenis_surat == 'tidak_mampu') {
-            $data = $pengajuan->sktm;
-            $view = 'admin.approve.show.sktm';
-        } else {
-            return redirect()->back()->with('error', 'Jenis surat tidak valid');
-        }
-
-        return view($view, [
-            'title' => 'Detail Pengajuan',
-            'pengajuan' => $pengajuan,
-            'data' => $data
-        ]);
-    }
-
-
-
-    // Admin methods for approval
-    public function listPending()
-    {
-        // Get all pending pengajuan
-        $pengajuans = Pengajuan::where('status', 'pending')
-            ->latest()
-            ->paginate(10);
-
-        return view('admin.pengajuan.pending', compact('pengajuans'));
     }
 
     public function approve($id)
@@ -81,47 +44,129 @@ class PengajuanController extends Controller
             return redirect()->back()->with('error', 'Pengajuan sudah diproses sebelumnya.');
         }
 
-        // Update pengajuan status
-        $pengajuan->update([
-            'status' => 'approved',
-            'approved_at' => now(),
-            'approved_by' => Auth::id(),
-        ]);
+        try {
+            // Generate nomor surat
+            $nomorSurat = $this->generateNomorSurat($pengajuan);
 
-        // Generate nomor surat based on jenis_surat
-        $prefix = ($pengajuan->jenis_surat == 'domisili') ? 'SKD' : 'SKTM';
-        $nomorSurat = $this->generateNomorSurat($prefix);
+            // Create arsip entry
+            if ($pengajuan->jenis_surat == 'domisili') {
+                $pengajuan->load('domisili');
+                $data = $pengajuan->domisili;
+                $perihal = 'Surat Keterangan Domisili - ' . $data->nama;
+                $filename = 'domisili_' . $pengajuan->pengajuan_id . '.pdf';
+            } else if ($pengajuan->jenis_surat == 'sktm') { // Ubah 'tidak_mampu' menjadi 'sktm'
+                $pengajuan->load('sktm');
+                $data = $pengajuan->sktm;
+                $perihal = 'Surat Keterangan Tidak Mampu - ' . $data->nama;
+                $filename = 'sktm_' . $pengajuan->pengajuan_id . '.pdf'; // Ubah prefix filename
+            } else {
+                return redirect()->back()->with('error', 'Jenis surat tidak valid.');
+            }
 
-        // Create arsip entry
-        if ($pengajuan->jenis_surat == 'domisili') {
-            $pengajuan->load('domisili');
-            $data = $pengajuan->domisili;
-            $perihal = 'Surat Keterangan Domisili - ' . $data->nama;
-            $filename = 'domisili_' . $pengajuan->pengajuan_id . '.pdf';
-        } else { // tidak_mampu
-            $pengajuan->load('tidakMampu');
-            $data = $pengajuan->tidakMampu;
-            $perihal = 'Surat Keterangan Tidak Mampu - ' . $data->nama;
-            $filename = 'tidak_mampu_' . $pengajuan->pengajuan_id . '.pdf';
+            // Generate PDF terlebih dahulu
+            $generatedFilename = $this->generatePDF($pengajuan, $nomorSurat);
+
+            // Pastikan file PDF berhasil dibuat sebelum update status
+            if (!Storage::disk('public')->exists('surat_keluar/' . $generatedFilename)) {
+                throw new \Exception('Gagal membuat file PDF');
+            }
+
+            // Update pengajuan status setelah PDF berhasil dibuat
+            $updateResult = $pengajuan->update([
+                'status' => 'approved',
+                'approved_at' => now(),
+                'approved_by' => Auth::id(),
+                'catatan_admin' => request('catatan_admin')
+            ]);
+
+            // Log hasil update untuk debugging
+            Log::info('Update status pengajuan #' . $pengajuan->pengajuan_id . ' result: ' . ($updateResult ? 'success' : 'failed'));
+
+            // Verifikasi status telah berubah
+            $pengajuan = $pengajuan->fresh();
+            Log::info('Status pengajuan #' . $pengajuan->pengajuan_id . ' setelah update: ' . $pengajuan->status);
+
+            // Buat arsip setelah status diupdate
+            $arsip = Arsip::create([
+                'pengajuan_id' => $pengajuan->pengajuan_id,
+                'nomor_surat' => $nomorSurat,
+                'jenis_surat' => 'keluar',  // Set jenis surat sebagai surat keluar
+                'perihal' => $perihal,
+                'tanggal_surat' => now(),
+                'asal_surat' => 'Desa Gedungboyountung',
+                'keterangan' => $data->keterangan ?? 'Surat Keterangan ' . ucfirst($pengajuan->jenis_surat),
+                'file_surat' => $generatedFilename,
+                'user_created' => Auth::id(),
+            ]);
+
+            return redirect()->route('approve')
+                ->with('success', 'Pengajuan berhasil disetujui dan surat telah dibuat.');
+        } catch (\Exception $e) {
+            // Log error
+            Log::error('Error saat menyetujui pengajuan #' . $pengajuan->pengajuan_id . ': ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            // Rollback status jika sudah terlanjur diupdate
+            if ($pengajuan->status === 'approved') {
+                $pengajuan->update(['status' => 'pending']);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat menyetujui pengajuan: ' . $e->getMessage());
         }
+    }
 
-        $arsip = Arsip::create([
-            'pengajuan_id' => $pengajuan->pengajuan_id,
-            'nomor_surat' => $nomorSurat,
-            'jenis_surat' => 'keluar',
-            'perihal' => $perihal,
-            'tanggal_surat' => now(),
-            'asal_surat' => 'Desa Gedungboyountung',
-            'keterangan' => $data->keterangan,
-            'file_surat' => $filename,
-            'user_created' => Auth::id(),
-        ]);
+    private function generatePDF($pengajuan, $nomorSurat)
+    {
+        try {
+            // Setup data untuk PDF
+            if ($pengajuan->jenis_surat == 'domisili') {
+                $pengajuan->load('domisili');
+                $data = [
+                    'pengajuan' => $pengajuan,
+                    'domisili' => $pengajuan->domisili,
+                    'nomor_surat' => $nomorSurat,
+                    'tanggal' => now()->format('d F Y')
+                ];
+                $view = 'admin.surat.pdf.domisili';
+                $filename = 'domisili_' . $pengajuan->pengajuan_id . '.pdf';
+            } else if ($pengajuan->jenis_surat == 'sktm') { // Ubah 'tidak_mampu' menjadi 'sktm'
+                $pengajuan->load('sktm');
+                $data = [
+                    'pengajuan' => $pengajuan,
+                    'sktm' => $pengajuan->sktm,
+                    'nomor_surat' => $nomorSurat,
+                    'tanggal' => now()->format('d F Y')
+                ];
+                $view = 'admin.surat.pdf.sktm'; // Sesuaikan nama view
+                $filename = 'sktm_' . $pengajuan->pengajuan_id . '.pdf'; // Ubah prefix filename
+            } else {
+                throw new \Exception('Jenis surat tidak valid.');
+            }
 
-        // Generate PDF
-        $this->generatePDF($pengajuan, $nomorSurat);
+            $pdf = app('dompdf.wrapper')->loadView($view, $data);
 
-        return redirect()->route('admin.pengajuan.pending')
-            ->with('success', 'Pengajuan berhasil disetujui dan surat telah dibuat.');
+            // Pastikan direktori ada
+            $storagePath = storage_path('app/public/surat_keluar');
+            if (!file_exists($storagePath)) {
+                mkdir($storagePath, 0755, true);
+            }
+
+            // Simpan PDF
+            $pdf->save($storagePath . '/' . $filename);
+
+            // Verifikasi file berhasil disimpan
+            if (!file_exists($storagePath . '/' . $filename)) {
+                throw new \Exception('File PDF gagal disimpan di: ' . $storagePath . '/' . $filename);
+            }
+
+            Log::info('PDF berhasil dibuat: ' . $filename);
+            return $filename;
+        } catch (\Exception $e) {
+            Log::error('Error generating PDF: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            throw $e;
+        }
     }
 
     public function reject($id, Request $request)
@@ -145,20 +190,30 @@ class PengajuanController extends Controller
             'alasan_penolakan' => $request->alasan_penolakan,
         ]);
 
-        return redirect()->route('admin.pengajuan.pending')
+        return redirect()->route('admin.pengajuan.index')
             ->with('success', 'Pengajuan berhasil ditolak.');
     }
 
-    private function generateNomorSurat($prefix)
+    private function generateNomorSurat($pengajuan)
     {
-        // Get the highest number used this year for this type of letter
-        $latestArsip = Arsip::whereYear('created_at', date('Y'))
-            ->where('nomor_surat', 'like', $prefix . '/%/' . date('m') . '/' . date('Y'))
+        // Tentukan prefix dan suffix berdasarkan jenis surat
+        if ($pengajuan->jenis_surat == 'domisili') {
+            $prefix = '470';
+            $suffix = '413.321.19';
+        } else { // untuk surat tidak mampu
+            $prefix = '440'; // Changed from 470 to 440 for SKTM
+            $suffix = '413.321.19';
+        }
+        $year = date('Y');
+
+        // Cari nomor surat terakhir dengan format yang sama di tahun ini
+        $latestArsip = Arsip::whereYear('created_at', $year)
+            ->where('nomor_surat', 'like', $prefix . '/%/' . $suffix . '/' . $year)
             ->orderBy('created_at', 'desc')
             ->first();
 
         if ($latestArsip && $latestArsip->nomor_surat) {
-            // Extract the number part from the latest nomor_surat
+            // Ekstrak nomor urut dari nomor surat terakhir
             $parts = explode('/', $latestArsip->nomor_surat);
             if (count($parts) >= 2 && is_numeric($parts[1])) {
                 $count = (int)$parts[1] + 1;
@@ -169,43 +224,8 @@ class PengajuanController extends Controller
             $count = 1;
         }
 
-        return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . date('m') . '/' . date('Y');
-    }
-
-    private function generatePDF($pengajuan, $nomorSurat)
-    {
-        if ($pengajuan->jenis_surat == 'domisili') {
-            $pengajuan->load('domisili');
-            $data = [
-                'pengajuan' => $pengajuan,
-                'domisili' => $pengajuan->domisili,
-                'nomor_surat' => $nomorSurat,
-                'tanggal' => now()->format('d F Y')
-            ];
-            $view = 'admin.surat.pdf.domisili';
-            $filename = 'domisili_' . $pengajuan->pengajuan_id . '.pdf';
-        } else { // tidak_mampu
-            $pengajuan->load('tidakMampu');
-            $data = [
-                'pengajuan' => $pengajuan,
-                'tidakMampu' => $pengajuan->tidakMampu,
-                'nomor_surat' => $nomorSurat,
-                'tanggal' => now()->format('d F Y')
-            ];
-            $view = 'admin.surat.pdf.tidak_mampu';
-            $filename = 'tidak_mampu_' . $pengajuan->pengajuan_id . '.pdf';
-        }
-
-        $pdf = app('dompdf.wrapper')->loadView($view, $data);
-
-        // Make sure directory exists
-        $storagePath = storage_path('app/public/surat_keluar');
-        if (!file_exists($storagePath)) {
-            mkdir($storagePath, 0755, true);
-        }
-
-        $pdf->save($storagePath . '/' . $filename);
-
-        return $filename;
+        // Format: 470/001/413.321.19/2024 untuk domisili
+        // Format: 440/001/413.321.19/2024 untuk sktm
+        return $prefix . '/' . str_pad($count, 3, '0', STR_PAD_LEFT) . '/' . $suffix . '/' . $year;
     }
 }

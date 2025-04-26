@@ -17,7 +17,8 @@ class PengajuanController extends Controller
 
     public function riwayat()
     {
-        $pengajuan = Pengajuan::where('user_id', auth()->id())
+        $pengajuan = Pengajuan::with(['sktm', 'domisili']) // eager loading untuk menghindari N+1 problem
+            ->where('user_id', auth()->id())
             ->latest()
             ->paginate(10);
 
@@ -52,4 +53,14 @@ class PengajuanController extends Controller
     //     return redirect()->route('pengajuan.riwayat')
     //         ->with('success', 'Pengajuan surat berhasil dikirim');
     // }
+
+
+    public function detail($id)
+    {
+        $pengajuan = Pengajuan::with(['sktm', 'domisili'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($id);
+
+        return response()->json($pengajuan);
+    }
 }

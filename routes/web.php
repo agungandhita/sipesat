@@ -52,10 +52,15 @@ Route::middleware('auth')->group(function () {
 
     //riwayat
     Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('riwayat.pengajuan');
+    Route::get('/pengajuan/{id}/detail', [App\Http\Controllers\Page\PengajuanController::class, 'detail'])->name('pengajuan.detail');
+
 
     //SKTM
     Route::get('/form/sktm', [App\Http\Controllers\Page\SktmController::class, 'index'])->name('form.sktm');
     Route::post('/form/sktm/post', [App\Http\Controllers\Page\SktmController::class, 'store'])->name('form.sktm.post');
+    Route::get('/sktm/download/{id}', [SktmController::class, 'download'])->name('page.sktm.download');
+
+
 
     //Domisili
     Route::get('/form/domisili', [App\Http\Controllers\Page\DomisiliController::class, 'index'])->name('form.domisili');
@@ -70,6 +75,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('admin')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
+
     // penduduk
     Route::get('penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
     Route::post('penduduk/update/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
@@ -83,6 +89,9 @@ Route::middleware('admin')->group(function () {
 
     //approve
     Route::get('/approve', [App\Http\Controllers\admin\PengajuanController::class, 'index'])->name('approve');
+    Route::post('/pengajuan/{id}/approve', [PengajuanController::class, 'approve'])->name('pengajuan.approve');
+    Route::post('/pengajuan/{id}/reject', [PengajuanController::class, 'reject'])->name('pengajuan.reject');
+
 
 
     // Domisili routes
