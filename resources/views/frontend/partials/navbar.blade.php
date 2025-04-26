@@ -71,7 +71,7 @@
                             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
                             <ul class="py-2 text-gray-700 " aria-labelledby="dropdownDefaultButton">
                                 <li>
-                                    <a href='{{ route('pengajuan.riwayat') }}'
+                                    <a href='{{ route('riwayat.pengajuan') }}'
                                         class="block px-4 py-2 hover:bg-gray-100">Pengajuan</a>
                                 </li>
                                 <li>

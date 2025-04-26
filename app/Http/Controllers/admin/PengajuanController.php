@@ -16,12 +16,12 @@ class PengajuanController extends Controller
 {
     public function index()
     {
-        // Get all pengajuan for the current user
-        $pengajuans = Pengajuan::where('user_id', Auth::id())
+        // Get all pengajuan data
+        $pengajuans = Pengajuan::with('user')
             ->latest()
-            ->paginate(10);
+            ->get();
 
-        return view('user.pengajuan.index', compact('pengajuans'));
+        return view('admin.approve.index', compact('pengajuans'));
     }
 
     public function create($jenis)
@@ -34,111 +34,32 @@ class PengajuanController extends Controller
         return view('user.pengajuan.form', compact('jenis'));
     }
 
-    public function store(Request $request)
-    {
-        // Validate jenis surat
-        if (!in_array($request->jenis_surat, ['domisili', 'tidak_mampu'])) {
-            return redirect()->back()->with('error', 'Jenis surat tidak valid.');
-        }
 
-        // Common validation rules
-        $rules = [
-            'nama' => 'required|string|max:255',
-            'nik' => 'required|string|max:16',
-            'tempat_lahir' => 'required|string|max:255',
-            'pekerjaan' => 'required|string|max:255',
-            'alamat' => 'required|string',
-            'keterangan' => 'required|string',
-            'keperluan' => 'required|string|max:255',
-        ];
-
-        // Additional validation for tidak_mampu
-        if ($request->jenis_surat == 'tidak_mampu') {
-            $rules['penghasilan'] = 'required|numeric';
-            $rules['tanggungan'] = 'required|integer';
-        }
-
-        $request->validate($rules);
-
-        // Create pengajuan with pending status
-        $pengajuan = Pengajuan::create([
-            'user_id' => Auth::id(),
-            'jenis_surat' => $request->jenis_surat,
-            'status' => 'pending', // Pending approval
-        ]);
-
-        // Create specific record based on jenis_surat
-        if ($request->jenis_surat == 'domisili') {
-            Domisili::create([
-                'pengajuan_id' => $pengajuan->pengajuan_id,
-                'nama' => $request->nama,
-                'nik' => $request->nik,
-                'tempat_lahir' => $request->tempat_lahir,
-                'pekerjaan' => $request->pekerjaan,
-                'alamat' => $request->alamat,
-                'keterangan' => $request->keterangan,
-                'keperluan' => $request->keperluan,
-            ]);
-        } else { // tidak_mampu
-            Sktm::create([
-                'pengajuan_id' => $pengajuan->pengajuan_id,
-                'nama' => $request->nama,
-                'nik' => $request->nik,
-                'tempat_lahir' => $request->tempat_lahir,
-                'pekerjaan' => $request->pekerjaan,
-                'alamat' => $request->alamat,
-                'penghasilan' => $request->penghasilan,
-                'tanggungan' => $request->tanggungan,
-                'keterangan' => $request->keterangan,
-                'keperluan' => $request->keperluan,
-            ]);
-        }
-
-        return redirect()->route('pengajuan.index')
-            ->with('success', 'Pengajuan surat berhasil dikirim dan menunggu persetujuan admin.');
-    }
 
     public function show($id)
     {
-        $pengajuan = Pengajuan::where('pengajuan_id', $id)
-            ->where('user_id', Auth::id()) // Ensure user can only see their own pengajuan
-            ->firstOrFail();
+        $pengajuan = Pengajuan::with(['user', 'domisili', 'sktm'])
+            ->findOrFail($id);
 
-        // Load the related model based on jenis_surat
+        // Load data berdasarkan jenis surat
         if ($pengajuan->jenis_surat == 'domisili') {
-            $pengajuan->load('domisili');
             $data = $pengajuan->domisili;
-        } else { // tidak_mampu
-            $pengajuan->load('tidakMampu');
-            $data = $pengajuan->tidakMampu;
+            $view = 'admin.approve.show.domisili';
+        } else if ($pengajuan->jenis_surat == 'tidak_mampu') {
+            $data = $pengajuan->sktm;
+            $view = 'admin.approve.show.sktm';
+        } else {
+            return redirect()->back()->with('error', 'Jenis surat tidak valid');
         }
 
-        $arsip = Arsip::where('pengajuan_id', $pengajuan->pengajuan_id)->first();
-
-        return view('user.pengajuan.show', compact('pengajuan', 'data', 'arsip'));
+        return view($view, [
+            'title' => 'Detail Pengajuan',
+            'pengajuan' => $pengajuan,
+            'data' => $data
+        ]);
     }
 
-    public function download($id)
-    {
-        $pengajuan = Pengajuan::where('pengajuan_id', $id)
-            ->where('user_id', Auth::id()) // Ensure user can only download their own pengajuan
-            ->where('status', 'approved') // Only approved pengajuan can be downloaded
-            ->firstOrFail();
 
-        $arsip = Arsip::where('pengajuan_id', $pengajuan->pengajuan_id)->first();
-
-        if (!$arsip) {
-            return redirect()->back()->with('error', 'File surat tidak ditemukan.');
-        }
-
-        $filePath = storage_path('app/public/surat_keluar/' . $arsip->file_surat);
-
-        if (!file_exists($filePath)) {
-            return redirect()->back()->with('error', 'File surat tidak ditemukan.');
-        }
-
-        return response()->download($filePath, $arsip->file_surat);
-    }
 
     // Admin methods for approval
     public function listPending()

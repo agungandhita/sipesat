@@ -51,11 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');
 
     //riwayat
-    Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('pengajuan.riwayat');
+    Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('riwayat.pengajuan');
 
     //SKTM
     Route::get('/form/sktm', [App\Http\Controllers\Page\SktmController::class, 'index'])->name('form.sktm');
-
+    Route::post('/form/sktm/post', [App\Http\Controllers\Page\SktmController::class, 'store'])->name('form.sktm.post');
 
     //Domisili
     Route::get('/form/domisili', [App\Http\Controllers\Page\DomisiliController::class, 'index'])->name('form.domisili');
@@ -80,6 +80,9 @@ Route::middleware('admin')->group(function () {
     Route::get('arsip', [ArsipController::class, 'index'])->name('arsip');
     Route::post('arsip/post', [ArsipController::class, 'store'])->name('arsip.post');
     Route::delete('arsip/delete/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
+
+    //approve
+    Route::get('/approve', [App\Http\Controllers\admin\PengajuanController::class, 'index'])->name('approve');
 
 
     // Domisili routes
