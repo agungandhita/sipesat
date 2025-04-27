@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pengajuan extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'pengajuan_id';
     protected $fillable = [
@@ -16,7 +17,9 @@ class Pengajuan extends Model
         'status',
         'catatan_admin',
         'approved_at',
-        'approved_by'
+        'approved_by',
+        'rejected_at',
+        'rejected_by',
     ];
 
     public function user()

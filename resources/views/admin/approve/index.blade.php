@@ -173,9 +173,9 @@
                                                                         <div class="mt-4">
                                                                             <label for="keterangan"
                                                                                 class="block text-sm font-medium text-gray-700">
-                                                                                Keterangan (opsional)
+                                                                                'catatan admin (opsional)
                                                                             </label>
-                                                                            <textarea id="keterangan" name="keterangan" rows="3"
+                                                                            <textarea id="'catatan_admin" name="catatan_admin" rows="3"
                                                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
                                                                         </div>
                                                                     </div>
@@ -230,10 +230,10 @@
                                                                         <div class="mt-4">
                                                                             <label for="alasan_penolakan"
                                                                                 class="block text-sm font-medium text-gray-700">
-                                                                                Alasan Penolakan <span
+                                                                                Catatan Admin <span
                                                                                     class="text-red-600">*</span>
                                                                             </label>
-                                                                            <textarea id="alasan_penolakan" name="alasan_penolakan" rows="3" required
+                                                                            <textarea id="alasan_penolakan" name="catatan_admin" rows="3" required
                                                                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
                                                                         </div>
                                                                     </div>

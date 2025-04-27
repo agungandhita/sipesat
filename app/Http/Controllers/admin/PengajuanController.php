@@ -187,10 +187,10 @@ class PengajuanController extends Controller
             'status' => 'rejected',
             'rejected_at' => now(),
             'rejected_by' => Auth::id(),
-            'alasan_penolakan' => $request->alasan_penolakan,
+            'catatan_admin' => $request->catatam_admin,
         ]);
 
-        return redirect()->route('admin.pengajuan.index')
+        return redirect()->route('approve')
             ->with('success', 'Pengajuan berhasil ditolak.');
     }
 

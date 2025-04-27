@@ -19,6 +19,9 @@ return new class extends Migration
             $table->text('catatan_admin')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->unsignedBigInteger('approved_by')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+            $table->unsignedBigInteger('rejected_by')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
