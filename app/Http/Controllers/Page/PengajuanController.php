@@ -17,7 +17,7 @@ class PengajuanController extends Controller
 
     public function riwayat()
     {
-        $pengajuan = Pengajuan::with(['sktm', 'domisili']) // eager loading untuk menghindari N+1 problem
+        $pengajuan = Pengajuan::with(['sktm', 'domisili', 'meninggal']) // eager loading untuk menghindari N+1 problem
             ->where('user_id', auth()->id())
             ->latest()
             ->paginate(10);
@@ -28,36 +28,10 @@ class PengajuanController extends Controller
         ]);
     }
 
-    // public function store(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'jenis_surat' => 'required',
-    //         'keperluan' => 'required',
-    //         'lampiran.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048'
-    //     ]);
-
-    //     $validatedData['user_id'] = auth()->id();
-    //     $validatedData['status'] = 'diproses';
-
-    //     if ($request->hasFile('lampiran')) {
-    //         $files = [];
-    //         foreach ($request->file('lampiran') as $file) {
-    //             $path = $file->store('lampiran', 'public');
-    //             $files[] = $path;
-    //         }
-    //         $validatedData['lampiran'] = json_encode($files);
-    //     }
-
-    //     Pengajuan::create($validatedData);
-
-    //     return redirect()->route('pengajuan.riwayat')
-    //         ->with('success', 'Pengajuan surat berhasil dikirim');
-    // }
-
 
     public function detail($id)
     {
-        $pengajuan = Pengajuan::with(['sktm', 'domisili'])
+        $pengajuan = Pengajuan::with(['sktm', 'domisili', 'meninggal'])
             ->where('user_id', auth()->id())
             ->findOrFail($id);
 

@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="p-6">
-                    <form action="{{ route('domisili.store') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('form.domisili.post') }}" method="POST" class="space-y-6">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

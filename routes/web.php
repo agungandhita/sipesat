@@ -54,20 +54,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('riwayat.pengajuan');
     Route::get('/pengajuan/{id}/detail', [App\Http\Controllers\Page\PengajuanController::class, 'detail'])->name('pengajuan.detail');
 
-
     //SKTM
     Route::get('/form/sktm', [App\Http\Controllers\Page\SktmController::class, 'index'])->name('form.sktm');
     Route::post('/form/sktm/post', [App\Http\Controllers\Page\SktmController::class, 'store'])->name('form.sktm.post');
     Route::get('/sktm/download/{id}', [SktmController::class, 'download'])->name('page.sktm.download');
 
-
-
     //Domisili
     Route::get('/form/domisili', [App\Http\Controllers\Page\DomisiliController::class, 'index'])->name('form.domisili');
+    Route::post('/form/domisili/post', [App\Http\Controllers\Page\DomisiliController::class, 'store'])->name('form.domisili.post');
+    Route::get('/domisili/download/{id}', [\App\Http\Controllers\Page\DomisiliController::class, 'download'])->name('page.domisili.download');
 
 
     //Suket-Meninggal
     Route::get('form/suket-meinggal', [App\Http\Controllers\Page\MeninggalController::class, 'index'])->name('form.suket-meninggal');
+    Route::post('form/suket-meninggal/post', [App\Http\Controllers\Page\MeninggalController::class, 'store'])->name('form.suket-meninggal.post');
+    Route::get('meninggal/download/{id}', [App\Http\Controllers\Page\MeninggalController::class, 'download'])->name('page.meninggal.download');
 });
 
 

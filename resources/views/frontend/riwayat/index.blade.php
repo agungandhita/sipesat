@@ -90,6 +90,17 @@
                                                                         d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                                                 </svg>
                                                             </a>
+                                                        @elseif($p->jenis_surat == 'meninggal')
+                                                            <a href="{{ route('page.meninggal.download', $p->pengajuan_id) }}"
+                                                                class="py-1 px-2 sm:px-3 inline-flex items-center gap-x-1 text-xs sm:text-sm font-medium rounded-lg border border-blue-600 bg-blue-600 text-white hover:bg-blue-700">
+                                                                <span class="hidden sm:inline">Unduh</span>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-4 h-4">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                                                </svg>
+                                                            </a>
                                                         @endif
                                                     @endif
                                                 </div>
@@ -157,19 +168,30 @@
                 fetch(`/pengajuan/${id}/detail`)
                     .then(response => response.json())
                     .then(data => {
+                        // Format tanggal
+                        const formatDate = (dateString) => {
+                            if (!dateString) return '-';
+                            const date = new Date(dateString);
+                            return date.toLocaleDateString('id-ID', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric'
+                            });
+                        };
+
                         let content = `
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Jenis Surat</label>
-                                <p class="mt-1 text-sm text-gray-900">${data.jenis_surat}</p>
+                                <p class="mt-1 text-sm text-gray-900 capitalize">${data.jenis_surat}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Tanggal Pengajuan</label>
-                                <p class="mt-1 text-sm text-gray-900">${data.created_at}</p>
+                                <p class="mt-1 text-sm text-gray-900">${formatDate(data.created_at)}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Status</label>
-                                <p class="mt-1 text-sm text-gray-900">${data.status}</p>
+                                <p class="mt-1 text-sm text-gray-900 capitalize">${data.status}</p>
                             </div>
                             ${data.catatan_admin ? `
                                     <div>
@@ -179,18 +201,37 @@
                                     ` : ''}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Data Pemohon</label>
-                                <div class="mt-1 text-sm text-gray-900">
+                                <div class="mt-1 text-sm text-gray-900 space-y-2 border border-gray-200 rounded-md p-3">
                                     ${data.jenis_surat === 'sktm' ? `
-                                                <p>Nama: ${data.sktm.nama}</p>
-                                                <p>NIK: ${data.sktm.nik}</p>
-                                                <p>Tempat Lahir: ${data.sktm.tempat_lahir}</p>
-                                                <p>Tanggal Lahir: ${data.sktm.tanggal_lahir}</p>
-                                                <p>Alamat: ${data.sktm.alamat}</p>
-                                            ` : `
-                                                <p>Nama: ${data.domisili.nama}</p>
-                                                <p>NIK: ${data.domisili.nik}</p>
-                                                <p>Alamat: ${data.domisili.alamat}</p>
-                                            `}
+                                                <p><span class="font-medium">Nama:</span> ${data.sktm.nama}</p>
+                                                <p><span class="font-medium">NIK:</span> ${data.sktm.nik}</p>
+                                                <p><span class="font-medium">Tempat Lahir:</span> ${data.sktm.tempat_lahir}</p>
+                                                <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.sktm.tanggal_lahir)}</p>
+                                                <p><span class="font-medium">Alamat:</span> ${data.sktm.alamat}</p>
+                                            ` : data.jenis_surat === 'domisili' ? `
+                                                <p><span class="font-medium">Nama:</span> ${data.domisili.nama}</p>
+                                                <p><span class="font-medium">NIK:</span> ${data.domisili.nik}</p>
+                                                <p><span class="font-medium">Alamat:</span> ${data.domisili.alamat}</p>
+                                            ` : data.jenis_surat === 'meninggal' ? `
+                                                <div class="border-b border-gray-200 pb-2 mb-2">
+                                                    <p class="font-medium text-gray-700 mb-1">Data Almarhum:</p>
+                                                    <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_almarhum}</p>
+                                                    <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_almarhum}</p>
+                                                    <p><span class="font-medium">Tempat Lahir:</span> ${data.meninggal.tempat_lahir_almarhum}</p>
+                                                    <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.meninggal.tanggal_lahir_almarhum)}</p>
+                                                </div>
+                                                <div class="border-b border-gray-200 pb-2 mb-2">
+                                                    <p class="font-medium text-gray-700 mb-1">Data Kematian:</p>
+                                                    <p><span class="font-medium">Tanggal Meninggal:</span> ${formatDate(data.meninggal.tanggal_meninggal)}</p>
+                                                    <p><span class="font-medium">Tempat Meninggal:</span> ${data.meninggal.tempat_meninggal}</p>
+                                                    <p><span class="font-medium">Sebab Meninggal:</span> ${data.meninggal.sebab_meninggal}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="font-medium text-gray-700 mb-1">Data Pelapor:</p>
+                                                    <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_pelapor}</p>
+                                                    <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_pelapor}</p>
+                                                </div>
+                                            ` : ''}
                                 </div>
                             </div>
                         </div>

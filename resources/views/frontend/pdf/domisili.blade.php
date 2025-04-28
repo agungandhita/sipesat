@@ -148,7 +148,7 @@
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td>Nomor RT. 015/008 Desa Gedongboyountung Kecamatan Turi Kabupaten Lamongan</td>
+                <td>{{ $domisili->alamat }}</td>
             </tr>
             <tr>
                 <td>Keterangan</td>

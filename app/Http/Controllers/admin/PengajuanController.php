@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Sktm;
 use App\Models\Arsip;
 use App\Models\Domisili;
+use App\Models\Meninggal;
 use Barryvdh\DomPDF\PDF;
 use App\Models\Pengajuan;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class PengajuanController extends Controller
     public function create($jenis)
     {
         // Validate jenis surat
-        if (!in_array($jenis, ['domisili', 'sktm'])) { // Ubah 'tidak_mampu' menjadi 'sktm'
+        if (!in_array($jenis, ['domisili', 'sktm', 'meninggal'])) {
             return redirect()->back()->with('error', 'Jenis surat tidak valid.');
         }
 
@@ -54,11 +55,16 @@ class PengajuanController extends Controller
                 $data = $pengajuan->domisili;
                 $perihal = 'Surat Keterangan Domisili - ' . $data->nama;
                 $filename = 'domisili_' . $pengajuan->pengajuan_id . '.pdf';
-            } else if ($pengajuan->jenis_surat == 'sktm') { // Ubah 'tidak_mampu' menjadi 'sktm'
+            } else if ($pengajuan->jenis_surat == 'sktm') {
                 $pengajuan->load('sktm');
                 $data = $pengajuan->sktm;
                 $perihal = 'Surat Keterangan Tidak Mampu - ' . $data->nama;
-                $filename = 'sktm_' . $pengajuan->pengajuan_id . '.pdf'; // Ubah prefix filename
+                $filename = 'sktm_' . $pengajuan->pengajuan_id . '.pdf';
+            } else if ($pengajuan->jenis_surat == 'meninggal') {
+                $pengajuan->load('meninggal');
+                $data = $pengajuan->meninggal;
+                $perihal = 'Surat Keterangan Meninggal - ' . $data->nama;
+                $filename = 'meninggal_' . $pengajuan->pengajuan_id . '.pdf';
             } else {
                 return redirect()->back()->with('error', 'Jenis surat tidak valid.');
             }
@@ -130,7 +136,7 @@ class PengajuanController extends Controller
                 ];
                 $view = 'admin.surat.pdf.domisili';
                 $filename = 'domisili_' . $pengajuan->pengajuan_id . '.pdf';
-            } else if ($pengajuan->jenis_surat == 'sktm') { // Ubah 'tidak_mampu' menjadi 'sktm'
+            } else if ($pengajuan->jenis_surat == 'sktm') {
                 $pengajuan->load('sktm');
                 $data = [
                     'pengajuan' => $pengajuan,
@@ -138,8 +144,18 @@ class PengajuanController extends Controller
                     'nomor_surat' => $nomorSurat,
                     'tanggal' => now()->format('d F Y')
                 ];
-                $view = 'admin.surat.pdf.sktm'; // Sesuaikan nama view
-                $filename = 'sktm_' . $pengajuan->pengajuan_id . '.pdf'; // Ubah prefix filename
+                $view = 'admin.surat.pdf.sktm';
+                $filename = 'sktm_' . $pengajuan->pengajuan_id . '.pdf';
+            } else if ($pengajuan->jenis_surat == 'meninggal') {
+                $pengajuan->load('meninggal');
+                $data = [
+                    'pengajuan' => $pengajuan,
+                    'meninggal' => $pengajuan->meninggal,
+                    'nomor_surat' => $nomorSurat,
+                    'tanggal' => now()->format('d F Y')
+                ];
+                $view = 'admin.surat.pdf.meninggal';
+                $filename = 'meninggal_' . $pengajuan->pengajuan_id . '.pdf';
             } else {
                 throw new \Exception('Jenis surat tidak valid.');
             }
@@ -200,8 +216,14 @@ class PengajuanController extends Controller
         if ($pengajuan->jenis_surat == 'domisili') {
             $prefix = '470';
             $suffix = '413.321.19';
-        } else { // untuk surat tidak mampu
-            $prefix = '440'; // Changed from 470 to 440 for SKTM
+        } else if ($pengajuan->jenis_surat == 'sktm') {
+            $prefix = '470';
+            $suffix = '413.321.19';
+        } else if ($pengajuan->jenis_surat == 'meninggal') {
+            $prefix = '470';  // Prefix untuk surat keterangan meninggal
+            $suffix = '413.321.19';
+        } else {
+            $prefix = '470';
             $suffix = '413.321.19';
         }
         $year = date('Y');
