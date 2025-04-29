@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
     //informasi
     Route::get('/berita', [App\Http\Controllers\Page\InformasiController::class, 'index'])->name('berita.index');
     Route::get('/berita/{slug}', [App\Http\Controllers\Page\InformasiController::class, 'show'])->name('berita.show');
+    Route::post('komentar/destroy/{id}', [App\Http\Controllers\Page\InformasiController::class, 'destroyKomentar'])->name('hapus.komentar');
+
+
 
     //riwayat
     Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('riwayat.pengajuan');
@@ -86,9 +89,11 @@ Route::middleware('admin')->group(function () {
 
     // penduduk
     Route::get('penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');
-    Route::post('penduduk/update/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
+    Route::post('penduduk/update/{penduduk}', [PendudukController::class, 'update'])->name('penduduk.update');
     Route::post('penduduk/create', [PendudukController::class, 'store'])->name('penduduk.create');
     Route::post('penduduk/delete/{id}', [PendudukController::class, 'destroy'])->name('penduduk.hapus');
+    Route::get('penduduk/rt/{rt}', [PendudukController::class, 'byRT'])->name('penduduk.by.rt');
+    Route::get('penduduk/dusun/{dusun}', [PendudukController::class, 'byDusun'])->name('penduduk.by.dusun');
 
     // arsip
     Route::get('arsip', [ArsipController::class, 'index'])->name('arsip');

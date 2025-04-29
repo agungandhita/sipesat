@@ -37,7 +37,7 @@
                 <!-- Bagian Komentar -->
                 <section class="mt-12 pt-8 border-t border-gray-200">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Komentar ({{ count($komentar ?? []) }})</h2>
-                    
+
                     <!-- Form Komentar -->
                     @auth
                         <div class="mb-8 bg-gray-50 p-6 rounded-lg">
@@ -45,12 +45,11 @@
                             <form action="{{ route('informasi.komentar.store', $informasi->informasi_id) }}" method="POST">
                                 @csrf
                                 <div class="mb-4">
-                                    <textarea name="isi_komentar" rows="4" 
-                                        class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500" 
-                                        placeholder="Tulis komentar Anda di sini..."
-                                        required></textarea>
+                                    <textarea name="isi_komentar" rows="4"
+                                        class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+                                        placeholder="Tulis komentar Anda di sini..." required></textarea>
                                 </div>
-                                <button type="submit" 
+                                <button type="submit"
                                     class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
                                     Kirim Komentar
                                 </button>
@@ -59,13 +58,13 @@
                     @else
                         <div class="mb-8 bg-gray-50 p-6 rounded-lg text-center">
                             <p class="text-gray-700 mb-4">Silakan login untuk meninggalkan komentar</p>
-                            <a href="{{ route('login') }}" 
+                            <a href="{{ route('login') }}"
                                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
                                 Login
                             </a>
                         </div>
                     @endauth
-                    
+
                     <!-- Daftar Komentar -->
                     <div class="space-y-6">
                         @forelse ($komentar ?? [] as $item)
@@ -79,15 +78,17 @@
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h4 class="text-sm font-semibold text-gray-900">{{ $item->user->name ?? 'User' }}</h4>
+                                        <h4 class="text-sm font-semibold text-gray-900">{{ $item->user->name ?? 'User' }}
+                                        </h4>
                                         <span class="text-xs text-gray-500">{{ $item->created_at->diffForHumans() }}</span>
                                     </div>
                                     <p class="text-gray-700">{{ $item->isi_komentar }}</p>
-                                    
+
                                     @auth
-                                        @if(auth()->id() == $item->user_id || auth()->user()->role == 'admin')
+                                        @if (auth()->id() == $item->user_id || auth()->user()->role == 'admin')
                                             <div class="mt-2 flex space-x-2">
-                                                <form action="{{ route('komentar.destroy', $item->id) }}" method="POST" class="inline">
+                                                <form action="{{ route('hapus.komentar', $item->komentar_id) }}" method="POST"
+                                                    class="inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-xs text-red-600 hover:underline">
@@ -108,7 +109,7 @@
                 </section>
 
                 <div class="mt-8 pt-8 border-t border-gray-200">
-                    <a href="{{ route('pengumuman') }}"
+                    <a href="{{ route('berita.index') }}"
                         class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">

@@ -65,18 +65,16 @@
 
 {{-- modal start --}}
 <div id="default-modal" tabindex="-1" aria-hidden="true"
-    class="shadow-2xl border-[1px] border-blue-100/50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full backdrop-blur-sm">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
+    class="shadow-2xl border-[1px] border-blue-100/50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-modal md:h-full backdrop-blur-sm">
+    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
-        <div
-            class="relative bg-white/95 backdrop-blur-md rounded-lg shadow-[0_10px_30px_rgba(8,112,184,0.15)] border border-blue-50">
+        <div class="relative bg-white/95 backdrop-blur-md rounded-lg shadow-[0_10px_30px_rgba(8,112,184,0.15)] border border-blue-50 max-h-[90vh] overflow-y-auto">
             <!-- Modal header -->
             <div
                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-blue-100/30 bg-gradient-to-r from-blue-50 to-indigo-50">
                 <h3
                     class="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
-                    Masukkan Data Penduduk
-                </h3>
+                    Masukkan Data Penduduk</h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     data-modal-hide="default-modal">
@@ -107,7 +105,8 @@
                             <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">NIK</label>
                             <input type="text" name="nik" id="nik"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Masukkan Nomor Induk Kependudukan">
+                                placeholder="Masukkan Nomor Induk Kependudukan" required maxlength="16" minlength="16">
+                            <p class="mt-1 text-xs text-gray-500">NIK harus 16 digit</p>
                         </div>
 
                         <!-- Jenis Kelamin Select -->
@@ -115,10 +114,121 @@
                             <label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis
                                 Kelamin</label>
                             <select id="jenis_kelamin" name="jenis_kelamin"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                required>
                                 <option value="" selected disabled>Pilih Jenis Kelamin</option>
                                 <option value="laki-laki">Laki-laki</option>
                                 <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+
+                        <!-- RT Input -->
+                        <div>
+                            <label for="rt" class="block mb-2 text-sm font-medium text-gray-900">RT</label>
+                            <input type="text" name="rt" id="rt"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan RT">
+                        </div>
+
+                        <!-- RW Input -->
+                        <div>
+                            <label for="rw" class="block mb-2 text-sm font-medium text-gray-900">RW</label>
+                            <input type="text" name="rw" id="rw"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan RW">
+                        </div>
+
+                        <!-- Dusun Input -->
+                        <div>
+                            <label for="dusun" class="block mb-2 text-sm font-medium text-gray-900">Dusun</label>
+                            <input type="text" name="dusun" id="dusun"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan Dusun">
+                        </div>
+
+                        <!-- Tempat Lahir Input -->
+                        <div>
+                            <label for="tempat_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tempat
+                                Lahir</label>
+                            <input type="text" name="tempat_lahir" id="tempat_lahir"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Masukkan Tempat Lahir">
+                        </div>
+
+                        <!-- Tanggal Lahir Input -->
+                        <div>
+                            <label for="tanggal_lahir" class="block mb-2 text-sm font-medium text-gray-900">Tanggal
+                                Lahir</label>
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+
+                        <!-- Agama Select -->
+                        <div>
+                            <label for="agama" class="block mb-2 text-sm font-medium text-gray-900">Agama</label>
+                            <select id="agama" name="agama"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="" selected disabled>Pilih Agama</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Kristen">Kristen</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Buddha">Buddha</option>
+                                <option value="Konghucu">Konghucu</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Perkawinan Select -->
+                        <div>
+                            <label for="status_perkawinan" class="block mb-2 text-sm font-medium text-gray-900">Status
+                                Perkawinan</label>
+                            <select id="status_perkawinan" name="status_perkawinan"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="" selected disabled>Pilih Status</option>
+                                <option value="Belum Kawin">Belum Kawin</option>
+                                <option value="Kawin">Kawin</option>
+                                <option value="Cerai Hidup">Cerai Hidup</option>
+                                <option value="Cerai Mati">Cerai Mati</option>
+                            </select>
+                        </div>
+
+                        <!-- Pekerjaan Select -->
+                        <div>
+                            <label for="pekerjaan"
+                                class="block mb-2 text-sm font-medium text-gray-900">Pekerjaan</label>
+                            <select id="pekerjaan" name="pekerjaan"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="" selected disabled>Pilih Pekerjaan</option>
+                                <option value="Petani">Petani</option>
+                                <option value="Nelayan">Nelayan</option>
+                                <option value="Pedagang">Pedagang</option>
+                                <option value="PNS">PNS</option>
+                                <option value="TNI/Polri">TNI/Polri</option>
+                                <option value="Swasta">Swasta</option>
+                                <option value="Wiraswasta">Wiraswasta</option>
+                                <option value="Pelajar/Mahasiswa">Pelajar/Mahasiswa</option>
+                                <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>
+                                <option value="Tidak Bekerja">Tidak Bekerja</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <!-- Pendidikan Select -->
+                        <div>
+                            <label for="pendidikan"
+                                class="block mb-2 text-sm font-medium text-gray-900">Pendidikan</label>
+                            <select id="pendidikan" name="pendidikan"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="" selected disabled>Pilih Pendidikan</option>
+                                <option value="Tidak/Belum Sekolah">Tidak/Belum Sekolah</option>
+                                <option value="SD/Sederajat">SD/Sederajat</option>
+                                <option value="SMP/Sederajat">SMP/Sederajat</option>
+                                <option value="SMA/Sederajat">SMA/Sederajat</option>
+                                <option value="D1/D2/D3">D1/D2/D3</option>
+                                <option value="D4/S1">D4/S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
                             </select>
                         </div>
 

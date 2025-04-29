@@ -8,7 +8,7 @@
             </a>
             <div class="hidden md:block">
                 <h1 class="text-xl px-3 font-bold capitalize">desa
-                    <span class="text-base capitalize">gedungboyountung</span>
+                    <span class="text-base capitalize">gedongboyountung</span>
                 </h1>
             </div>
             <div class="sm:hidden">
