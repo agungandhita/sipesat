@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Page;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Informasi; // Tambahkan import model Informasi
 
 class PageController extends Controller
 {
@@ -21,10 +22,15 @@ class PageController extends Controller
         ]);
     }
 
-    public function pengumuman()
-    {
-        return view('frontend.pengumuman.index');
-    }
+    // public function pengumuman()
+    // {
+    //     $informasi = Informasi::latest()->paginate(6); // Pagination dengan 6 item per halaman
+
+    //     return view('frontend.pengumuman.index', [
+    //         'title' => 'Pengumuman dan Berita',
+    //         'informasi' => $informasi
+    //     ]);
+    // }
 
     public function artikel()
     {

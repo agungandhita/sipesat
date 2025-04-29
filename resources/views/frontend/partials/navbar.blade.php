@@ -42,10 +42,10 @@
                 <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
                     href="{{ Route('profil') }}">Profil desa</a>
                 <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
-                    href="{{ Route('pengumuman') }}">Pengumuman</a>
+                    href="{{ Route('berita.index') }}">Pengumuman</a>
 
                 <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
-                    href="{{ Route('layanan') }}">layanan</a>
+                    href="{{ Route('layanan') }}">Layanan</a>
 
 
                 <div class="flex gap-x-3">

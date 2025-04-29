@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\SktmController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Informasi;
 
 
 
@@ -46,9 +47,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
     Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
-    Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
+
+
     Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
     Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');
+
+
+    //informasi
+    Route::get('/berita', [App\Http\Controllers\Page\InformasiController::class, 'index'])->name('berita.index');
+    Route::get('/berita/{slug}', [App\Http\Controllers\Page\InformasiController::class, 'show'])->name('berita.show');
 
     //riwayat
     Route::get('/pengajuan/riwayat', [App\Http\Controllers\Page\PengajuanController::class, 'riwayat'])->name('riwayat.pengajuan');
@@ -92,8 +99,6 @@ Route::middleware('admin')->group(function () {
     Route::get('/approve', [App\Http\Controllers\admin\PengajuanController::class, 'index'])->name('approve');
     Route::post('/pengajuan/{id}/approve', [PengajuanController::class, 'approve'])->name('pengajuan.approve');
     Route::post('/pengajuan/{id}/reject', [PengajuanController::class, 'reject'])->name('pengajuan.reject');
-
-
 
     // Domisili routes
     Route::get('domisili', [App\Http\Controllers\admin\DomisiliController::class, 'index'])->name('domisili.index');
@@ -144,8 +149,13 @@ Route::middleware('admin')->group(function () {
 
 
 
+// Pastikan route ini juga tersedia untuk pengguna yang tidak login
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
 Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
-Route::get('/pengumuman', [App\Http\Controllers\Page\PageController::class, 'pengumuman'])->name('pengumuman');
+
+// Route baru untuk detail informasi/berita (untuk pengguna yang tidak login)
+Route::get('/berita', [App\Http\Controllers\Page\InformasiController::class, 'index'])->name('berita.index');
+Route::get('/berita/{slug}', [App\Http\Controllers\Page\InformasiController::class, 'show'])->name('berita.show');
+
 Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
 Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('komentar_id');
             $table->unsignedBigInteger('user_id')->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger('informasi_id')->constrained('informasi')->onDelete('cascade');
-            $table->text('konten');
+            $table->text('isi_komentar');
             $table->timestamps();
         });
     }
