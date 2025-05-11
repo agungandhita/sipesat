@@ -75,7 +75,7 @@
         </div>
 
         <!-- Modal -->
-        <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-[120]">
             <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
                 <div class="flex justify-between items-center pb-3">
                     <h3 class="text-xl font-semibold text-gray-900">Detail Surat Keterangan Kematian</h3>
@@ -113,7 +113,7 @@
                         // Menghapus bagian waktu (T00:00:00.000000Z)
                         const datePart = dateString.split('T')[0];
                         if (!datePart) return dateString;
-                        
+
                         const [year, month, day] = datePart.split('-');
                         return `${day}-${month}-${year}`;
                     }

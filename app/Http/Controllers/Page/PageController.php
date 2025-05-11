@@ -22,15 +22,6 @@ class PageController extends Controller
         ]);
     }
 
-    // public function pengumuman()
-    // {
-    //     $informasi = Informasi::latest()->paginate(6); // Pagination dengan 6 item per halaman
-
-    //     return view('frontend.pengumuman.index', [
-    //         'title' => 'Pengumuman dan Berita',
-    //         'informasi' => $informasi
-    //     ]);
-    // }
 
     public function artikel()
     {

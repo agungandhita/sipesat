@@ -22,10 +22,10 @@
                         {{ $informasi->judul }}</h1>
                 </header>
 
-                @if ($informasi->gambar)
+                @if ($informasi->gambar_sampul)
                     <figure class="mb-8">
-                        <img src="{{ asset('storage/' . $informasi->gambar) }}" alt="{{ $informasi->judul }}"
-                            class="w-full rounded-lg">
+                        <img src="{{ asset('storage/' . $informasi->gambar_sampul) }}" alt="{{ $informasi->judul }}"
+                            class="w-full h-44 object-contain rounded-lg">
                         <figcaption class="mt-2 text-sm text-center text-gray-500">{{ $informasi->judul }}</figcaption>
                     </figure>
                 @endif

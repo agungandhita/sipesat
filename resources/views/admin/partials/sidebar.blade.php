@@ -22,7 +22,7 @@
                 </ul>
 
                 <div class="mt-6">
-                    <h6 class="text-blue-600 text-sm font-bold px-4">Information</h6>
+                    <h6 class="text-blue-600 text-sm font-bold px-4">Informasi</h6>
                     <ul class="mt-3 space-y-2">
                         <li>
                             <a href="{{ route('penduduk') }}"
@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="mt-6">
-                    <h6 class="text-blue-600 text-sm font-bold px-4">General Settings</h6>
+                    <h6 class="text-blue-600 text-sm font-bold px-4">Pemgaturan Berita</h6>
                     <ul class="mt-3 space-y-2">
                         <li>
                             <a href="{{ route('informasi.index') }}"
@@ -144,10 +144,10 @@
                 </div>
 
                 <div class="mt-6">
-                    <h6 class="text-blue-600 text-sm font-bold px-4">Actions</h6>
+                    <h6 class="text-blue-600 text-sm font-bold px-4">Aksi & Profil</h6>
                     <ul class="mt-3 space-y-2">
                         <li>
-                            <a href="javascript:void(0)"
+                            <a href="{{ route('admin.profile-desa.index') }}"
                                 class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                     class="w-[18px] h-[18px] mr-3" viewBox="0 0 512 512">

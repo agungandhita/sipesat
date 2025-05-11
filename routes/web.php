@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\admin\ArsipController;
 use App\Http\Controllers\admin\DashboardController;
-use App\Http\Controllers\admin\DomisiliController;
 use App\Http\Controllers\Admin\InformasiController;
 use App\Http\Controllers\admin\MeninggalController;
 use App\Http\Controllers\admin\PendudukController;
@@ -114,6 +113,15 @@ Route::middleware('admin')->group(function () {
     Route::post('domisili/{id}/update', [App\Http\Controllers\admin\DomisiliController::class, 'update'])->name('domisili.update');
     Route::get('domisili/{id}/download', [App\Http\Controllers\admin\DomisiliController::class, 'download'])->name('domisili.download');
 
+    //profile desa
+    Route::get('/profile-desa', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'index'])->name('admin.profile-desa.index');
+    Route::get('/profile-desa/create', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'create'])->name('admin.profile-desa.create');
+    Route::post('/profile-desa', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'store'])->name('admin.profile-desa.store');
+    Route::get('/admin/profile-desa/{profileDesa}', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'show'])->name('admin.profile-desa.show');
+    Route::get('/profile-desa/{profileDesa}/edit', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'edit'])->name('admin.profile-desa.edit');
+    Route::put('/profile-desa/{profileDesa}', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'update'])->name('admin.profile-desa.update');
+    Route::delete('/profile-desa/{profileDesa}', [\App\Http\Controllers\Admin\ProfileDesaController::class, 'destroy'])->name('admin.profile-desa.destroy');
+
     //informasi-berita
     Route::get('informasi', [InformasiController::class, 'index'])->name('informasi.index');
     Route::get('informasi/create', [InformasiController::class, 'create'])->name('informasi.create');
@@ -153,14 +161,9 @@ Route::middleware('admin')->group(function () {
 
 
 
-
-// Pastikan route ini juga tersedia untuk pengguna yang tidak login
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
 Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
-
-// Route baru untuk detail informasi/berita (untuk pengguna yang tidak login)
 Route::get('/berita', [App\Http\Controllers\Page\InformasiController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [App\Http\Controllers\Page\InformasiController::class, 'show'])->name('berita.show');
-
 Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
 Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');

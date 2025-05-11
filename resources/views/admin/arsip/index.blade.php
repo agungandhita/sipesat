@@ -115,7 +115,7 @@
         <!-- Delete Confirmation Modals -->
         @foreach ($surat as $key => $tes)
             <div id="popup-modal{{ $key }}" tabindex="-1"
-                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
                 <div class="relative p-4 w-full max-w-md max-h-full">
                     <div class="relative bg-white rounded-xl shadow-2xl">
                         <button type="button"

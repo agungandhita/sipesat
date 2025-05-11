@@ -65,15 +65,16 @@
 
 {{-- modal start --}}
 <div id="default-modal" tabindex="-1" aria-hidden="true"
-    class="shadow-2xl border-[1px] border-blue-100/50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-modal md:h-full backdrop-blur-sm">
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-modal md:h-full bg-gray-800/50">
     <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
         <!-- Modal content -->
-        <div class="relative bg-white/95 backdrop-blur-md rounded-lg shadow-[0_10px_30px_rgba(8,112,184,0.15)] border border-blue-50 max-h-[90vh] overflow-y-auto">
+        <div
+            class="relative bg-white rounded-lg shadow-md border border-gray-200 max-h-[90vh] overflow-y-auto">
             <!-- Modal header -->
             <div
-                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-blue-100/30 bg-gradient-to-r from-blue-50 to-indigo-50">
+                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
                 <h3
-                    class="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">
+                    class="text-xl font-semibold text-gray-900">
                     Masukkan Data Penduduk</h3>
                 <button type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -108,7 +109,7 @@
                                 placeholder="Masukkan Nomor Induk Kependudukan" required maxlength="16" minlength="16">
                             <p class="mt-1 text-xs text-gray-500">NIK harus 16 digit</p>
                         </div>
-
+                        
                         <!-- Jenis Kelamin Select -->
                         <div>
                             <label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis
@@ -244,7 +245,7 @@
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b mt-4">
                         <button type="submit"
-                            class="text-white bg-blue-700 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
+                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
                         <button data-modal-hide="default-modal" type="button"
                             class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
                     </div>

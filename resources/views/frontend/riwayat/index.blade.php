@@ -127,7 +127,7 @@
     </div>
 
     <!-- Modal Detail -->
-    <div id="detailModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+    <div id="detailModal" class="hidden fixed inset-0 z-[120] overflow-y-auto" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -194,44 +194,44 @@
                                 <p class="mt-1 text-sm text-gray-900 capitalize">${data.status}</p>
                             </div>
                             ${data.catatan_admin ? `
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Catatan Admin</label>
-                                        <p class="mt-1 text-sm text-gray-900">${data.catatan_admin}</p>
-                                    </div>
-                                    ` : ''}
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700">Catatan Admin</label>
+                                                <p class="mt-1 text-sm text-gray-900">${data.catatan_admin}</p>
+                                            </div>
+                                            ` : ''}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Data Pemohon</label>
                                 <div class="mt-1 text-sm text-gray-900 space-y-2 border border-gray-200 rounded-md p-3">
                                     ${data.jenis_surat === 'sktm' ? `
-                                                <p><span class="font-medium">Nama:</span> ${data.sktm.nama}</p>
-                                                <p><span class="font-medium">NIK:</span> ${data.sktm.nik}</p>
-                                                <p><span class="font-medium">Tempat Lahir:</span> ${data.sktm.tempat_lahir}</p>
-                                                <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.sktm.tanggal_lahir)}</p>
-                                                <p><span class="font-medium">Alamat:</span> ${data.sktm.alamat}</p>
-                                            ` : data.jenis_surat === 'domisili' ? `
-                                                <p><span class="font-medium">Nama:</span> ${data.domisili.nama}</p>
-                                                <p><span class="font-medium">NIK:</span> ${data.domisili.nik}</p>
-                                                <p><span class="font-medium">Alamat:</span> ${data.domisili.alamat}</p>
-                                            ` : data.jenis_surat === 'meninggal' ? `
-                                                <div class="border-b border-gray-200 pb-2 mb-2">
-                                                    <p class="font-medium text-gray-700 mb-1">Data Almarhum:</p>
-                                                    <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_almarhum}</p>
-                                                    <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_almarhum}</p>
-                                                    <p><span class="font-medium">Tempat Lahir:</span> ${data.meninggal.tempat_lahir_almarhum}</p>
-                                                    <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.meninggal.tanggal_lahir_almarhum)}</p>
-                                                </div>
-                                                <div class="border-b border-gray-200 pb-2 mb-2">
-                                                    <p class="font-medium text-gray-700 mb-1">Data Kematian:</p>
-                                                    <p><span class="font-medium">Tanggal Meninggal:</span> ${formatDate(data.meninggal.tanggal_meninggal)}</p>
-                                                    <p><span class="font-medium">Tempat Meninggal:</span> ${data.meninggal.tempat_meninggal}</p>
-                                                    <p><span class="font-medium">Sebab Meninggal:</span> ${data.meninggal.sebab_meninggal}</p>
-                                                </div>
-                                                <div>
-                                                    <p class="font-medium text-gray-700 mb-1">Data Pelapor:</p>
-                                                    <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_pelapor}</p>
-                                                    <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_pelapor}</p>
-                                                </div>
-                                            ` : ''}
+                                                        <p><span class="font-medium">Nama:</span> ${data.sktm.nama}</p>
+                                                        <p><span class="font-medium">NIK:</span> ${data.sktm.nik}</p>
+                                                        <p><span class="font-medium">Tempat Lahir:</span> ${data.sktm.tempat_lahir}</p>
+                                                        <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.sktm.tanggal_lahir)}</p>
+                                                        <p><span class="font-medium">Alamat:</span> ${data.sktm.alamat}</p>
+                                                    ` : data.jenis_surat === 'domisili' ? `
+                                                        <p><span class="font-medium">Nama:</span> ${data.domisili.nama}</p>
+                                                        <p><span class="font-medium">NIK:</span> ${data.domisili.nik}</p>
+                                                        <p><span class="font-medium">Alamat:</span> ${data.domisili.alamat}</p>
+                                                    ` : data.jenis_surat === 'meninggal' ? `
+                                                        <div class="border-b border-gray-200 pb-2 mb-2">
+                                                            <p class="font-medium text-gray-700 mb-1">Data Almarhum:</p>
+                                                            <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_almarhum}</p>
+                                                            <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_almarhum}</p>
+                                                            <p><span class="font-medium">Tempat Lahir:</span> ${data.meninggal.tempat_lahir_almarhum}</p>
+                                                            <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.meninggal.tanggal_lahir_almarhum)}</p>
+                                                        </div>
+                                                        <div class="border-b border-gray-200 pb-2 mb-2">
+                                                            <p class="font-medium text-gray-700 mb-1">Data Kematian:</p>
+                                                            <p><span class="font-medium">Tanggal Meninggal:</span> ${formatDate(data.meninggal.tanggal_meninggal)}</p>
+                                                            <p><span class="font-medium">Tempat Meninggal:</span> ${data.meninggal.tempat_meninggal}</p>
+                                                            <p><span class="font-medium">Sebab Meninggal:</span> ${data.meninggal.sebab_meninggal}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="font-medium text-gray-700 mb-1">Data Pelapor:</p>
+                                                            <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_pelapor}</p>
+                                                            <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_pelapor}</p>
+                                                        </div>
+                                                    ` : ''}
                                 </div>
                             </div>
                         </div>

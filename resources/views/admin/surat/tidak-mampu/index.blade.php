@@ -60,7 +60,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-2 text-sm">
-                                        <button onclick="showDetail({{ $pengajuan->pengajuan_id }})" 
+                                        <button onclick="showDetail({{ $pengajuan->pengajuan_id }})"
                                             class="text-blue-600 hover:underline">Detail</button>
                                         <a href="{{ route('sktm.download', $pengajuan->pengajuan_id) }}"
                                             class="text-green-600 hover:underline">Download PDF</a>
@@ -83,13 +83,14 @@
             </div>
         </div>
         <!-- Modal -->
-        <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div id="detailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-[120]">
             <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 shadow-lg rounded-md bg-white">
                 <div class="flex justify-between items-center pb-3 border-b">
                     <h3 class="text-2xl font-semibold text-gray-900">Detail Surat Keterangan Tidak Mampu</h3>
                     <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -102,19 +103,19 @@
 @endsection
 
 @section('scripts')
-<script>
-    function showDetail(id) {
-        fetch(`/admin/sktm/${id}`, { // Perbaikan URL sesuai dengan route yang baru
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const modal = document.getElementById('detailModal');
-            const content = document.getElementById('modalContent');
-            
-            content.innerHTML = `
+    <script>
+        function showDetail(id) {
+            fetch(`/admin/sktm/${id}`, { // Perbaikan URL sesuai dengan route yang baru
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const modal = document.getElementById('detailModal');
+                    const content = document.getElementById('modalContent');
+
+                    content.innerHTML = `
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="space-y-6">
                         <div class="bg-blue-50 rounded-lg p-4">
@@ -165,10 +166,10 @@
                                 </div>
                                 <div class="flex border-b border-green-100 pb-2">
                                     <span class="font-medium w-1/3">Status</span>
-                                    <span class="w-2/3">: 
+                                    <span class="w-2/3">:
                                         <span class="px-2 py-1 rounded-full text-xs font-medium ${
-                                            data.pengajuan.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                            data.pengajuan.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+                                            data.pengajuan.status === 'approved' ? 'bg-green-100 text-green-800' :
+                                            data.pengajuan.status === 'rejected' ? 'bg-red-100 text-red-800' :
                                             'bg-yellow-100 text-yellow-800'
                                         }">
                                             ${data.pengajuan.status.toUpperCase()}
@@ -180,35 +181,35 @@
                                     <span class="w-2/3">: ${new Date(data.pengajuan.created_at).toLocaleDateString('id-ID')}</span>
                                 </div>
                                 ${data.pengajuan.catatan_admin ? `
-                                    <div class="flex border-b border-green-100 pb-2">
-                                        <span class="font-medium w-1/3">Catatan Admin</span>
-                                        <span class="w-2/3">: ${data.pengajuan.catatan_admin}</span>
-                                    </div>
-                                ` : ''}
+                                            <div class="flex border-b border-green-100 pb-2">
+                                                <span class="font-medium w-1/3">Catatan Admin</span>
+                                                <span class="w-2/3">: ${data.pengajuan.catatan_admin}</span>
+                                            </div>
+                                        ` : ''}
                             </div>
                         </div>
                     </div>
                 </div>
             `;
-            
-            modal.classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat memuat data');
-        });
-    }
 
-    function closeModal() {
-        document.getElementById('detailModal').classList.add('hidden');
-    }
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const modal = document.getElementById('detailModal');
-        if (event.target == modal) {
-            closeModal();
+                    modal.classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memuat data');
+                });
         }
-    }
-</script>
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 @endsection
