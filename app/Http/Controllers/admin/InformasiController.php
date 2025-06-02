@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 class InformasiController extends Controller
 {
@@ -51,10 +52,10 @@ class InformasiController extends Controller
             foreach ($matches[1] as $src) {
                 if (strpos($src, ';base64,') !== false) {
                     // Proses gambar base64 dari editor
-                    $image_parts = explode(";base64,", $src);
+                    $image_parts = explode(";", $src);
                     $image_type_aux = explode("image/", $image_parts[0]);
                     $image_type = $image_type_aux[1];
-                    $image_base64 = base64_decode($image_parts[1]);
+                    $image_base64 = base64_decode(explode(",", $image_parts[1])[1]);
                     $image_name = hash('sha256', time() . rand()) . '.' . $image_type;
 
                     // Simpan gambar di folder konten
@@ -84,7 +85,17 @@ class InformasiController extends Controller
 
     public function show(Informasi $informasi)
     {
-        return view('admin.informasi.show', compact('informasi'));
+        // Ambil komentar parent beserta replies
+        $komentar = $informasi->komentar()
+            ->parentComments()
+            ->with(['user', 'replies.user']) // Pastikan relasi user dimuat
+            ->latest()
+            ->get();
+
+        return view('admin.informasi.show', [
+            'informasi' => $informasi,
+            'komentar' => $komentar
+        ]);
     }
 
     public function edit($id)
@@ -125,15 +136,15 @@ class InformasiController extends Controller
 
         // Proses gambar dalam konten
         $konten = $request->konten;
-        
+
         // Ambil semua URL gambar dari konten lama
         preg_match_all('/<img[^>]+src="([^">]+)"/', $oldKonten, $oldMatches);
         $oldImages = $oldMatches[1] ?? [];
-        
+
         // Ambil semua URL gambar dari konten baru
         preg_match_all('/<img[^>]+src="([^">]+)"/', $konten, $newMatches);
         $newImages = $newMatches[1] ?? [];
-        
+
         // Hapus gambar yang tidak digunakan lagi
         foreach ($oldImages as $oldImage) {
             if (!in_array($oldImage, $newImages)) {
@@ -149,15 +160,15 @@ class InformasiController extends Controller
             foreach ($matches[1] as $src) {
                 if (strpos($src, ';base64,') !== false) {
                     // Proses gambar base64 dari editor
-                    $image_parts = explode(";base64,", $src);
+                    $image_parts = explode(";", $src);
                     $image_type_aux = explode("image/", $image_parts[0]);
                     $image_type = $image_type_aux[1];
-                    $image_base64 = base64_decode($image_parts[1]);
+                    $image_base64 = base64_decode(explode(",", $image_parts[1])[1]);
                     $image_name = hash('sha256', time() . rand()) . '.' . $image_type;
-                    
+
                     // Simpan gambar di storage
                     Storage::disk('public')->put('informasi/konten/' . $image_name, $image_base64);
-                    
+
                     // Ganti URL gambar di konten
                     $konten = str_replace($src, Storage::url('informasi/konten/' . $image_name), $konten);
                 }
@@ -182,7 +193,7 @@ class InformasiController extends Controller
     public function destroy(Informasi $informasi, $id)
     {
         $informasi = Informasi::findOrFail($id);
-        
+
         // Hapus gambar sampul jika ada
         if ($informasi->gambar_sampul) {
             if (Storage::disk('public')->exists($informasi->gambar_sampul)) {
@@ -231,39 +242,76 @@ class InformasiController extends Controller
     }
 
     // Metode untuk mengelola komentar
-    public function storeKomentar(Request $request, Informasi $informasi)
+    public function storeKomentar(Request $request, $informasi_id)
     {
-        $validatedData = $request->validate([
-            'konten' => 'required'
+        $request->validate([
+            'isi_komentar' => 'required|string|max:500',
+            'parent_id' => 'nullable|exists:komentar,komentar_id'
         ]);
 
-        $komentar = $informasi->komentar()->create([
-            'user_id' => auth()->id(),
-            'konten' => $validatedData['konten']
+        // Pastikan informasi ada
+        $informasi = Informasi::where('informasi_id', $informasi_id)
+            ->firstOrFail();
+
+        // Buat komentar baru
+        $komentar = Komentar::create([
+            'user_id' => Auth::id(),
+            'informasi_id' => $informasi_id,
+            'parent_id' => $request->parent_id,
+            'isi_komentar' => $request->isi_komentar,
         ]);
 
-        return back()->with('success', 'Komentar berhasil ditambahkan');
+        $message = $request->parent_id ? 'Balasan berhasil ditambahkan' : 'Komentar berhasil ditambahkan';
+        return redirect()->back()->with('success', $message);
     }
 
     public function updateKomentar(Request $request, Komentar $komentar)
     {
-        $this->authorize('update', $komentar);
-
         $validatedData = $request->validate([
-            'konten' => 'required'
+            'isi_komentar' => 'required|string|max:500'
         ]);
 
-        $komentar->update($validatedData);
+        // Cek apakah user adalah pemilik komentar atau admin
+        if (Auth::id() == $komentar->user_id || (Auth::check() && Auth::user()->role == 'admin')) {
+            $komentar->update([
+                'isi_komentar' => $validatedData['isi_komentar']
+            ]);
+            return back()->with('success', 'Komentar berhasil diperbarui');
+        }
 
-        return back()->with('success', 'Komentar berhasil diperbarui');
+        return back()->with('error', 'Anda tidak memiliki izin untuk memperbarui komentar ini');
     }
 
-    public function destroyKomentar(Komentar $komentar)
+    public function destroyKomentar($komentar_id)
     {
-        $this->authorize('delete', $komentar);
+        $komentar = Komentar::findOrFail($komentar_id);
 
-        $komentar->delete();
+        // Cek apakah user adalah pemilik komentar atau admin
+        if (Auth::id() == $komentar->user_id || (Auth::check() && Auth::user()->role == 'admin')) {
+            $komentar->delete();
+            return redirect()->back()->with('success', 'Komentar berhasil dihapus');
+        }
 
-        return back()->with('success', 'Komentar berhasil dihapus');
+        return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menghapus komentar ini');
+    }
+
+    public function showArticle($slug)
+    {
+        $informasi = Informasi::where('slug', $slug)
+            ->firstOrFail();
+
+        // Ambil komentar parent beserta replies
+        $komentar = $informasi->komentar()
+            ->parentComments()
+            ->with(['user', 'replies.user']) // Pastikan relasi user dimuat
+            ->latest()
+            ->get();
+
+        return view('frontend.pengumuman.artikel', [
+            'title' => $informasi->judul,
+            'informasi' => $informasi,
+            'komentar' => $komentar
+        ]);
     }
 }
+

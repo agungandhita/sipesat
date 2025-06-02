@@ -36,13 +36,13 @@
 
                 <!-- Bagian Komentar -->
                 <section class="mt-12 pt-8 border-t border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Komentar ({{ count($komentar ?? []) }})</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Komentar ({{ $komentar->sum(function($k) { return 1 + $k->replies->count(); }) }})</h2>
 
                     <!-- Form Komentar -->
                     @auth
                         <div class="mb-8 bg-gray-50 p-6 rounded-lg">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Tinggalkan Komentar</h3>
-                            <form action="{{ route('informasi.komentar.store', $informasi->informasi_id) }}" method="POST">
+                            <form action="{{ route('komentar.store', $informasi->informasi_id) }}" method="POST">
                                 @csrf
                                 <div class="mb-4">
                                     <textarea name="isi_komentar" rows="4"
@@ -68,38 +68,7 @@
                     <!-- Daftar Komentar -->
                     <div class="space-y-6">
                         @forelse ($komentar ?? [] as $item)
-                            <div class="flex space-x-4 p-4 bg-gray-50 rounded-lg">
-                                <div class="flex-shrink-0">
-                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                                        <span class="text-blue-600 font-semibold">
-                                            {{ substr($item->user->name ?? 'User', 0, 1) }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h4 class="text-sm font-semibold text-gray-900">{{ $item->user->name ?? 'User' }}
-                                        </h4>
-                                        <span class="text-xs text-gray-500">{{ $item->created_at->diffForHumans() }}</span>
-                                    </div>
-                                    <p class="text-gray-700">{{ $item->isi_komentar }}</p>
-
-                                    @auth
-                                        @if (auth()->id() == $item->user_id || auth()->user()->role == 'admin')
-                                            <div class="mt-2 flex space-x-2">
-                                                <form action="{{ route('hapus.komentar', $item->komentar_id) }}" method="POST"
-                                                    class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-xs text-red-600 hover:underline">
-                                                        Hapus
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        @endif
-                                    @endauth
-                                </div>
-                            </div>
+                            @include('frontend.pengumuman.partials.comment', ['comment' => $item, 'level' => 0])
                         @empty
                             <div class="text-center py-8">
                                 <p class="text-gray-500">Belum ada komentar. Jadilah yang pertama berkomentar!</p>

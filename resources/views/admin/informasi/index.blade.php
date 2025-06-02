@@ -72,6 +72,10 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-2">
+                                        <a href="{{ route('berita.tampil', $info->slug) }}"
+                                           class="text-blue-600 hover:text-blue-900" target="_blank">
+                                           Lihat
+                                        </a>
                                         <a href="{{ route('informasi.edit', $info->informasi_id) }}"
                                             class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                         <button data-modal-target="popup-modal{{ $loop->iteration }}"

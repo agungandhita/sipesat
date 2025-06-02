@@ -34,13 +34,13 @@ class InformasiController extends Controller
             ->where('status', 'published')
             ->firstOrFail();
 
+        // Ambil komentar parent beserta replies
         // Ambil komentar yang terkait dengan informasi ini
         $komentar = $informasi->komentar()
-            ->with('user') // Eager loading user untuk menampilkan nama pembuat komentar
+            ->parentComments()
+            ->with(['user', 'replies.user']) // Pastikan relasi user dimuat
             ->latest()
             ->get();
-
-        // Tambah jumlah view
 
         return view('frontend.pengumuman.artikel', [
             'title' => $informasi->judul,
@@ -50,12 +50,13 @@ class InformasiController extends Controller
     }
 
     /**
-     * Menyimpan komentar baru
+     * Menyimpan komentar baru atau reply
      */
     public function storeKomentar(Request $request, $informasi_id)
     {
         $request->validate([
             'isi_komentar' => 'required|string|max:500',
+            'parent_id' => 'nullable|exists:komentar,komentar_id'
         ]);
 
         // Pastikan informasi ada dan dipublikasikan
@@ -67,11 +68,12 @@ class InformasiController extends Controller
         $komentar = Komentar::create([
             'user_id' => Auth::id(),
             'informasi_id' => $informasi_id,
+            'parent_id' => $request->parent_id,
             'isi_komentar' => $request->isi_komentar,
         ]);
 
-        return redirect()->back()
-            ->with('success', 'Komentar berhasil ditambahkan');
+        $message = $request->parent_id ? 'Balasan berhasil ditambahkan' : 'Komentar berhasil ditambahkan';
+        return redirect()->back()->with('success', $message);
     }
 
     /**
