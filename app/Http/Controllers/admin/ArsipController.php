@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreArsipRequest;
+use Illuminate\Support\Facades\Validator;
 
 class ArsipController extends Controller
 {
@@ -101,9 +102,62 @@ class ArsipController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Arsip $arsip)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nomor_surat' => 'nullable|string|max:255',
+            'perihal' => 'required|string|max:255',
+            'asal_surat' => 'required|string|max:255',
+            'jenis_surat' => 'required|in:masuk,keluar',
+            'tanggal_surat' => 'required|date',
+            'keterangan' => 'nullable|string',
+            'file_surat' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $arsip = Arsip::where('arsip_id', $id)->first();
+            
+            if (!$arsip) {
+                return redirect()->route('arsip')->with('error', 'Data tidak ditemukan');
+            }
+
+            $updateData = [
+                'nomor_surat' => $request->nomor_surat,
+                'perihal' => $request->perihal,
+                'asal_surat' => $request->asal_surat,
+                'jenis_surat' => $request->jenis_surat,
+                'tanggal_surat' => $request->tanggal_surat,
+                'keterangan' => $request->keterangan,
+                'user_updated' => auth()->user()->user_id ?? null
+            ];
+
+            // Handle file upload if new file is provided
+            if ($request->hasFile('file_surat')) {
+                // Delete old file
+                if ($arsip->file_surat) {
+                    $oldFilePath = public_path('storage/' . $arsip->file_surat);
+                    if (file_exists($oldFilePath)) {
+                        unlink($oldFilePath);
+                    }
+                }
+
+                // Upload new file
+                $file = $request->file('file_surat');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('surat', $filename, 'public');
+                $updateData['file_surat'] = $path;
+            }
+
+            $arsip->update($updateData);
+
+            return redirect()->route('arsip')->with('success', 'Data arsip berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data: ' . $e->getMessage());
+        }
     }
 
     /**

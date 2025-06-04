@@ -104,6 +104,7 @@ Route::middleware('admin')->group(function () {
     // arsip
     Route::get('arsip', [ArsipController::class, 'index'])->name('arsip');
     Route::post('arsip/post', [ArsipController::class, 'store'])->name('arsip.post');
+    Route::post('/arsip/{id}', [ArsipController::class, 'update'])->name('arsip.update');
     Route::delete('arsip/delete/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
 
     //approve

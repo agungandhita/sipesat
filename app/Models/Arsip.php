@@ -10,7 +10,7 @@ class Arsip extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'arsips'; // Explicitly set the table name
+    protected $table = 'arsips';
     protected $primaryKey = 'arsip_id';
     
     protected $fillable = [
@@ -25,4 +25,6 @@ class Arsip extends Model
         'user_created',
         'user_updated'
     ];
+
+    protected $dates = ['deleted_at'];
 }
