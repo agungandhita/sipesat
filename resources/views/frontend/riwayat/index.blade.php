@@ -55,7 +55,7 @@
                                             </td>
                                             <td class="px-3 sm:px-6 py-3">
                                                 <div class="flex justify-end gap-2">
-                                                    <button type="button" onclick="showDetail('{{ $p->pengajuan_id }}')"
+                                                    <button type="button" onclick="openModal('detailModal{{ $p->pengajuan_id }}')"
                                                         class="py-1 px-2 sm:px-3 inline-flex items-center gap-x-1 text-xs sm:text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
                                                         <span class="hidden sm:inline">Detail</span>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -126,136 +126,201 @@
         </div>
     </div>
 
-    <!-- Modal Detail -->
-    <div id="detailModal" class="hidden fixed inset-0 z-[120] overflow-y-auto" aria-labelledby="modal-title" role="dialog"
-        aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Detail Pengajuan Surat
-                            </h3>
-                            <div class="mt-4">
-                                <div id="modalContent" class="space-y-4">
-                                    <!-- Content will be loaded here -->
-                                </div>
-                            </div>
-                        </div>
+    @forelse($pengajuan as $p)
+        <!-- Modal Approve -->
+        <div id="approveModal{{ $p->pengajuan_id }}"
+            class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                        <h3 class="text-xl font-semibold text-gray-900">
+                            Konfirmasi Persetujuan
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            onclick="closeModal('approveModal{{ $p->pengajuan_id }}')">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
                     </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" onclick="closeModal()"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Tutup
-                    </button>
+
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <form action="{{ route('pengajuan.approve', $p->pengajuan_id) }}" method="POST">
+                            @csrf
+                            <p class="text-sm text-gray-500 mb-4">
+                                Apakah Anda yakin ingin menyetujui pengajuan surat ini?
+                            </p>
+                            <div class="mb-4">
+                                <label for="catatan_admin{{ $p->pengajuan_id }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Catatan Admin (opsional)
+                                </label>
+                                <textarea id="catatan_admin{{ $p->pengajuan_id }}" name="catatan_admin" rows="3"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    placeholder="Tambahkan catatan jika diperlukan"></textarea>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                                <button type="submit"
+                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Setujui</button>
+                                <button type="button" onclick="closeModal('approveModal{{ $p->pengajuan_id }}')"
+                                    class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    @push('scripts')
-        <script>
-            function showDetail(id) {
-                // Tampilkan modal
-                document.getElementById('detailModal').classList.remove('hidden');
+        <!-- Modal Reject -->
+        <div id="rejectModal{{ $p->pengajuan_id }}"
+            class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                        <h3 class="text-xl font-semibold text-gray-900">
+                            Konfirmasi Penolakan
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            onclick="closeModal('rejectModal{{ $p->pengajuan_id }}')">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
 
-                // Ambil data detail pengajuan
-                fetch(`/pengajuan/${id}/detail`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Format tanggal
-                        const formatDate = (dateString) => {
-                            if (!dateString) return '-';
-                            const date = new Date(dateString);
-                            return date.toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            });
-                        };
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <form action="{{ route('pengajuan.reject', $p->pengajuan_id) }}" method="POST">
+                            @csrf
+                            <p class="text-sm text-gray-500 mb-4">
+                                Apakah Anda yakin ingin menolak pengajuan surat ini?
+                            </p>
+                            <div class="mb-4">
+                                <label for="alasan_penolakan{{ $p->pengajuan_id }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Catatan Admin <span class="text-red-600">*</span>
+                                </label>
+                                <textarea id="alasan_penolakan{{ $p->pengajuan_id }}" name="catatan_admin" rows="3" required
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    placeholder="Berikan alasan penolakan"></textarea>
+                            </div>
 
-                        let content = `
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Jenis Surat</label>
-                                <p class="mt-1 text-sm text-gray-900 capitalize">${data.jenis_surat}</p>
+                            <!-- Modal footer -->
+                            <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                                <button type="submit"
+                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tolak</button>
+                                <button type="button" onclick="closeModal('rejectModal{{ $p->pengajuan_id }}')"
+                                    class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Tanggal Pengajuan</label>
-                                <p class="mt-1 text-sm text-gray-900">${formatDate(data.created_at)}</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Detail -->
+        <div id="detailModal{{ $p->pengajuan_id }}"
+            class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                        <h3 class="text-xl font-semibold text-gray-900">
+                            Detail Pengajuan
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            onclick="closeModal('detailModal{{ $p->pengajuan_id }}')">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <dl class="divide-y divide-gray-200">
+                            <div class="py-2 grid grid-cols-3 gap-4">
+                                <dt class="text-sm font-medium text-gray-500">Nama Pemohon</dt>
+                                <dd class="text-sm text-gray-900 col-span-2">{{ $p->user->nama }}</dd>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Status</label>
-                                <p class="mt-1 text-sm text-gray-900 capitalize">${data.status}</p>
+                            <div class="py-2 grid grid-cols-3 gap-4">
+                                <dt class="text-sm font-medium text-gray-500">Jenis Surat</dt>
+                                <dd class="text-sm text-gray-900 col-span-2">{{ ucfirst($p->jenis_surat) }}</dd>
                             </div>
-                            ${data.catatan_admin ? `
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700">Catatan Admin</label>
-                                                <p class="mt-1 text-sm text-gray-900">${data.catatan_admin}</p>
-                                            </div>
-                                            ` : ''}
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Data Pemohon</label>
-                                <div class="mt-1 text-sm text-gray-900 space-y-2 border border-gray-200 rounded-md p-3">
-                                    ${data.jenis_surat === 'sktm' ? `
-                                                        <p><span class="font-medium">Nama:</span> ${data.sktm.nama}</p>
-                                                        <p><span class="font-medium">NIK:</span> ${data.sktm.nik}</p>
-                                                        <p><span class="font-medium">Tempat Lahir:</span> ${data.sktm.tempat_lahir}</p>
-                                                        <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.sktm.tanggal_lahir)}</p>
-                                                        <p><span class="font-medium">Alamat:</span> ${data.sktm.alamat}</p>
-                                                    ` : data.jenis_surat === 'domisili' ? `
-                                                        <p><span class="font-medium">Nama:</span> ${data.domisili.nama}</p>
-                                                        <p><span class="font-medium">NIK:</span> ${data.domisili.nik}</p>
-                                                        <p><span class="font-medium">Alamat:</span> ${data.domisili.alamat}</p>
-                                                    ` : data.jenis_surat === 'meninggal' ? `
-                                                        <div class="border-b border-gray-200 pb-2 mb-2">
-                                                            <p class="font-medium text-gray-700 mb-1">Data Almarhum:</p>
-                                                            <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_almarhum}</p>
-                                                            <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_almarhum}</p>
-                                                            <p><span class="font-medium">Tempat Lahir:</span> ${data.meninggal.tempat_lahir_almarhum}</p>
-                                                            <p><span class="font-medium">Tanggal Lahir:</span> ${formatDate(data.meninggal.tanggal_lahir_almarhum)}</p>
-                                                        </div>
-                                                        <div class="border-b border-gray-200 pb-2 mb-2">
-                                                            <p class="font-medium text-gray-700 mb-1">Data Kematian:</p>
-                                                            <p><span class="font-medium">Tanggal Meninggal:</span> ${formatDate(data.meninggal.tanggal_meninggal)}</p>
-                                                            <p><span class="font-medium">Tempat Meninggal:</span> ${data.meninggal.tempat_meninggal}</p>
-                                                            <p><span class="font-medium">Sebab Meninggal:</span> ${data.meninggal.sebab_meninggal}</p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="font-medium text-gray-700 mb-1">Data Pelapor:</p>
-                                                            <p><span class="font-medium">Nama:</span> ${data.meninggal.nama_pelapor}</p>
-                                                            <p><span class="font-medium">NIK:</span> ${data.meninggal.nik_pelapor}</p>
-                                                        </div>
-                                                    ` : ''}
+                            <div class="py-2 grid grid-cols-3 gap-4">
+                                <dt class="text-sm font-medium text-gray-500">Tanggal Pengajuan</dt>
+                                <dd class="text-sm text-gray-900 col-span-2">{{ $p->created_at->format('d-m-Y H:i') }}</dd>
+                            </div>
+                            <div class="py-2 grid grid-cols-3 gap-4">
+                                <dt class="text-sm font-medium text-gray-500">Status</dt>
+                                <dd class="text-sm text-gray-900 col-span-2">
+                                    @if ($p->status == 'pending')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Menunggu</span>
+                                    @elseif($p->status == 'approved')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Disetujui</span>
+                                    @elseif($p->status == 'rejected')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Ditolak</span>
+                                    @endif
+                                </dd>
+                            </div>
+                            @if ($p->catatan_admin)
+                                <div class="py-2 grid grid-cols-3 gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Catatan Admin</dt>
+                                    <dd class="text-sm text-gray-900 col-span-2">{{ $p->catatan_admin }}</dd>
                                 </div>
-                            </div>
+                            @endif
+                        </dl>
+
+                        <!-- Modal footer -->
+                        <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                            <button type="button" onclick="closeModal('detailModal{{ $p->pengajuan_id }}')"
+                                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Tutup</button>
                         </div>
-                    `;
-                        document.getElementById('modalContent').innerHTML = content;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('modalContent').innerHTML =
-                            '<p class="text-red-500">Terjadi kesalahan saat memuat data</p>';
-                    });
-            }
-
-            function closeModal() {
-                document.getElementById('detailModal').classList.add('hidden');
-            }
-
-            // Close modal when clicking outside
-            window.onclick = function(event) {
-                let modal = document.getElementById('detailModal');
-                if (event.target == modal) {
-                    closeModal();
-                }
-            }
-        </script>
-    @endpush
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+    @endforelse
 @endsection
+
+@push('scripts')
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        // Find all modals and close them if clicked outside
+        const modals = document.querySelectorAll('[id*="Modal"]');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    }
+</script>
+@endpush

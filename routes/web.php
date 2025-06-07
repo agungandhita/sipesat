@@ -88,10 +88,9 @@ Route::middleware('admin')->group(function () {
 
 
     Route::get('/pengumuman', [App\Http\Controllers\Admin\InformasiController::class, 'index'])->name('berita.lihat');
-    // Ganti route ini
     Route::get('/pengumuman/{slug}', [App\Http\Controllers\Admin\InformasiController::class, 'showArticle'])->name('berita.tampil');
-    Route::post('/komentar/{id}', [App\Http\Controllers\Admin\InformasiController::class,'storeKomentar'])->name('komentar.store');
-    Route::delete('/komentar/destroy/{id}', [App\Http\Controllers\Admin\InformasiController::class, 'destroyKomentar'])->name('hapus.komentar');
+    Route::post('/admin/komentar/{id}', [App\Http\Controllers\Admin\InformasiController::class,'storeKomentar'])->name('admin.komentar.store');
+    Route::delete('/admin/komentar/destroy/{id}', [App\Http\Controllers\Admin\InformasiController::class, 'destroyKomentar'])->name('admin.hapus.komentar');
 
     // penduduk
     Route::get('penduduk', [App\Http\Controllers\admin\PendudukController::class, 'index'])->name('penduduk');

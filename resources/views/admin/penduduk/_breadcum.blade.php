@@ -47,7 +47,7 @@
                     Input Data
                 </button>
 
-                <a href="#"
+                {{-- <a href="#"
                     class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow-md focus:ring-4 focus:ring-gray-200 sm:w-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4 h-4 mr-2 text-gray-600"
                         fill="currentColor">
@@ -56,7 +56,7 @@
                         </path>
                     </svg>
                     Export
-                </a>
+                </a> --}}
             </div>
         </div>
     </div>
@@ -109,7 +109,7 @@
                                 placeholder="Masukkan Nomor Induk Kependudukan" required maxlength="16" minlength="16">
                             <p class="mt-1 text-xs text-gray-500">NIK harus 16 digit</p>
                         </div>
-                        
+
                         <!-- Jenis Kelamin Select -->
                         <div>
                             <label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis

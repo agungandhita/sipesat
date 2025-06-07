@@ -143,195 +143,165 @@
 
                                         <!-- Modal Approve -->
                                         <div id="approveModal{{ $pengajuan->pengajuan_id }}"
-                                            class="fixed inset-0 z-[120] hidden overflow-y-auto"
-                                            aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                            <div
-                                                class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                                    aria-hidden="true"></div>
-                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                                                    aria-hidden="true">&#8203;</span>
-                                                <div
-                                                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                    <form
-                                                        action="{{ route('pengajuan.approve', $pengajuan->pengajuan_id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                                            <div class="sm:flex sm:items-start">
-                                                                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                                                                    <h3 class="text-lg leading-6 font-medium text-gray-900"
-                                                                        id="modal-title">
-                                                                        Konfirmasi Persetujuan
-                                                                    </h3>
-                                                                    <div class="mt-2">
-                                                                        <p class="text-sm text-gray-500">
-                                                                            Apakah Anda yakin ingin menyetujui pengajuan
-                                                                            surat
-                                                                            ini?
-                                                                        </p>
-                                                                        <div class="mt-4">
-                                                                            <label for="keterangan"
-                                                                                class="block text-sm font-medium text-gray-700">
-                                                                                'catatan admin (opsional)
-                                                                            </label>
-                                                                            <textarea id="'catatan_admin" name="catatan_admin" rows="3"
-                                                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                            class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+                                            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                                <!-- Modal content -->
+                                                <div class="relative bg-white rounded-lg shadow">
+                                                    <!-- Modal header -->
+                                                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                                                        <h3 class="text-xl font-semibold text-gray-900">
+                                                            Konfirmasi Persetujuan
+                                                        </h3>
+                                                        <button type="button"
+                                                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                            onclick="closeModal('approveModal{{ $pengajuan->pengajuan_id }}')">
+                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 14 14">
+                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                            </svg>
+                                                            <span class="sr-only">Close modal</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="p-4 md:p-5">
+                                                        <form action="{{ route('pengajuan.approve', $pengajuan->pengajuan_id) }}" method="POST">
+                                                            @csrf
+                                                            <p class="text-sm text-gray-500 mb-4">
+                                                                Apakah Anda yakin ingin menyetujui pengajuan surat ini?
+                                                            </p>
+                                                            <div class="mb-4">
+                                                                <label for="catatan_admin{{ $pengajuan->pengajuan_id }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                                                    Catatan Admin (opsional)
+                                                                </label>
+                                                                <textarea id="catatan_admin{{ $pengajuan->pengajuan_id }}" name="catatan_admin" rows="3"
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                                    placeholder="Tambahkan catatan jika diperlukan"></textarea>
                                                             </div>
-                                                        </div>
-                                                        <div
-                                                            class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                                            <button type="submit"
-                                                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                                                Setujui
-                                                            </button>
-                                                            <button type="button"
-                                                                onclick="closeModal('approveModal{{ $pengajuan->pengajuan_id }}')"
-                                                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                                                Batal
-                                                            </button>
-                                                        </div>
-                                                    </form>
+
+                                                            <!-- Modal footer -->
+                                                            <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                                                                <button type="submit"
+                                                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Setujui</button>
+                                                                <button type="button" onclick="closeModal('approveModal{{ $pengajuan->pengajuan_id }}')"
+                                                                    class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Modal Reject -->
                                         <div id="rejectModal{{ $pengajuan->pengajuan_id }}"
-                                            class="fixed inset-0 z-[120] hidden overflow-y-auto"
-                                            aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                            <div
-                                                class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                                    aria-hidden="true"></div>
-                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                                                    aria-hidden="true">&#8203;</span>
-                                                <div
-                                                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                    <form
-                                                        action="{{ route('pengajuan.reject', $pengajuan->pengajuan_id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                                            <div class="sm:flex sm:items-start">
-                                                                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                                                                    <h3 class="text-lg leading-6 font-medium text-gray-900"
-                                                                        id="modal-title">
-                                                                        Konfirmasi Penolakan
-                                                                    </h3>
-                                                                    <div class="mt-2">
-                                                                        <p class="text-sm text-gray-500">
-                                                                            Apakah Anda yakin ingin menolak pengajuan surat
-                                                                            ini?
-                                                                        </p>
-                                                                        <div class="mt-4">
-                                                                            <label for="alasan_penolakan"
-                                                                                class="block text-sm font-medium text-gray-700">
-                                                                                Catatan Admin <span
-                                                                                    class="text-red-600">*</span>
-                                                                            </label>
-                                                                            <textarea id="alasan_penolakan" name="catatan_admin" rows="3" required
-                                                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                            class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+                                            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                                <!-- Modal content -->
+                                                <div class="relative bg-white rounded-lg shadow">
+                                                    <!-- Modal header -->
+                                                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                                                        <h3 class="text-xl font-semibold text-gray-900">
+                                                            Konfirmasi Penolakan
+                                                        </h3>
+                                                        <button type="button"
+                                                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                            onclick="closeModal('rejectModal{{ $pengajuan->pengajuan_id }}')">
+                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 14 14">
+                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                            </svg>
+                                                            <span class="sr-only">Close modal</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="p-4 md:p-5">
+                                                        <form action="{{ route('pengajuan.reject', $pengajuan->pengajuan_id) }}" method="POST">
+                                                            @csrf
+                                                            <p class="text-sm text-gray-500 mb-4">
+                                                                Apakah Anda yakin ingin menolak pengajuan surat ini?
+                                                            </p>
+                                                            <div class="mb-4">
+                                                                <label for="alasan_penolakan{{ $pengajuan->pengajuan_id }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                                                    Catatan Admin <span class="text-red-600">*</span>
+                                                                </label>
+                                                                <textarea id="alasan_penolakan{{ $pengajuan->pengajuan_id }}" name="catatan_admin" rows="3" required
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                                    placeholder="Berikan alasan penolakan"></textarea>
                                                             </div>
-                                                        </div>
-                                                        <div
-                                                            class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                                            <button type="submit"
-                                                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                                                Tolak
-                                                            </button>
-                                                            <button type="button"
-                                                                onclick="closeModal('rejectModal{{ $pengajuan->pengajuan_id }}')"
-                                                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                                                Batal
-                                                            </button>
-                                                        </div>
-                                                    </form>
+
+                                                            <!-- Modal footer -->
+                                                            <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                                                                <button type="submit"
+                                                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tolak</button>
+                                                                <button type="button" onclick="closeModal('rejectModal{{ $pengajuan->pengajuan_id }}')"
+                                                                    class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Batal</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Modal Detail -->
                                         <div id="detailModal{{ $pengajuan->pengajuan_id }}"
-                                            class="fixed inset-0 z-[120] hidden overflow-y-auto"
-                                            aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                                            <div
-                                                class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                                    aria-hidden="true"></div>
-                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                                                    aria-hidden="true">&#8203;</span>
-                                                <div
-                                                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                                        <div class="sm:flex sm:items-start">
-                                                            <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                                                                <h3 class="text-lg leading-6 font-medium text-gray-900"
-                                                                    id="modal-title">
-                                                                    Detail Pengajuan
-                                                                </h3>
-                                                                <div class="mt-4 border-t border-gray-200 pt-4">
-                                                                    <dl class="divide-y divide-gray-200">
-                                                                        <div class="py-2 grid grid-cols-3 gap-4">
-                                                                            <dt class="text-sm font-medium text-gray-500">
-                                                                                Nama
-                                                                                Pemohon</dt>
-                                                                            <dd class="text-sm text-gray-900 col-span-2">
-                                                                                {{ $pengajuan->user->nama }}</dd>
-                                                                        </div>
-                                                                        <div class="py-2 grid grid-cols-3 gap-4">
-                                                                            <dt class="text-sm font-medium text-gray-500">
-                                                                                Jenis
-                                                                                Surat</dt>
-                                                                            <dd class="text-sm text-gray-900 col-span-2">
-                                                                                {{ ucfirst($pengajuan->jenis_surat) }}</dd>
-                                                                        </div>
-                                                                        <div class="py-2 grid grid-cols-3 gap-4">
-                                                                            <dt class="text-sm font-medium text-gray-500">
-                                                                                Tanggal Pengajuan</dt>
-                                                                            <dd class="text-sm text-gray-900 col-span-2">
-                                                                                {{ $pengajuan->created_at->format('d-m-Y H:i') }}
-                                                                            </dd>
-                                                                        </div>
-                                                                        <div class="py-2 grid grid-cols-3 gap-4">
-                                                                            <dt class="text-sm font-medium text-gray-500">
-                                                                                Status</dt>
-                                                                            <dd class="text-sm text-gray-900 col-span-2">
-                                                                                @if ($pengajuan->status == 'pending')
-                                                                                    <span
-                                                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                                                        Menunggu
-                                                                                    </span>
-                                                                                @elseif($pengajuan->status == 'approved')
-                                                                                    <span
-                                                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                                        Disetujui
-                                                                                    </span>
-                                                                                @elseif($pengajuan->status == 'rejected')
-                                                                                    <span
-                                                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                                        Ditolak
-                                                                                    </span>
-                                                                                @endif
-                                                                            </dd>
-                                                                        </div>
-                                                                    </dl>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                            class="hidden flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50 backdrop-blur-sm">
+                                            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                                                <!-- Modal content -->
+                                                <div class="relative bg-white rounded-lg shadow">
+                                                    <!-- Modal header -->
+                                                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                                                        <h3 class="text-xl font-semibold text-gray-900">
+                                                            Detail Pengajuan
+                                                        </h3>
                                                         <button type="button"
-                                                            onclick="closeModal('detailModal{{ $pengajuan->pengajuan_id }}')"
-                                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                                                            Tutup
+                                                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                                            onclick="closeModal('detailModal{{ $pengajuan->pengajuan_id }}')">
+                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 14 14">
+                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                            </svg>
+                                                            <span class="sr-only">Close modal</span>
                                                         </button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="p-4 md:p-5">
+                                                        <dl class="divide-y divide-gray-200">
+                                                            <div class="py-2 grid grid-cols-3 gap-4">
+                                                                <dt class="text-sm font-medium text-gray-500">Nama Pemohon</dt>
+                                                                <dd class="text-sm text-gray-900 col-span-2">{{ $pengajuan->user->nama }}</dd>
+                                                            </div>
+                                                            <div class="py-2 grid grid-cols-3 gap-4">
+                                                                <dt class="text-sm font-medium text-gray-500">Jenis Surat</dt>
+                                                                <dd class="text-sm text-gray-900 col-span-2">{{ ucfirst($pengajuan->jenis_surat) }}</dd>
+                                                            </div>
+                                                            <div class="py-2 grid grid-cols-3 gap-4">
+                                                                <dt class="text-sm font-medium text-gray-500">Tanggal Pengajuan</dt>
+                                                                <dd class="text-sm text-gray-900 col-span-2">{{ $pengajuan->created_at->format('d-m-Y H:i') }}</dd>
+                                                            </div>
+                                                            <div class="py-2 grid grid-cols-3 gap-4">
+                                                                <dt class="text-sm font-medium text-gray-500">Status</dt>
+                                                                <dd class="text-sm text-gray-900 col-span-2">
+                                                                    @if ($pengajuan->status == 'pending')
+                                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Menunggu</span>
+                                                                    @elseif($pengajuan->status == 'approved')
+                                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Disetujui</span>
+                                                                    @elseif($pengajuan->status == 'rejected')
+                                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Ditolak</span>
+                                                                    @endif
+                                                                </dd>
+                                                            </div>
+                                                        </dl>
+
+                                                        <!-- Modal footer -->
+                                                        <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                                                            <button type="button" onclick="closeModal('detailModal{{ $pengajuan->pengajuan_id }}')"
+                                                                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Tutup</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

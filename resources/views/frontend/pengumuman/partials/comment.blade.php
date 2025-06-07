@@ -2,14 +2,16 @@
     <div class="flex-shrink-0">
         <div class="w-10 h-10 rounded-full {{ isset($comment->user) && $comment->user->role == 'admin' ? 'bg-red-100' : 'bg-blue-100' }} flex items-center justify-center">
             <span class="{{ isset($comment->user) && $comment->user->role == 'admin' ? 'text-red-600' : 'text-blue-600' }} font-semibold">
-                {{ substr($comment->user->name ?? 'User', 0, 1) }}
+                {{ $comment->user ? substr($comment->user->nama, 0, 1) : 'A' }}
             </span>
         </div>
     </div>
     <div class="flex-1">
         <div class="flex items-center justify-between mb-2">
             <div class="flex items-center space-x-2">
-                <h4 class="text-sm font-semibold text-gray-900">{{ $comment->user->name ?? 'User' }}</h4>
+                <h4 class="text-sm font-semibold text-gray-900">
+                    {{ $comment->user->nama ?? 'Admin' }}
+                </h4>
                 @if(isset($comment->user) && $comment->user->role == 'admin')
                     <span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded-full">Admin</span>
                 @endif
@@ -22,7 +24,7 @@
             @auth
                 <!-- Reply Button -->
                 @if($level < 2)
-                    <button onclick="toggleReplyForm({{ $comment->komentar_id }})" 
+                    <button onclick="toggleReplyForm({{ $comment->komentar_id }})"
                             class="text-xs text-blue-600 hover:underline">
                         Balas
                     </button>
@@ -30,6 +32,7 @@
 
                 <!-- Delete Button -->
                 @if (auth()->id() == $comment->user_id || auth()->user()->role == 'admin')
+                    <!-- Form Hapus Komentar -->
                     <form action="{{ route('hapus.komentar', $comment->komentar_id) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
@@ -78,11 +81,46 @@
     </div>
 </div>
 
-@if($level == 0)
-    <script>
-        function toggleReplyForm(commentId) {
-            const form = document.getElementById('reply-form-' + commentId);
-            form.classList.toggle('hidden');
+@push('scripts')
+<script>
+function toggleReplyForm(commentId) {
+    const replyForm = document.getElementById(`reply-form-${commentId}`);
+
+    if (replyForm) {
+        if (replyForm.classList.contains('hidden')) {
+            // Hide all other reply forms first
+            hideAllReplyForms();
+
+            // Show current reply form
+            replyForm.classList.remove('hidden');
+
+            // Focus on textarea
+            const textarea = replyForm.querySelector('textarea[name="isi_komentar"]');
+            if (textarea) {
+                textarea.focus();
+            }
+        } else {
+            replyForm.classList.add('hidden');
+
+            // Clear textarea
+            const textarea = replyForm.querySelector('textarea[name="isi_komentar"]');
+            if (textarea) {
+                textarea.value = '';
+            }
         }
-    </script>
-@endif
+    }
+}
+
+function hideAllReplyForms() {
+    const allReplyForms = document.querySelectorAll('[id^="reply-form-"]');
+    allReplyForms.forEach(form => {
+        form.classList.add('hidden');
+
+        const textarea = form.querySelector('textarea[name="isi_komentar"]');
+        if (textarea) {
+            textarea.value = '';
+        }
+    });
+}
+</script>
+@endpush
