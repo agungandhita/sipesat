@@ -27,60 +27,69 @@
             </div>
         </div>
 
-        <!-- Pencarian Data Penduduk Section -->
         <div class="container mx-auto px-6 py-16">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Cari Data Penduduk</h2>
                 <div class="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Cari informasi penduduk Desa Gedongboyountung berdasarkan
-                    nama atau alamat</p>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Cari informasi penduduk Desa Gedongboyountung berdasarkan nama atau alamat</p>
             </div>
 
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div class="p-8">
-                        <form action="#" method="GET" class="space-y-6">
+                        <form action="{{ route('profil') }}" method="GET" class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <!-- Nama Input -->
                                 <div class="md:col-span-2">
-                                    <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Nama
-                                        Penduduk</label>
-                                    <input type="text" name="search" id="search" value="{{ request('search') }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Masukkan nama penduduk">
+                                    <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Nama Penduduk</label>
+                                    <input type="text"
+                                           name="search"
+                                           id="search"
+                                           value="{{ request('search') }}"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                           placeholder="Masukkan nama penduduk"
+                                           autocomplete="off">
                                 </div>
 
                                 <!-- Dusun Select -->
                                 <div>
                                     <label for="dusun" class="block mb-2 text-sm font-medium text-gray-900">Dusun</label>
-                                    <select id="dusun" name="dusun"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                        <option value="" selected>Semua Dusun</option>
-                                        @foreach ($dusunList ?? [] as $dusun)
-                                            <option value="{{ $dusun }}"
-                                                {{ request('dusun') == $dusun ? 'selected' : '' }}>{{ $dusun }}
-                                            </option>
-                                        @endforeach
+                                    <select id="dusun"
+                                            name="dusun"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                        <option value="">Semua Dusun</option>
+                                        {{-- PERBAIKAN 2: Perbaiki loop dusun --}}
+                                        @if(isset($dusunList) && $dusunList->count() > 0)
+                                            @foreach ($dusunList as $dusun)
+                                                <option value="{{ $dusun }}"
+                                                        {{ request('dusun') == $dusun ? 'selected' : '' }}>
+                                                    {{ $dusun }}
+                                                </option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>
 
                             <div class="flex justify-end">
                                 <button type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
+                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                     Cari
                                 </button>
                             </div>
                         </form>
 
-                        @if (isset($penduduk) && count($penduduk) > 0)
+                        {{-- PERBAIKAN 3: Perbaiki kondisi tampilan hasil --}}
+                        @if (isset($penduduk) && $penduduk->count() > 0)
                             <div class="mt-8">
-                                <h3 class="text-xl font-bold text-gray-800 mb-4">Hasil Pencarian</h3>
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">
+                                    Hasil Pencarian ({{ $penduduk->total() }} data ditemukan)
+                                </h3>
                                 <div class="overflow-x-auto relative">
                                     <table class="w-full text-sm text-left text-gray-500">
                                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -95,8 +104,22 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($penduduk as $index => $warga)
-                                                <tr class="bg-white border-b hover:bg-gray-50">
-                                                    <td class="py-4 px-6">{{ $index + 1 }}</td>
+                                                <tr class="bg-white border-b hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+                                                    onclick="showPendudukDetail(
+                                                        '{{ addslashes($warga->nama) }}',
+                                                        '{{ ucfirst($warga->jenis_kelamin) }}',
+                                                        '{{ addslashes($warga->alamat) }}',
+                                                        '{{ $warga->rt ? 'RT '.$warga->rt : '' }}{{ $warga->rw ? ' / RW '.$warga->rw : '' }}',
+                                                        '{{ addslashes($warga->dusun) }}',
+                                                        '{{ addslashes($warga->tempat_lahir) }}',
+                                                        {{ $warga->tanggal_lahir ? \Carbon\Carbon::parse($warga->tanggal_lahir)->format('d-m-Y') : '' }}
+                                                        '{{ addslashes($warga->agama) }}',
+                                                        '{{ addslashes($warga->status_perkawinan) }}',
+                                                        '{{ addslashes($warga->pekerjaan) }}',
+                                                        '{{ addslashes($warga->pendidikan) }}',
+                                                        '{{ $warga->usia }}'
+                                                    )">
+                                                    <td class="py-4 px-6">{{ ($penduduk->currentPage() - 1) * $penduduk->perPage() + $index + 1 }}</td>
                                                     <td class="py-4 px-6 font-medium text-gray-900">{{ $warga->nama }}</td>
                                                     <td class="py-4 px-6">{{ ucfirst($warga->jenis_kelamin) }}</td>
                                                     <td class="py-4 px-6">{{ $warga->alamat }}</td>
@@ -115,23 +138,36 @@
                                     </table>
                                 </div>
 
-                                <!-- Pagination -->
-                                @if ($penduduk instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                                    <div class="mt-4">
-                                        {{ $penduduk->appends(request()->query())->links('pagination::tailwind') }}
+                                {{-- PERBAIKAN 4: Perbaiki pagination --}}
+                                @if ($penduduk->hasPages())
+                                    <div class="mt-6">
+                                        {{ $penduduk->appends(request()->query())->links() }}
                                     </div>
                                 @endif
                             </div>
-                        @elseif(request('search') || request('dusun'))
+                        @elseif(request()->has('search') || request()->has('dusun'))
+                            {{-- PERBAIKAN 5: Tampilkan pesan hanya jika ada pencarian --}}
                             <div class="mt-8 p-6 text-center bg-gray-50 rounded-lg">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-4"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <h4 class="text-lg font-medium text-gray-900 mb-2">Data Tidak Ditemukan</h4>
-                                <p class="text-gray-600">Maaf, tidak ada data penduduk yang sesuai dengan kriteria pencarian
-                                    Anda.</p>
+                                <p class="text-gray-600">
+                                    Maaf, tidak ada data penduduk yang sesuai dengan kriteria pencarian Anda.
+                                    <br>
+                                    <small class="text-gray-500">
+                                        Pencarian: "{{ request('search') }}"
+                                        @if(request('dusun'))
+                                            di {{ request('dusun') }}
+                                        @endif
+                                    </small>
+                                </p>
+                                <button onclick="window.location.href='{{ route('profil') }}'"
+                                        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                    Reset Pencarian
+                                </button>
                             </div>
                         @endif
                     </div>
@@ -388,8 +424,7 @@
                     <div class="md:w-2/5 p-8">
                         <div class="mb-8">
                             <h3 class="text-2xl font-bold text-gray-800 mb-4">Desa Gedongboyountung</h3>
-                            <p class="text-gray-600 mb-6">Terletak di Kecamatan Turi, Kabupaten Lamongan, Provinsi Jawa
-                                Timur.</p>
+                            <p class="text-gray-600 mb-6">Terletak di Kecamatan Turi, Kabupaten Lamongan, Provinsi Jawa Timur.</p>
 
                             <div class="bg-blue-50 rounded-xl p-6 mb-8">
                                 <h4 class="font-bold text-blue-800 mb-4">Batas Wilayah</h4>
@@ -473,3 +508,131 @@
         </div>
     </div>
 @endsection
+
+        <!-- Modal Detail Penduduk -->
+        <div id="pendudukModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+
+                <!-- Modal panel -->
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modalTitle">Detail Penduduk</h3>
+                                <div class="border-t border-gray-200 pt-4">
+                                    <dl class="divide-y divide-gray-200">
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Nama Lengkap</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalNama">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Jenis Kelamin</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalJenisKelamin">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Tempat, Tanggal Lahir</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalTtl">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Usia</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalUsia">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Alamat</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalAlamat">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">RT/RW</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalRtRw">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Dusun</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalDusun">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Agama</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalAgama">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Status Perkawinan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalStatusPerkawinan">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Pekerjaan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalPekerjaan">-</dd>
+                                        </div>
+                                        <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                                            <dt class="text-sm font-medium text-gray-500">Pendidikan</dt>
+                                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="modalPendidikan">-</dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" onclick="closeModal()"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- JavaScript untuk Modal -->
+        <script>
+            function showPendudukDetail(nama, jenisKelamin, alamat, rtRw, dusun, tempatLahir, tanggalLahir, agama, statusPerkawinan, pekerjaan, pendidikan, usia) {
+                // Escape HTML untuk keamanan
+                function escapeHtml(text) {
+                    var map = {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#039;'
+                    };
+                    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+                }
+
+                document.getElementById('modalNama').textContent = nama || '-';
+                document.getElementById('modalJenisKelamin').textContent = jenisKelamin || '-';
+                document.getElementById('modalTtl').textContent = (tempatLahir || '') + (tanggalLahir ? ', ' + tanggalLahir : '') || '-';
+                document.getElementById('modalUsia').textContent = usia ? usia + ' tahun' : '-';
+                document.getElementById('modalAlamat').textContent = alamat || '-';
+                document.getElementById('modalRtRw').textContent = rtRw || '-';
+                document.getElementById('modalDusun').textContent = dusun || '-';
+                document.getElementById('modalAgama').textContent = agama || '-';
+                document.getElementById('modalStatusPerkawinan').textContent = statusPerkawinan || '-';
+                document.getElementById('modalPekerjaan').textContent = pekerjaan || '-';
+                document.getElementById('modalPendidikan').textContent = pendidikan || '-';
+
+                document.getElementById('pendudukModal').classList.remove('hidden');
+                // Prevent body scroll when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                document.getElementById('pendudukModal').classList.add('hidden');
+                // Restore body scroll when modal is closed
+                document.body.style.overflow = 'auto';
+            }
+
+            // Menutup modal jika user mengklik di luar modal
+            window.onclick = function(event) {
+                const modal = document.getElementById('pendudukModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        </script>

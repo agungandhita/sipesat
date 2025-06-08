@@ -13,12 +13,12 @@ class Penduduk extends Model
     protected $table = "penduduks";
     protected $primaryKey = 'warga_id';
     protected $fillable = [
-        'nama', 
-        'alamat', 
+        'nama',
+        'alamat',
         'rt',
         'rw',
         'dusun',
-        'nik', 
+        'nik',
         'jenis_kelamin',
         'tempat_lahir',
         'tanggal_lahir',
@@ -26,7 +26,7 @@ class Penduduk extends Model
         'status_perkawinan',
         'pekerjaan',
         'pendidikan',
-        'user_created', 
+        'user_created',
         'user_updated'
     ];
     protected $guarded = [
@@ -62,7 +62,7 @@ class Penduduk extends Model
     public function getUsiaAttribute()
     {
         if ($this->tanggal_lahir) {
-            return $this->tanggal_lahir->age;
+            return $this->tanggal_lahir;
         }
         return null;
     }

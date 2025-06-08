@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
-    Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
+    Route::get('/profil', [App\Http\Controllers\Page\ProfilController::class, 'profil'])->name('profil');
 
 
     Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
@@ -169,7 +169,7 @@ Route::middleware('admin')->group(function () {
 
 
 Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
-Route::get('/profil', [App\Http\Controllers\Page\PageController::class, 'profil'])->name('profil');
+Route::get('/profil', [App\Http\Controllers\Page\ProfilController::class, 'index'])->name('profil');
 Route::get('/berita', [App\Http\Controllers\Page\InformasiController::class, 'index'])->name('berita.index');
 Route::get('/berita/{slug}', [App\Http\Controllers\Page\InformasiController::class, 'show'])->name('berita.show');
 Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
