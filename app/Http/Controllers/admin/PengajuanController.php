@@ -188,7 +188,7 @@ class PengajuanController extends Controller
     public function reject($id, Request $request)
     {
         $request->validate([
-            'alasan_penolakan' => 'required|string',
+            'catatan_admin' => 'required|string',
         ]);
 
         $pengajuan = Pengajuan::findOrFail($id);
