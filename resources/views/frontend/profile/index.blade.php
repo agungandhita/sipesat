@@ -105,14 +105,14 @@
                                         <tbody>
                                             @foreach ($penduduk as $index => $warga)
                                                 <tr class="bg-white border-b hover:bg-gray-50 cursor-pointer transition-colors duration-200"
-                                                    onclick="showPendudukDetail(
+                                                    onclick="showPendudukDetailNew(
                                                         '{{ addslashes($warga->nama) }}',
                                                         '{{ ucfirst($warga->jenis_kelamin) }}',
                                                         '{{ addslashes($warga->alamat) }}',
                                                         '{{ $warga->rt ? 'RT '.$warga->rt : '' }}{{ $warga->rw ? ' / RW '.$warga->rw : '' }}',
                                                         '{{ addslashes($warga->dusun) }}',
                                                         '{{ addslashes($warga->tempat_lahir) }}',
-                                                        {{ $warga->tanggal_lahir ? \Carbon\Carbon::parse($warga->tanggal_lahir)->format('d-m-Y') : '' }}
+                                                        '{{ $warga->tanggal_lahir ? \Carbon\Carbon::parse($warga->tanggal_lahir)->format('d-m-Y') : '' }}',
                                                         '{{ addslashes($warga->agama) }}',
                                                         '{{ addslashes($warga->status_perkawinan) }}',
                                                         '{{ addslashes($warga->pekerjaan) }}',
@@ -509,7 +509,203 @@
     </div>
 @endsection
 
-        <!-- Modal Detail Penduduk -->
+        <!-- Modal Detail Penduduk Baru --}}
+        <div id="pendudukModalNew" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[120] justify-center items-center w-full h-full bg-black/50">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                        <h3 class="text-xl font-semibold text-gray-900">
+                            Detail Data Penduduk
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                            data-modal-hide="pendudukModalNew" onclick="closeModalNew()">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Nama -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Nama Lengkap</label>
+                                <div id="modalNewNama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Jenis Kelamin -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Jenis Kelamin</label>
+                                <div id="modalNewJenisKelamin" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Tempat Lahir -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Tempat Lahir</label>
+                                <div id="modalNewTempatLahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Tanggal Lahir -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Tanggal Lahir</label>
+                                <div id="modalNewTanggalLahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Usia -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Usia</label>
+                                <div id="modalNewUsia" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Alamat -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Alamat</label>
+                                <div id="modalNewAlamat" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- RT/RW -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">RT/RW</label>
+                                <div id="modalNewRtRw" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Dusun -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Dusun</label>
+                                <div id="modalNewDusun" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Agama -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Agama</label>
+                                <div id="modalNewAgama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Status Perkawinan -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Status Perkawinan</label>
+                                <div id="modalNewStatusPerkawinan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Pekerjaan -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Pekerjaan</label>
+                                <div id="modalNewPekerjaan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+
+                            <!-- Pendidikan -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-900 mb-1">Pendidikan</label>
+                                <div id="modalNewPendidikan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 w-full">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="flex items-center pt-4 border-t border-gray-200 mt-4">
+                            <button type="button" onclick="closeModalNew()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScript untuk Modal Baru -->
+        <script>
+            function showPendudukDetailNew(nama, jenisKelamin, alamat, rtRw, dusun, tempatLahir, tanggalLahir, agama, statusPerkawinan, pekerjaan, pendidikan, usia) {
+                // Escape HTML untuk keamanan
+                function escapeHtml(text) {
+                    if (!text) return '-';
+                    var map = {
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#039;'
+                    };
+                    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+                }
+
+                document.getElementById('modalNewNama').textContent = nama || '-';
+                document.getElementById('modalNewJenisKelamin').textContent = jenisKelamin || '-';
+                document.getElementById('modalNewTempatLahir').textContent = tempatLahir || '-';
+                document.getElementById('modalNewTanggalLahir').textContent = tanggalLahir || '-';
+                document.getElementById('modalNewUsia').textContent = usia ? usia + ' tahun' : '-';
+                document.getElementById('modalNewAlamat').textContent = alamat || '-';
+                document.getElementById('modalNewRtRw').textContent = rtRw || '-';
+                document.getElementById('modalNewDusun').textContent = dusun || '-';
+                document.getElementById('modalNewAgama').textContent = agama || '-';
+                document.getElementById('modalNewStatusPerkawinan').textContent = statusPerkawinan || '-';
+                document.getElementById('modalNewPekerjaan').textContent = pekerjaan || '-';
+                document.getElementById('modalNewPendidikan').textContent = pendidikan || '-';
+
+                // Tampilkan modal
+                const modal = document.getElementById('pendudukModalNew');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                // Prevent body scroll when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModalNew() {
+                const modal = document.getElementById('pendudukModalNew');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                // Restore body scroll when modal is closed
+                document.body.style.overflow = 'auto';
+            }
+
+            // Menutup modal jika user mengklik di luar modal
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('pendudukModalNew');
+                if (event.target === modal) {
+                    closeModalNew();
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModalNew();
+                }
+            });
+        </script>
+@endsection
+
+{{-- Hapus atau komentar modal lama jika tidak digunakan lagi --}}
+{{-- <!-- Modal Detail Penduduk -->
         <div id="pendudukModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <!-- Background overlay -->

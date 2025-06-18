@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             InformasiSeeder::class,
             KomentarSeeder::class,
-            PendudukSeeder::class,
+            //PendudukSeeder::class,
             ProfileDesaSeeder::class
         ]);
     }
