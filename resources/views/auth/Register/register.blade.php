@@ -17,15 +17,24 @@
         <div class="space-y-6">
             <div>
                 <label class="text-gray-800 text-sm mb-2 block">Nama</label>
-                <input name="nama" type="text" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Masukan Nama" />
+                <input name="nama" type="text" value="{{ old('nama') }}" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Masukan Nama" />
+                @error('nama')
+                <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                @enderror
               </div>
           <div>
             <label class="text-gray-800 text-sm mb-2 block">Email</label>
-            <input name="email" type="email" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Masukan Email" />
+            <input name="email" type="email" value="{{ old('email') }}" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Masukan Email" />
+            @error('email')
+            <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
           <div>
             <label class="text-gray-800 text-sm mb-2 block">Password</label>
             <input name="password" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Masukan password" />
+            @error('password')
+            <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+            @enderror
           </div>
         </div>
 

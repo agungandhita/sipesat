@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengajuans', function (Blueprint $table) {
             $table->id('pengajuan_id');
-            $table->unsignedBigInteger('user_id')->constrained();
+            $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->enum('jenis_surat', ['sktm', 'domisili', 'meninggal']); // Surat Keterangan Tidak Mampu, Domisili
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('catatan_admin')->nullable();

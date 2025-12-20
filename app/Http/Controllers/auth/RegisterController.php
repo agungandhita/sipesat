@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\auth;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
 
 
 class RegisterController extends Controller
@@ -14,13 +14,9 @@ class RegisterController extends Controller
         return view('auth.Register.register');
     }
 
-    public function store(Request $request){
+    public function store(RegisterRequest $request){
 
-        $validasi = $request->validate([
-            'nama' => 'required|max:255',
-            'email' => 'required|email:rfc,dns|unique:users',
-            'password' => 'required|min:5|max:255',
-        ]);
+        $validasi = $request->validated();
 
 
         $validasi['password'] = bcrypt($validasi['password']);
