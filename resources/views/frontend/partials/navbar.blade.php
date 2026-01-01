@@ -1,108 +1,121 @@
-<header
-    class="relative flex flex-wrap sm:justify-start sm:flex-nowrap w-full rounded-b-4xl bg-white shadow-2xl text-sm py-3">
-    <nav class="max-w-[90rem] w-full mx-auto px-2 sm:flex sm:items-center sm:justify-between">
-        <div class="flex items-center justify-between">
-            <a class="flex-none text-xl font-semibold focus:outline-none focus:opacity-80" href="#"
-                aria-label="Brand">
-                <img src="{{ asset('img/lamongan.png') }}" alt="logo" class='w-14 md:w-16' />
-            </a>
-            <div class="hidden md:block">
-                <h1 class="text-xl px-3 font-bold capitalize">desa
-                    <span class="text-base capitalize">gedongboyountung</span>
-                </h1>
-            </div>
-            <div class="sm:hidden">
-                <button type="button"
-                    class="hs-collapse-toggle relative size-7 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-                    id="hs-navbar-example-collapse" aria-expanded="false" aria-controls="hs-navbar-example"
-                    aria-label="Toggle navigation" data-hs-collapse="#hs-navbar-example">
-                    <svg class="hs-collapse-open:hidden shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" x2="21" y1="6" y2="6" />
-                        <line x1="3" x2="21" y1="12" y2="12" />
-                        <line x1="3" x2="21" y1="18" y2="18" />
-                    </svg>
-                    <svg class="hs-collapse-open:block hidden shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 6 6 18" />
-                        <path d="m6 6 12 12" />
-                    </svg>
-                    <span class="sr-only">Toggle navigation</span>
-                </button>
-            </div>
+<!-- Top Bar -->
+<div class="bg-gray-50 text-gray-500 py-1.5 hidden lg:block border-b border-gray-100">
+    <div class="max-w-[90rem] mx-auto px-4 flex justify-between items-center text-[10px] font-bold uppercase tracking-wider">
+        <div class="flex items-center space-x-6">
+            <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Jam Layanan: 08:00 - 15:00
+            </span>
+            <span class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Kontak Desa
+            </span>
         </div>
-        <div id="hs-navbar-example"
-            class="hidden hs-collapse overflow-hidden transition-all duration-300 basis-full grow sm:block"
-            aria-labelledby="hs-navbar-example-collapse">
-            <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-                <a class="font-semibold text-black text-base hover:text-blue-600 focus:outline-none"
-                    href="{{ Route('home') }}" aria-current="page">Home</a>
-                <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
-                    href="{{ Route('profil') }}">Profil desa</a>
-                <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
-                    href="{{ Route('berita.index') }}">Pengumuman</a>
+        <div class="flex items-center space-x-4">
+            <a href="#" class="hover:text-blue-600 transition-colors">Pengaduan</a>
+            <a href="#" class="hover:text-blue-600 transition-colors">Bantuan</a>
+        </div>
+    </div>
+</div>
 
-                <a class="font-semibold text-black text-base hover:text-blue-700 focus:outline-none focus:text-gray-400"
-                    href="{{ Route('layanan') }}">Layanan</a>
+<header class="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
+    <nav class="max-w-[90rem] mx-auto px-4">
+        <div class="flex items-center justify-between h-16 lg:h-20">
+            <!-- Brand -->
+            <a class="flex items-center gap-2.5 focus:outline-none" href="{{ Route('home') }}">
+                <img src="{{ asset('img/logo-desa.png') }}" alt="Logo" class="w-8 lg:w-9 h-auto" onerror="this.src='{{ asset('img/lamongan.png') }}'"/>
+                <div class="flex flex-col">
+                    <span class="text-gray-900 font-bold text-base lg:text-lg leading-tight">{{ config('app.name', 'SIPESAT') }}</span>
+                    <span class="text-gray-500 text-[9px] lg:text-[10px] font-bold uppercase tracking-wider">{{ config('app.village_name', 'Nama Desa Anda') }}</span>
+                </div>
+            </a>
 
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center gap-4">
+                <div class="flex items-center gap-1">
+                    <a class="px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('home') ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:text-gray-900' }}" href="{{ Route('home') }}">Beranda</a>
+                    <a class="px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('profil') ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:text-gray-900' }}" href="{{ Route('profil') }}">Profil Desa</a>
+                    <a class="px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('berita.*') ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:text-gray-900' }}" href="{{ Route('berita.index') }}">Pengumuman</a>
+                    <a class="px-3 py-2 text-sm font-semibold rounded-lg transition-all {{ request()->routeIs('layanan') ? 'text-blue-700 bg-blue-50' : 'text-gray-600 hover:text-gray-900' }}" href="{{ Route('layanan') }}">Layanan</a>
+                </div>
 
-                <div class="flex gap-x-3">
-                    @guest
-                        <a href='{{ route('login') }}'
-                            class='font-semibold text-white text-base rounded-xl bg-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400'>Login</a>
-                        <a href="/register"
-                            class="font-semibold text-black text-base rounded-xl bg-white border-2 border-blue-700 px-5 py-1 focus:outline-none focus:text-gray-400">Register</a>
-                    @else
-                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                            class="text-white font-medium rounded-full text-sm inline-flex items-center border border-blue-300 p-2"
-                            type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="text-blue-700">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
+                @guest
+                    <div class="flex items-center gap-2 ml-4">
+                        <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-bold text-gray-700 hover:text-blue-700 transition-colors">Masuk</a>
+                        <a href="/register" class="px-5 py-2 text-sm font-bold text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-all">Daftar</a>
+                    </div>
+                @else
+                    <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
+                        <button id="hs-dropdown-account" type="button" class="flex items-center gap-2.5 p-1 pl-3 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all">
+                            <span class="text-xs font-bold text-gray-700">{{ Auth::user()->name }}</span>
+                            <div class="w-7 h-7 bg-blue-700 text-white flex items-center justify-center rounded-full text-[10px] font-bold">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
                         </button>
 
-                        <!-- Dropdown menu -->
-                        <div id="dropdown"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
-                            <ul class="py-2 text-gray-700 " aria-labelledby="dropdownDefaultButton">
-                                <li>
-                                    <a href='{{ route('riwayat.pengajuan') }}'
-                                        class="block px-4 py-2 hover:bg-gray-100">Pengajuan</a>
-                                </li>
-                                <li>
-                                    <form action="/logout" method="POST" class="inline">
-                                        @csrf
-                                        <button type="submit"
-                                            class="block cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100 text-black">
-                                            Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
+                        <div class="hs-dropdown-menu transition-[opacity,margin] duration-200 hs-dropdown-open:opacity-100 opacity-0 hidden min-w-48 bg-white border border-gray-200 shadow-lg rounded-xl p-1.5 mt-2" aria-labelledby="hs-dropdown-account">
+                            <a class="flex items-center gap-2 py-2 px-3 rounded-lg text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all" href="{{ route('riwayat.pengajuan') }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Riwayat
+                            </a>
+                            <div class="h-px bg-gray-100 my-1"></div>
+                            <form action="/logout" method="POST" class="m-0">
+                                @csrf
+                                <button type="submit" class="flex w-full items-center gap-2 py-2 px-3 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition-all">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                    Keluar
+                                </button>
+                            </form>
                         </div>
+                    </div>
+                @endguest
+            </div>
 
+            <!-- Mobile Menu Toggle -->
+            <button type="button" class="hs-collapse-toggle lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                data-hs-collapse="#mobile-menu"
+                aria-controls="mobile-menu"
+                aria-label="Toggle navigation">
+                <svg class="hs-collapse-open:hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg class="hs-collapse-open:block hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Content -->
+        <div id="mobile-menu" class="hs-collapse hidden overflow-hidden transition-all duration-300 lg:hidden border-t border-gray-100">
+            <div class="flex flex-col gap-1 py-4">
+                <a class="px-4 py-2.5 text-sm font-bold {{ request()->routeIs('home') ? 'text-blue-700 bg-blue-50 rounded-lg' : 'text-gray-700' }}" href="{{ Route('home') }}">Beranda</a>
+                <a class="px-4 py-2.5 text-sm font-bold {{ request()->routeIs('profil') ? 'text-blue-700 bg-blue-50 rounded-lg' : 'text-gray-700' }}" href="{{ Route('profil') }}">Profil Desa</a>
+                <a class="px-4 py-2.5 text-sm font-bold {{ request()->routeIs('berita.*') ? 'text-blue-700 bg-blue-50 rounded-lg' : 'text-gray-700' }}" href="{{ Route('berita.index') }}">Pengumuman</a>
+                <a class="px-4 py-2.5 text-sm font-bold {{ request()->routeIs('layanan') ? 'text-blue-700 bg-blue-50 rounded-lg' : 'text-gray-700' }}" href="{{ Route('layanan') }}">Layanan</a>
+
+                <div class="h-px bg-gray-100 my-2"></div>
+
+                @guest
+                    <div class="grid grid-cols-2 gap-3 px-4 pt-2">
+                        <a href="{{ route('login') }}" class="w-full py-2.5 text-center text-sm font-bold text-gray-700 border border-gray-200 rounded-lg">Masuk</a>
+                        <a href="/register" class="w-full py-2.5 text-center text-sm font-bold text-white bg-blue-700 rounded-lg">Daftar</a>
+                    </div>
+                @else
+                    <div class="px-4 pt-2 flex flex-col gap-1">
+                        <a href="{{ route('riwayat.pengajuan') }}" class="px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-gray-50 rounded-lg flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Riwayat Pengajuan
+                        </a>
+                        <form action="/logout" method="POST" class="m-0">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                Keluar
+                            </button>
+                        </form>
                     </div>
                 @endguest
             </div>
         </div>
-        </div>
     </nav>
 </header>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Mobile menu toggle
-        const toggleButton = document.getElementById('hs-navbar-example-collapse');
-        const navbar = document.getElementById('hs-navbar-example');
-
-        toggleButton.addEventListener('click', () => {
-            const isHidden = navbar.classList.contains('hidden');
-            navbar.classList.toggle('hidden', !isHidden);
-        });
-    });
-</script>

@@ -1,17 +1,9 @@
 @include('frontend.partials.start')
 @include('frontend.partials.navbar')
 
-<body class="">
-
+<main>
     @yield('container')
+</main>
 
-
-
-
-
-
-
-    @include('frontend.partials.end')
-    {{-- @include('sweetalert::alert') --}}
-    @include('frontend.partials.footer')
-</body>
+@include('frontend.partials.footer')
+@include('frontend.partials.end')

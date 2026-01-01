@@ -1,36 +1,51 @@
-<div class="min-h-[500px] md:pt-8">
-    <div class="grid md:grid-cols-2 justify-center items-center gap-10">
-        <!-- Kolom Teks -->
-        <div class="max-md:order-1">
-            <h1 class="md:text-5xl text-3xl font-bold md:!leading-[55px]">Selamat datang di Sistem Pelayanan Surat
-                Terpadu <span class="text-blue-700">(SIPESAT)</span></h1>
-            {{-- <h1 class="md:text-2xl text-blue-700 text-xl font-semibold md:!leading-[55px]">Sistem Informasi Pelayanan Surat</h1> --}}
-            <span class="text-black font-bold">Desa Gedongboyountung, Kecamatan Turi, Kabupaten Lamongan</span>
-            <p class="mt-4 text-lg leading-relaxed text-black font-serif text-justify">✨Kemudahan, Transparansi, dan
-                Pelayanan Terbaik untuk masyarakat. Kami berkomitmen untuk memberikan layanan desa yang cepat, mudah,
-                dan transparan. Lewat platform ini,
-                Anda dapat mengakses informasi desa, layanan administrasi, dan kebutuhan lainnya secara langsung.
-            </p>
+<div class="relative py-12 md:py-20">
+    <div class="grid lg:grid-cols-2 items-center gap-12">
+        <!-- Left Column: Text Content -->
+        <div class="space-y-6">
+            <div
+                class="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold tracking-wide">
+                Sistem Pelayanan Digital Desa
+            </div>
 
-            <!-- Search Bar -->
-            {{-- <div class="bg-gray-200 mt-10 flex rounded-r-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] overflow-hidden">
-                <input type='email' placeholder='Cari Data Penduduk Dengan NIK'
-                    class="w-full outline-none bg-gray-200 pl-4 border-none" />
-                <button type='submit'
-                    class="bg-blue-700 hover:bg-blue-500 font-bold transition-all text-white rounded-r-full px-5 py-2 cursor-pointer">Search</button>
-            </div> --}}
-            <!-- Logo Organisasi -->
-            <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
-                <img src="{{ asset('img/bpd.png') }}" class="w-28 mx-auto fill-black" alt="BPD Logo" />
-                <img src="{{ asset('img/karang-taruna2-removebg-preview.png') }}" class="w-28 mx-auto"
-                    alt="Karang Taruna Logo" />
-                <img src="{{ asset('img/PKK-removebg-preview.png') }}" class="w-32 mx-auto" alt="PKK Logo" />
-                <img src="{{ asset('img/Posyandu.png') }}" class="w-32 mx-auto" alt="Posyandu Logo" />
+            <div class="space-y-4">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+                    Layanan Desa <br />
+                    <span class="text-blue-600">{{ config('app.village_name', 'Nama Desa Anda') }}</span>
+                </h1>
+                <p class="text-lg text-gray-600 max-w-lg">
+                    Akses pelayanan administrasi desa secara cepat, transparan, dan mudah langsung dari genggaman Anda.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <a href="{{ route('layanan') }}"
+                    class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
+                    Ajukan Layanan
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+                <a href="{{ route('profil') }}"
+                    class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all">
+                    Profil Desa
+                </a>
             </div>
         </div>
-        <!-- Kolom Gambar -->
-        <div class="max-md:mt-12 h-full">
-            <img src="{{ asset('img/main.jpg') }}" alt="Banner SIPESAT" class="w-full h-full object-cover rounded-lg" />
+
+        <!-- Right Column: Visual -->
+        <div class="relative">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img src="#" alt="Banner Desa"
+                    class="w-full h-[300px] md:h-[450px] object-cover"
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516900557549-41557d405adf?q=80&w=2000&auto=format&fit=crop';" />
+                <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
+                    <p class="text-white text-lg font-bold">Kantor {{ config('app.village_name', 'Nama Desa Anda') }}
+                    </p>
+                    <p class="text-gray-200 text-xs uppercase tracking-widest">
+                        {{ config('app.sub_district', 'Kecamatan') }}, {{ config('app.district', 'Kabupaten') }}</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
