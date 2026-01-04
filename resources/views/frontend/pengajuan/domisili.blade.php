@@ -26,15 +26,15 @@
                 </div>
 
                 <div class="p-8">
-                    <form action="{{ route('form.domisili.post') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('form.domisili.post') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- NIK -->
                             <div class="col-span-1 md:col-span-2">
                                 <label for="nik" class="block text-sm font-semibold text-gray-700 mb-2">Nomor Induk Kependudukan (NIK)</label>
-                                <input type="text" id="nik" name="nik" maxlength="16" value="{{ old('nik') }}"
-                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('nik') border-red-500 @enderror"
+                                <input type="text" id="nik" name="nik" maxlength="16" value="{{ old('nik', $penduduk->nik ?? '') }}"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('nik') border-red-500 @enderror"
                                     placeholder="Masukkan 16 digit NIK" required>
                                 @error('nik')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -44,7 +44,7 @@
                             <!-- Nama Lengkap -->
                             <div class="col-span-1 md:col-span-2">
                                 <label for="nama" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                                <input type="text" id="nama" name="nama" value="{{ old('nama') }}"
+                                <input type="text" id="nama" name="nama" value="{{ old('nama', $penduduk->nama ?? '') }}"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('nama') border-red-500 @enderror"
                                     placeholder="Nama sesuai KTP" required>
                                 @error('nama')
@@ -55,7 +55,7 @@
                             <!-- Tempat Lahir -->
                             <div>
                                 <label for="tempat_lahir" class="block text-sm font-semibold text-gray-700 mb-2">Tempat Lahir</label>
-                                <input type="text" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir') }}"
+                                <input type="text" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir', $penduduk->tempat_lahir ?? '') }}"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('tempat_lahir') border-red-500 @enderror"
                                     placeholder="Kota/Kabupaten" required>
                                 @error('tempat_lahir')
@@ -66,7 +66,7 @@
                             <!-- Tanggal Lahir -->
                             <div>
                                 <label for="tanggal_lahir" class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir</label>
-                                <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
+                                <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', isset($penduduk->tanggal_lahir) ? \Carbon\Carbon::parse($penduduk->tanggal_lahir)->format('Y-m-d') : '') }}"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('tanggal_lahir') border-red-500 @enderror"
                                     required>
                                 @error('tanggal_lahir')
@@ -77,7 +77,7 @@
                             <!-- Pekerjaan -->
                             <div class="col-span-1 md:col-span-2">
                                 <label for="pekerjaan" class="block text-sm font-semibold text-gray-700 mb-2">Pekerjaan</label>
-                                <input type="text" id="pekerjaan" name="pekerjaan" value="{{ old('pekerjaan') }}"
+                                <input type="text" id="pekerjaan" name="pekerjaan" value="{{ old('pekerjaan', $penduduk->pekerjaan ?? '') }}"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('pekerjaan') border-red-500 @enderror"
                                     placeholder="Contoh: Wiraswasta">
                                 @error('pekerjaan')
@@ -90,10 +90,29 @@
                                 <label for="alamat" class="block text-sm font-semibold text-gray-700 mb-2">Alamat Lengkap</label>
                                 <textarea id="alamat" name="alamat" rows="3"
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('alamat') border-red-500 @enderror"
-                                    placeholder="Alamat domisili saat ini" required>{{ old('alamat') }}</textarea>
+                                    placeholder="Alamat domisili saat ini" required>{{ old('alamat', $penduduk->alamat ?? '') }}</textarea>
                                 @error('alamat')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
+                            </div>
+
+                            <!-- Document Upload Section -->
+                            <div class="col-span-1 md:col-span-2 mt-4">
+                                <h3 class="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider">Dokumen Pendukung (Opsional)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="p-4 border-2 border-dashed border-gray-200 rounded-lg">
+                                        <label for="file_ktp" class="block text-sm font-semibold text-gray-700 mb-2">Foto KTP</label>
+                                        <input type="file" id="file_ktp" name="file_ktp" accept=".pdf,.jpg,.jpeg,.png"
+                                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                        <p class="mt-2 text-xs text-gray-500">Format: PDF, JPG, PNG (Max 2MB)</p>
+                                    </div>
+                                    <div class="p-4 border-2 border-dashed border-gray-200 rounded-lg">
+                                        <label for="file_kk" class="block text-sm font-semibold text-gray-700 mb-2">Foto Kartu Keluarga</label>
+                                        <input type="file" id="file_kk" name="file_kk" accept=".pdf,.jpg,.jpeg,.png"
+                                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                        <p class="mt-2 text-xs text-gray-500">Format: PDF, JPG, PNG (Max 2MB)</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Keperluan -->

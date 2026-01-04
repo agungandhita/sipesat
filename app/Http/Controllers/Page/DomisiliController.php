@@ -4,18 +4,28 @@ namespace App\Http\Controllers\Page;
 
 use App\Models\Domisili;
 use App\Models\Arsip;
+use App\Models\Penduduk;
 use App\Models\Pengajuan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class DomisiliController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $penduduk = null;
+        
+        if ($user && $user->nik) {
+            $penduduk = Penduduk::where('nik', $user->nik)->first();
+        }
+
         return view('frontend.pengajuan.domisili', [
-            'title' => 'Domisili'
+            'title' => 'Domisili',
+            'penduduk' => $penduduk
         ]);
     }
 
@@ -30,13 +40,27 @@ class DomisiliController extends Controller
             'alamat' => 'required|string',
             'keterangan' => 'required|string',
             'keperluan' => 'required|string',
+            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
+
+        $fileKtpPath = null;
+        if ($request->hasFile('file_ktp')) {
+            $fileKtpPath = $request->file('file_ktp')->store('dokumen_pendukung', 'public');
+        }
+
+        $fileKkPath = null;
+        if ($request->hasFile('file_kk')) {
+            $fileKkPath = $request->file('file_kk')->store('dokumen_pendukung', 'public');
+        }
 
         // Buat pengajuan terlebih dahulu dengan status pending
         $pengajuan = Pengajuan::create([
             'user_id' => Auth::id(),
             'jenis_surat' => 'domisili',
-            'status' => 'pending',  // Status otomatis pending saat dibuat
+            'status' => 'pending',
+            'file_ktp' => $fileKtpPath,
+            'file_kk' => $fileKkPath,
         ]);
 
         // Buat record Domisili

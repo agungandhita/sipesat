@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="p-8">
-                    <form action="{{ route('form.suket-meninggal.post') }}" method="POST" class="space-y-10">
+                    <form action="{{ route('form.suket-meninggal.post') }}" method="POST" enctype="multipart/form-data" class="space-y-10">
                         @csrf
 
                         <!-- Section: Data Pejabat -->
@@ -110,6 +110,18 @@
                                         <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
                                     </select>
                                 </div>
+                                <div>
+                                    <label for="pekerjaan_almarhum" class="block text-sm font-semibold text-gray-700 mb-2">Pekerjaan</label>
+                                    <input type="text" id="pekerjaan_almarhum" name="pekerjaan_almarhum" value="{{ old('pekerjaan_almarhum') }}"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('pekerjaan_almarhum') border-red-500 @enderror"
+                                        placeholder="Contoh: Wiraswasta" required>
+                                </div>
+                                <div>
+                                    <label for="warga_negara" class="block text-sm font-semibold text-gray-700 mb-2">Warga Negara</label>
+                                    <input type="text" id="warga_negara" name="warga_negara" value="{{ old('warga_negara', 'WNI') }}"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('warga_negara') border-red-500 @enderror"
+                                        placeholder="Contoh: WNI" required>
+                                </div>
                                 <div class="col-span-1 md:col-span-2">
                                     <label for="alamat_almarhum" class="block text-sm font-semibold text-gray-700 mb-2">Alamat Terakhir</label>
                                     <textarea id="alamat_almarhum" name="alamat_almarhum" rows="3"
@@ -150,21 +162,68 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label for="nik_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">NIK Pelapor</label>
-                                    <input type="text" id="nik_pelapor" name="nik_pelapor" maxlength="16" value="{{ old('nik_pelapor') }}"
+                                    <input type="text" id="nik_pelapor" name="nik_pelapor" maxlength="16" value="{{ old('nik_pelapor', $penduduk->nik ?? '') }}"
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('nik_pelapor') border-red-500 @enderror"
                                         placeholder="Masukkan 16 digit NIK" required>
                                 </div>
                                 <div>
                                     <label for="nama_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">Nama Pelapor</label>
-                                    <input type="text" id="nama_pelapor" name="nama_pelapor" value="{{ old('nama_pelapor') }}"
+                                    <input type="text" id="nama_pelapor" name="nama_pelapor" value="{{ old('nama_pelapor', $penduduk->nama ?? '') }}"
                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('nama_pelapor') border-red-500 @enderror"
                                         placeholder="Nama sesuai KTP" required>
                                 </div>
+                                <div>
+                                    <label for="tempat_lahir_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">Tempat Lahir Pelapor</label>
+                                    <input type="text" id="tempat_lahir_pelapor" name="tempat_lahir_pelapor" value="{{ old('tempat_lahir_pelapor', $penduduk->tempat_lahir ?? '') }}"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('tempat_lahir_pelapor') border-red-500 @enderror"
+                                        placeholder="Kota/Kabupaten" required>
+                                </div>
+                                <div>
+                                    <label for="tanggal_lahir_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir Pelapor</label>
+                                    <input type="date" id="tanggal_lahir_pelapor" name="tanggal_lahir_pelapor"
+                                        value="{{ old('tanggal_lahir_pelapor', isset($penduduk->tanggal_lahir) ? \Carbon\Carbon::parse($penduduk->tanggal_lahir)->format('Y-m-d') : '') }}"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('tanggal_lahir_pelapor') border-red-500 @enderror"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="jenis_kelamin_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kelamin Pelapor</label>
+                                    <select id="jenis_kelamin_pelapor" name="jenis_kelamin_pelapor"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('jenis_kelamin_pelapor') border-red-500 @enderror" required>
+                                        <option value="">Pilih Jenis Kelamin</option>
+                                        <option value="Laki-laki" {{ old('jenis_kelamin_pelapor', (isset($penduduk->jenis_kelamin) && strtolower($penduduk->jenis_kelamin) == 'laki-laki') ? 'selected' : '') }}>Laki-laki</option>
+                                        <option value="Perempuan" {{ old('jenis_kelamin_pelapor', (isset($penduduk->jenis_kelamin) && strtolower($penduduk->jenis_kelamin) == 'perempuan') ? 'selected' : '') }}>Perempuan</option>
+                                    </select>
+                                </div>
                                 <div class="col-span-1 md:col-span-2">
-                                    <label for="hubungan_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">Hubungan dengan Almarhum</label>
-                                    <input type="text" id="hubungan_pelapor" name="hubungan_pelapor" value="{{ old('hubungan_pelapor') }}"
-                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('hubungan_pelapor') border-red-500 @enderror"
-                                        placeholder="Contoh: Anak Kandung / Istri / Suami" required>
+                                    <label for="alamat_pelapor" class="block text-sm font-semibold text-gray-700 mb-2">Alamat Pelapor</label>
+                                    <textarea id="alamat_pelapor" name="alamat_pelapor" rows="3"
+                                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none @error('alamat_pelapor') border-red-500 @enderror"
+                                         placeholder="Alamat lengkap sesuai KTP" required>{{ old('alamat_pelapor', $penduduk->alamat ?? '') }}</textarea>
+                                 </div>
+                            </div>
+                        </section>
+
+                        <!-- Section: Dokumen Pendukung -->
+                        <section>
+                            <h2 class="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">V. Dokumen Pendukung (Opsional)</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="p-4 border-2 border-dashed border-gray-200 rounded-lg hover:border-blue-400 transition-colors group">
+                                    <label for="file_ktp" class="block text-sm font-semibold text-gray-700 mb-2">Foto KTP Pelapor</label>
+                                    <input type="file" id="file_ktp" name="file_ktp" accept=".pdf,.jpg,.jpeg,.png"
+                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all">
+                                    <p class="mt-2 text-xs text-gray-500">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                    @error('file_ktp')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="p-4 border-2 border-dashed border-gray-200 rounded-lg hover:border-blue-400 transition-colors group">
+                                    <label for="file_kk" class="block text-sm font-semibold text-gray-700 mb-2">Foto Kartu Keluarga</label>
+                                    <input type="file" id="file_kk" name="file_kk" accept=".pdf,.jpg,.jpeg,.png"
+                                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all">
+                                    <p class="mt-2 text-xs text-gray-500">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                    @error('file_kk')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </section>

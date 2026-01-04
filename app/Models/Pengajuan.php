@@ -14,12 +14,15 @@ class Pengajuan extends Model
     protected $fillable = [
         'user_id',
         'jenis_surat',
+        'file_ktp',
+        'file_kk',
         'status',
         'catatan_admin',
         'approved_at',
         'approved_by',
         'rejected_at',
         'rejected_by',
+        'verification_token',
     ];
 
     public function user()

@@ -4,18 +4,28 @@ namespace App\Http\Controllers\Page;
 
 use App\Models\Meninggal;
 use App\Models\Arsip;
+use App\Models\Penduduk;
 use App\Models\Pengajuan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class MeninggalController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $penduduk = null;
+
+        if ($user && $user->nik) {
+            $penduduk = Penduduk::where('nik', $user->nik)->first();
+        }
+
         return view('frontend.pengajuan.meninggal', [
-            'title' => 'Surat Keterangan Meninggal'
+            'title' => 'Surat Keterangan Meninggal',
+            'penduduk' => $penduduk
         ]);
     }
 
@@ -31,6 +41,7 @@ class MeninggalController extends Controller
             'jenis_kelamin' => 'required|string',
             'agama' => 'required|string',
             'pekerjaan_almarhum' => 'required|string|max:255',
+            'warga_negara' => 'required|string|max:255',
             'alamat_almarhum' => 'required|string',
             'tanggal_meninggal' => 'required|date',
             'tempat_meninggal' => 'required|string|max:255',
@@ -41,13 +52,27 @@ class MeninggalController extends Controller
             'tanggal_lahir_pelapor' => 'required|date',
             'jenis_kelamin_pelapor' => 'required|string',
             'alamat_pelapor' => 'required|string',
+            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
+
+        $fileKtpPath = null;
+        if ($request->hasFile('file_ktp')) {
+            $fileKtpPath = $request->file('file_ktp')->store('dokumen_pendukung', 'public');
+        }
+
+        $fileKkPath = null;
+        if ($request->hasFile('file_kk')) {
+            $fileKkPath = $request->file('file_kk')->store('dokumen_pendukung', 'public');
+        }
 
         // Buat pengajuan terlebih dahulu dengan status pending
         $pengajuan = Pengajuan::create([
             'user_id' => Auth::id(),
             'jenis_surat' => 'meninggal',
-            'status' => 'pending',  // Status otomatis pending saat dibuat
+            'status' => 'pending',
+            'file_ktp' => $fileKtpPath,
+            'file_kk' => $fileKkPath,
         ]);
 
         // Buat record Meninggal

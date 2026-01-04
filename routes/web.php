@@ -45,8 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/', [App\Http\Controllers\Page\PageController::class, 'index'])->name('home');
-    Route::get('/profil', [App\Http\Controllers\Page\ProfilController::class, 'profil'])->name('profil');
-
 
     Route::get('/artikel', [App\Http\Controllers\Page\PageController::class, 'artikel'])->name('artikel');
     Route::get('/layanan', [App\Http\Controllers\Page\PageController::class, 'layanan'])->name('layanan');
